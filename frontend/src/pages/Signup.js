@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import axios
+import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for Toastify
 import './AuthForms.css';
 
 const Signup = () => {
@@ -8,16 +10,16 @@ const Signup = () => {
   const [fullName, setFullName] = useState('');
   const [contactNumber, setContactNumber] = useState('');
   const [role, setRole] = useState('User'); // Default role
-  const [error, setError] = useState(null);
-  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // Configure react-toastify
+  const notifySuccess = (message) => toast.success(message);
+  const notifyError = (message) => toast.error(message);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Reset previous error/message
-    setError(null);
-    setMessage(null);
+    // Reset previous messages
     setLoading(true);
 
     const userData = {
@@ -33,7 +35,7 @@ const Signup = () => {
       const response = await axios.post('http://localhost:5000/register', userData);
 
       // Handle success response
-      setMessage(response.data.message);
+      notifySuccess(response.data.message);
       setFullName('');
       setEmail('');
       setContactNumber('');
@@ -42,9 +44,9 @@ const Signup = () => {
     } catch (err) {
       // Handle error response
       if (err.response) {
-        setError(err.response.data.message);
+        notifyError(err.response.data.message);
       } else {
-        setError('An error occurred. Please try again later.');
+        notifyError('An error occurred. Please try again later.');
       }
     } finally {
       setLoading(false);
@@ -53,7 +55,7 @@ const Signup = () => {
 
   return (
     <div className="auth-form">
-      <h2>Signup</h2>
+      <h2>Add New User</h2>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <label htmlFor="full_name">Full Name</label>
@@ -111,14 +113,13 @@ const Signup = () => {
           </select>
         </div>
 
-        {/* Display error or success messages */}
-        {error && <div className="error">{error}</div>}
-        {message && <div className="success">{message}</div>}
-
         <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? 'Signing Up...' : 'Signup'}
+          {loading ? 'Signing Up...' : 'Register'}
         </button>
       </form>
+
+      {/* Toast container for showing success or error messages */}
+      <ToastContainer />
     </div>
   );
 };

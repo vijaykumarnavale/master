@@ -8,6 +8,13 @@ import UserDashboard from './components/UserDashboard';
 import Login from './pages/Login';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import Signup from './pages/Signup';
+
+import PropertiesForm from './components/PropertiesForm';
+import SetbacksForm from './components/SetbacksForm';
+import PermittedUsesForm from './components/PermittedUsesForm';
+import ADUDetailsForm from './components/ADUDetailsForm';
+import ParkingRequirementsForm from './components/ParkingRequirementsForm';
+
 const App = () => {
   return (
     <Router>
@@ -20,6 +27,11 @@ const App = () => {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/properties" element={<PropertiesForm />} />
+        <Route path="/setbacks" element={<SetbacksForm />} />
+        <Route path="/permitted-uses" element={<PermittedUsesForm />} />
+        <Route path="/adu-details" element={<ADUDetailsForm />} />
+        <Route path="/parking-requirements" element={<ParkingRequirementsForm />} />
         </Routes>
       </div>
     </Router>

@@ -1,0 +1,67 @@
+/* Button Styles */
+.btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-edit {
+    background-color: #4caf50; /* Green */
+    color: white;
+  }
+  
+  .btn-edit:hover {
+    background-color: #45a049;
+  }
+  
+  .btn-delete {
+    background-color: #f44336; /* Red */
+    color: white;
+  }
+  
+  .btn-delete:hover {
+    background-color: #da190b;
+  }
+  
+  .btn-save {
+    background-color: #2196f3; /* Blue */
+    color: white;
+  }
+  
+  .btn-save:hover {
+    background-color: #0b7dda;
+  }
+  
+  .btn-cancel {
+    background-color: #ff9800; /* Orange */
+    color: white;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #e68900;
+  }
+  
+  /* Table Styles */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  table th, table td {
+    text-align: left;
+    padding: 10px;
+  }
+  
+  table th {
+    background-color: #f2f2f2;
+  }
+  
+  table tr:hover {
+    background-color: #f1f1f1;
+  }
+  

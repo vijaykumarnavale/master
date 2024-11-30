@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import axios from 'axios'; // Import axios
+import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for Toastify
 import './AuthForms.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [isForgotPassword, setIsForgotPassword] = useState(false); // Toggle between login and forgot password
@@ -17,8 +17,6 @@ const Login = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setMessage('');
 
     const userData = { email, password };
 
@@ -26,7 +24,9 @@ const Login = () => {
       // Replace with your login API endpoint
       const response = await axios.post('http://localhost:5000/login', userData);
       
-      setMessage(response.data.message);  // Assuming successful login message
+      // Success toast message
+      toast.success(response.data.message);  
+
       setLoading(false);
 
       // Assuming the response contains user data with role
@@ -38,12 +38,13 @@ const Login = () => {
       } else if (role === 'User') {
         navigate('/user-dashboard'); // Redirect to User Dashboard
       } else {
-        setError('Role not found or invalid.');
+        toast.error('Role not found or invalid.'); // Error toast message
       }
       
     } catch (err) {
       setLoading(false);
-      setError(err.response ? err.response.data.message : 'Login failed, please try again');
+      // Error toast message
+      toast.error(err.response ? err.response.data.message : 'Login failed, please try again');
     }
   };
 
@@ -51,19 +52,19 @@ const Login = () => {
   const handleForgotPasswordSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setMessage('');
 
     try {
       const response = await axios.post('http://localhost:5000/forgot-password', { email: forgotPasswordEmail });
 
-      setMessage(response.data.message); // Success message on forgot password
+      // Success toast message
+      toast.success(response.data.message);  
       setForgotPasswordEmail(''); // Reset input field
       setIsForgotPassword(false);  // Go back to login screen
       setLoading(false);
     } catch (err) {
       setLoading(false);
-      setError(err.response ? err.response.data.message : 'An error occurred while trying to reset your password');
+      // Error toast message
+      toast.error(err.response ? err.response.data.message : 'An error occurred while trying to reset your password');
     }
   };
 
@@ -97,15 +98,12 @@ const Login = () => {
             />
           </div>
 
-          {error && <div className="error">{error}</div>}
-          {message && <div className="success">{message}</div>}
+          {/* Forgot Password Link */}
+          <p className="forgot-password-link" onClick={() => setIsForgotPassword(true)}>Forgot your password?</p>
 
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
-
-          {/* Forgot Password Link */}
-          <p className="forgot-password-link" onClick={() => setIsForgotPassword(true)}>Forgot your password?</p>
         </form>
       ) : (
         // Forgot Password Form
@@ -122,9 +120,6 @@ const Login = () => {
             />
           </div>
 
-          {error && <div className="error">{error}</div>}
-          {message && <div className="success">{message}</div>}
-
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? 'Sending Reset Link...' : 'Send Reset Link'}
           </button>
@@ -133,6 +128,9 @@ const Login = () => {
           <p className="forgot-password-link" onClick={() => setIsForgotPassword(false)}>Back to Login</p>
         </form>
       )}
+
+      {/* ToastContainer to display the toast messages */}
+      <ToastContainer />
     </div>
   );
 };

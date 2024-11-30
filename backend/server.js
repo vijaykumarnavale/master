@@ -6,6 +6,11 @@ const loginRoute = require('./routes/login');
 const dashboardRoute = require('./routes/dashboard');
 const forgotPassword=require('./routes/forgot_password');
 const resetPassword=require('./routes/forgot_password');
+const getAllUsers = require('./routes/all_users');
+const updateUser = require('./routes/updateUser');
+const deleteUser = require('./routes/deleteUser');
+const getSingleData = require('./routes/search');
+const post_data = require('./routes/post_data');
 
 const cors = require('cors');
 
@@ -25,6 +30,15 @@ app.use('/login', loginRoute);
 app.use('/dashboard', dashboardRoute);
 app.use('/',forgotPassword);
 app.use('/', resetPassword);
+app.use('/', getAllUsers);
+app.use('/', updateUser);
+app.use('/', deleteUser);
+app.use('/', getSingleData);
+app.use('/',post_data);
+app.use('',post_data);
+app.use('/',post_data);
+app.use('/',post_data);
+app.use('/',post_data);
 
 
 // Home Route
