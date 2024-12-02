@@ -35,7 +35,7 @@ const SearchAndRecords = () => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter area code or search query"
+          placeholder="Enter apn or address or pincode or search query"
         />
         <button onClick={handleSearch} disabled={loading}>
           {loading ? 'Searching...' : 'Search'}
@@ -48,20 +48,32 @@ const SearchAndRecords = () => {
         <table className="records-table">
           <thead>
             <tr>
-              <th>Record ID</th>
-              <th>Description</th>
+              <th>Property ID</th>
               <th>Address</th>
+              <th>APN</th>
+              <th>Pincode</th>
+              <th>Zoning</th>
+              <th>Plot Area (sqft)</th>
+              <th>Height Limit (ft)</th>
+              <th>Depth (ft)</th>
+              <th>Width (ft)</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {records.map((record) => (
-              <tr key={record.id}>
-                <td>{record.id}</td>
-                <td>{record.description}</td>
+              <tr key={record.property_id}>
+                <td>{record.property_id}</td>
                 <td>{record.address}</td>
+                <td>{record.apn}</td>
+                <td>{record.pincode}</td>
+                <td>{record.zoning}</td>
+                <td>{record.plot_area_sqft}</td>
+                <td>{record.height_limit_ft}</td>
+                <td>{record.depth_ft}</td>
+                <td>{record.width_ft}</td>
                 <td>
-                  <button onClick={() => handleCreateAP(record.id)}>
+                  <button onClick={() => handleCreateAP(record.property_id)}>
                     Create AP
                   </button>
                 </td>
