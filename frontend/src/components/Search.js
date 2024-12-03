@@ -74,7 +74,7 @@ const SearchAndRecords = () => {
                 <td>{record.width_ft}</td>
                 <td>
                   <button onClick={() => handleCreateAP(record.property_id)}>
-                    Create AP
+                    View Data
                   </button>
                 </td>
               </tr>

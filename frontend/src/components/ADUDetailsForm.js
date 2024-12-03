@@ -46,14 +46,16 @@ const ADUDetailsForm = () => {
       <h2 className="form-title">ADU Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="property-form">
         <div className="form-group">
-          <input
-            type="text"
+          <select
             name="adu_type"
             value={formData.adu_type}
             onChange={handleChange}
-            placeholder="ADU Type"
             className="input-field"
-          />
+          >
+            <option value="">Select ADU Type</option>
+            <option value="Attached">Attached</option>
+            <option value="Detached">Detached</option>
+          </select>
           {errors.adu_type && <span className="error-text">{errors.adu_type}</span>}
         </div>
         <div className="form-group">

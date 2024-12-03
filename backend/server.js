@@ -11,6 +11,7 @@ const updateUser = require('./routes/updateUser');
 const deleteUser = require('./routes/deleteUser');
 const getSingleData = require('./routes/search');
 const post_data = require('./routes/post_data');
+const getAllPropertiesData = require('./routes/get_property_data');
 
 const cors = require('cors');
 
@@ -35,10 +36,7 @@ app.use('/', updateUser);
 app.use('/', deleteUser);
 app.use('/', getSingleData);
 app.use('/',post_data);
-app.use('',post_data);
-app.use('/',post_data);
-app.use('/',post_data);
-app.use('/',post_data);
+app.use('/',getAllPropertiesData);
 
 
 // Home Route
