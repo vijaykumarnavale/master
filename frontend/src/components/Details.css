@@ -1,0 +1,66 @@
+.details-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .details-table th,
+  .details-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .details-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .details-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .footer-back-button {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold; /* Make the text bold */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 10%;
+  }
+  
+  .footer-back-button:hover {
+    background-color: red;
+    color: black;
+  }
+  
+  .footer-create-ap-button {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold; /* Make the text bold */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 10%;
+  }
+  
+  .footer-create-ap-button:hover {
+    background-color: #00ee0c;
+    color: black;
+  }
+  

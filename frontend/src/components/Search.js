@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Search.css'; // Optional styling
 
@@ -7,14 +8,14 @@ const SearchAndRecords = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSearch = async () => {
     setLoading(true);
-    setError(null); // Clear any previous errors
+    setError(null);
     try {
-      // Replace with your API endpoint
       const response = await axios.get(`http://localhost:5000/search?query=${query}`);
-      setRecords(response.data.records); // Assuming response contains the records
+      setRecords(response.data.records);
     } catch (err) {
       setError('Failed to fetch records. Please try again.');
     } finally {
@@ -22,10 +23,14 @@ const SearchAndRecords = () => {
     }
   };
 
-  const handleCreateAP = (recordId) => {
-    // Logic to create an architectural plan (for now, just a log)
-    console.log(`Creating architectural plan for record ID: ${recordId}`);
-    // You could trigger an API call here to create the AP
+  const handleViewData = async (propertyId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/property/${propertyId}`);
+      navigate('/property-details', { state: { propertyData: response.data } });
+    } catch (err) {
+      console.error('Error fetching property data:', err);
+      alert('Failed to fetch property data. Please try again.');
+    }
   };
 
   return (
@@ -35,7 +40,7 @@ const SearchAndRecords = () => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter apn or address or pincode or search query"
+          placeholder="Enter APN, address, pincode, or search query"
         />
         <button onClick={handleSearch} disabled={loading}>
           {loading ? 'Searching...' : 'Search'}
@@ -73,7 +78,7 @@ const SearchAndRecords = () => {
                 <td>{record.depth_ft}</td>
                 <td>{record.width_ft}</td>
                 <td>
-                  <button onClick={() => handleCreateAP(record.property_id)}>
+                  <button onClick={() => handleViewData(record.property_id)}>
                     View Data
                   </button>
                 </td>

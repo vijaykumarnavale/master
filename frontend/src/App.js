@@ -14,6 +14,7 @@ import SetbacksForm from './components/SetbacksForm';
 import PermittedUsesForm from './components/PermittedUsesForm';
 import ADUDetailsForm from './components/ADUDetailsForm';
 import ParkingRequirementsForm from './components/ParkingRequirementsForm';
+import PropertyDetails from './components/PropertyDetails';
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
         <Route path="/permitted-uses" element={<PermittedUsesForm />} />
         <Route path="/adu-details" element={<ADUDetailsForm />} />
         <Route path="/parking-requirements" element={<ParkingRequirementsForm />} />
+        <Route path="/property-details" element={<PropertyDetails />} />
         </Routes>
       </div>
     </Router>
