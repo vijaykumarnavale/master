@@ -10,7 +10,9 @@ const ADUDetailsForm = () => {
     property_id: localStorage.getItem('property_id'),
     adu_type: '',
     adu_count: '',
-    adu_max_sqft: ''
+    adu_max_sqft: '',
+    jadu_count: '', // New field
+    jadu_max_sqf: '' // New field
   });
 
   const [errors, setErrors] = useState({});
@@ -24,6 +26,8 @@ const ADUDetailsForm = () => {
     if (!formData.adu_type) newErrors.adu_type = 'ADU Type is required.';
     if (!formData.adu_count) newErrors.adu_count = 'Number of ADUs is required.';
     if (!formData.adu_max_sqft) newErrors.adu_max_sqft = 'Max ADU Size is required.';
+    if (!formData.jadu_count) newErrors.jadu_count = 'Number of JADUs is required.'; // New validation
+    if (!formData.jadu_max_sqf) newErrors.jadu_max_sqf = 'Max JADU Size is required.'; // New validation
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -79,6 +83,28 @@ const ADUDetailsForm = () => {
             className="input-field"
           />
           {errors.adu_max_sqft && <span className="error-text">{errors.adu_max_sqft}</span>}
+        </div>
+        <div className="form-group">
+          <input
+            type="number"
+            name="jadu_count" // New field
+            value={formData.jadu_count}
+            onChange={handleChange}
+            placeholder="Number of JADUs"
+            className="input-field"
+          />
+          {errors.jadu_count && <span className="error-text">{errors.jadu_count}</span>}
+        </div>
+        <div className="form-group">
+          <input
+            type="number"
+            name="jadu_max_sqf" // New field
+            value={formData.jadu_max_sqf}
+            onChange={handleChange}
+            placeholder="Max JADU Size (sqft)"
+            className="input-field"
+          />
+          {errors.jadu_max_sqf && <span className="error-text">{errors.jadu_max_sqf}</span>}
         </div>
         <button type="button" onClick={handleSubmit} className="submit-button">
           Next

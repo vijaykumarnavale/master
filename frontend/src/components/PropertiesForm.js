@@ -14,7 +14,8 @@ const PropertiesForm = () => {
     plot_area_sqft: '',
     height_limit_ft: '',
     depth_ft: '',
-    width_ft: ''
+    width_ft: '',
+    building_sqft: '', // Added field
   });
   const [errors, setErrors] = useState({});
 
@@ -139,6 +140,17 @@ const PropertiesForm = () => {
             className="input-field"
           />
           {errors.width_ft && <span className="error-text">{errors.width_ft}</span>}
+        </div>
+        <div className="form-group">
+          <input
+            type="number"
+            name="building_sqft" // Added field
+            value={formData.building_sqft}
+            onChange={handleChange}
+            placeholder="Building Area (sqft)"
+            className="input-field"
+          />
+          {errors.building_sqft && <span className="error-text">{errors.building_sqft}</span>}
         </div>
         <button type="button" onClick={handleSubmit} className="submit-button">Next</button>
       </form>

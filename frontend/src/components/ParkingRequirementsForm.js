@@ -10,19 +10,33 @@ const ParkingRequirementsForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     property_id: localStorage.getItem('property_id'), // assuming this value is set earlier
-    parking_spaces: ''
+    parking_spaces: '',
+    eligible_for_bonus: false, // New field with default value
+    bonus_type: '', // New field
+    bonus_percentage: '' // New field
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value
+    });
   };
+  
 
   const validateForm = () => {
     if (!formData.parking_spaces) {
       toast.error('Parking Spaces is a required field.');
       return false;
     }
+
+    if (formData.eligible_for_bonus && (!formData.bonus_type || !formData.bonus_percentage)) {
+      toast.error('If eligible for bonus, both Bonus Type and Bonus Percentage are required.');
+      return false;
+    }
+
     return true;
   };
 
@@ -58,6 +72,41 @@ const ParkingRequirementsForm = () => {
           placeholder="Parking Spaces"
           className="input-field"
         />
+        <div className="form-group">
+          <label>
+            <input
+              type="checkbox"
+              name="eligible_for_bonus"
+              checked={formData.eligible_for_bonus}
+              onChange={handleChange}
+            />
+            Eligible for Bonus
+          </label>
+        </div>
+        {formData.eligible_for_bonus && (
+          <>
+            <div className="form-group">
+              <input
+                type="text"
+                name="bonus_type"
+                value={formData.bonus_type}
+                onChange={handleChange}
+                placeholder="Bonus Type (e.g., Very Low Income, Senior Housing)"
+                className="input-field"
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="number"
+                name="bonus_percentage"
+                value={formData.bonus_percentage}
+                onChange={handleChange}
+                placeholder="Bonus Percentage (%)"
+                className="input-field"
+              />
+            </div>
+          </>
+        )}
         <button
           type="button"
           onClick={handleSubmit}
