@@ -16,14 +16,16 @@ const PropertyDetails = () => {
     console.log('Creating architectural plan for:', propertyData);
     alert('Architectural plan created successfully!');
   };
-
+  const capitalizeFieldName = (fieldName) => {
+    return fieldName.charAt(0).toUpperCase() + fieldName.slice(1).toLowerCase();
+  };
   return (
     <div className="details-container">
       <table className="details-table">
         <tbody>
           {Object.entries(propertyData).map(([key, value]) => (
             <tr key={key}>
-              <th>{key}</th>
+               <th>{capitalizeFieldName(key)}</th> 
               <td>{value}</td>
             </tr>
           ))}
