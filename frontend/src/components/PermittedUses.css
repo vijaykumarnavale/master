@@ -1,0 +1,101 @@
+/* Add this to your existing CSS file */
+
+.add-use-button {
+  background-color: black;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  width: 50%;
+  margin-top: 20px;
+  align-self:flex-end;
+}
+
+.add-use-button:hover {
+    background-color: #1be025;
+    color: black;
+}
+
+.remove-use-button {
+    background-color: #f44336;  /* Red */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    width: 50%;
+    align-self: center;
+}
+
+.remove-use-button:hover {
+    background-color: #da190b;
+}
+
+.use-form-group {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.input-field,
+.textarea-field {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.input-field:focus,
+.textarea-field:focus {
+    border-color: #4CAF50;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.error-text {
+    color: red;
+    font-size: 12px;
+}
+
+.submit-button {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+/* New styles for better spacing and layout */
+.use-buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.add-use-button,
+.remove-use-button {
+    margin-top: 0;
+    margin-right: 10px;
+}

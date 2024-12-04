@@ -44,13 +44,38 @@ router.post("/api/setbacks", (req, res) => {
 
 // Insert data into Permitted_Uses table
 router.post("/api/permitted-uses", (req, res) => {
-  const { property_id, use_type, max_height_ft, additional_notes } = req.body;
+  const { property_id, uses } = req.body;  // expects 'uses' as an array of use objects
+  
+  // Ensure 'uses' is an array
+  if (!Array.isArray(uses)) {
+    return res.status(400).json({ error: 'Uses should be an array' });
+  }
+
+  // Prepare the SQL query and values
   const sql = `INSERT INTO Permitted_Uses (property_id, use_type, max_height_ft, additional_notes) VALUES (?, ?, ?, ?)`;
-  db.query(sql, [property_id, use_type, max_height_ft, additional_notes], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    res.status(200).json({ use_id: result.insertId });
+
+  // Loop through each use entry and insert it into the database
+  const insertQueries = uses.map((use) => {
+    return new Promise((resolve, reject) => {
+      const { use_type, max_height_ft, additional_notes } = use;
+      db.query(sql, [property_id, use_type, max_height_ft, additional_notes], (err, result) => {
+        if (err) return reject(err);
+        resolve(result.insertId);
+      });
+    });
   });
+
+  // Wait for all inserts to complete and return the result
+  Promise.all(insertQueries)
+    .then((insertIds) => {
+      res.status(200).json({ message: 'Uses added successfully', use_ids: insertIds });
+    })
+    .catch((err) => {
+      console.error('Error inserting permitted uses:', err);
+      res.status(500).json({ error: 'Error inserting permitted uses' });
+    });
 });
+
 
 // Insert data into ADU_Details table
 router.post("/api/adu-details", (req, res) => {
