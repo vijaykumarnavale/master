@@ -7,11 +7,25 @@ import './PermittedUses.css';
 
 const PermittedUsesForm = () => {
   const navigate = useNavigate();
-  
-  // Initializing an array of use types and additional notes
+
+  // Initial form state
   const [formData, setFormData] = useState({
     property_id: localStorage.getItem('property_id'),
-    uses: [{ use_type: '', max_height_ft: '', additional_notes: '' }]
+    uses: [{
+      zoning_type: '',
+      use_type: '',
+      lot_area_sqft: '',
+      lot_width_ft: '',
+      lot_depth_ft: '',
+      setback_front_ft: '',
+      setback_back_ft: '',
+      setback_side_ft: '',
+      max_height_ft: '',
+      floor_area_ratio: '',
+      density_units_per_lot: '',
+      parking_spaces_required: '',
+      open_space_sqft: ''
+    }]
   });
 
   const [errors, setErrors] = useState({});
@@ -26,7 +40,21 @@ const PermittedUsesForm = () => {
   const handleAddUse = () => {
     setFormData({
       ...formData,
-      uses: [...formData.uses, { use_type: '', max_height_ft: '', additional_notes: '' }]
+      uses: [...formData.uses, {
+        zoning_type: '',
+        use_type: '',
+        lot_area_sqft: '',
+        lot_width_ft: '',
+        lot_depth_ft: '',
+        setback_front_ft: '',
+        setback_back_ft: '',
+        setback_side_ft: '',
+        max_height_ft: '',
+        floor_area_ratio: '',
+        density_units_per_lot: '',
+        parking_spaces_required: '',
+        open_space_sqft: ''
+      }]
     });
   };
 
@@ -37,12 +65,15 @@ const PermittedUsesForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const { uses } = formData;
-
-    uses.forEach((use, index) => {
-      if (!use.use_type) newErrors[`use_type_${index}`] = 'Use Type is required.';
-      if (!use.max_height_ft) newErrors[`max_height_ft_${index}`] = 'Max Height is required.';
-      if (!use.additional_notes) newErrors[`additional_notes_${index}`] = 'Additional Notes are required.';
+    
+    // Loop through each use object and validate zoning_type and use_type
+    formData.uses.forEach((use, index) => {
+      if (!use.zoning_type) {
+        newErrors[`zoning_type_${index}`] = "Zoning type is required.";
+      }
+      if (!use.use_type) {
+        newErrors[`use_type_${index}`] = "Use type is required.";
+      }
     });
 
     setErrors(newErrors);
@@ -58,59 +89,67 @@ const PermittedUsesForm = () => {
         navigate('/adu-details');
       })
       .catch((error) => {
-        console.error('Error submitting permitted uses data:', error);
+        console.error('Error submitting zoning details:', error);
       });
   };
 
+  const useTypeOptions = [
+    'Townhouses',
+    'Condominiums',
+    'Affordable Housing',
+    'Assisted Living',
+    'Single-Family Residences',
+    'Accessory Private Garages',
+    'Unenclosed Parking',
+    'Public Parks',
+    'Detached Accessory Building',
+    'Senior Citizen Accessory Units'
+  ];
+
   return (
     <div className="form-container">
-      <h2 className="form-title">Permitted Uses Details</h2>
+      <h2 className="form-title">Lot Zoning Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="property-form">
         {formData.uses.map((use, index) => (
           <div key={index} className="use-form-group">
-            <div className="form-group">
-              <select
-                name="use_type"
-                value={use.use_type}
-                onChange={(e) => handleChange(e, index)}
-                className="input-field"
-              >
-                <option value="" disabled>Select Use Type</option>
-                <option value="Townhouses">Townhouses</option>
-                <option value="Condominiums">Condominiums</option>
-                <option value="Affordable Housing">Affordable Housing</option>
-                <option value="Assisted Living">Assisted Living</option>
-                <option value="Single-Family Residences">Single-Family Residences</option>
-                <option value="Accessory Private Garages">Accessory Private Garages</option>
-                <option value="Unenclosed Parking">Unenclosed Parking</option>
-                <option value="Public Parks">Public Parks</option>
-                <option value="Detached Accessory Building">Detached Accessory Building</option>
-                <option value="Senior Citizen Accessory Units">Senior Citizen Accessory Units</option>
-              </select>
-              {errors[`use_type_${index}`] && <span className="error-text">{errors[`use_type_${index}`]}</span>}
-            </div>
-            <div className="form-group">
-              <input
-                type="number"
-                name="max_height_ft"
-                value={use.max_height_ft}
-                onChange={(e) => handleChange(e, index)}
-                placeholder="Max Height (ft)"
-                className="input-field"
-              />
-              {errors[`max_height_ft_${index}`] && <span className="error-text">{errors[`max_height_ft_${index}`]}</span>}
-            </div>
-            <div className="form-group">
-              <textarea
-                name="additional_notes"
-                value={use.additional_notes}
-                onChange={(e) => handleChange(e, index)}
-                placeholder="Additional Notes"
-                className="textarea-field"
-              />
-              {errors[`additional_notes_${index}`] && <span className="error-text">{errors[`additional_notes_${index}`]}</span>}
-            </div>
-            <button type="button" onClick={() => handleRemoveUse(index)} className="remove-use-button">
+            {Object.keys(use).map((field) => (
+              <div className="form-group" key={field}>
+                {/* Remove label */}
+                {field === 'use_type' ? (
+                  <select
+                    name={field}
+                    value={use[field]}
+                    onChange={(e) => handleChange(e, index)}
+                    className="input-field"
+                  >
+                    <option value="" disabled>Select Use Type</option>
+                    {useTypeOptions.map((option, idx) => (
+                      <option key={idx} value={option}>{option}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={field.includes('sqft') || field.includes('ft') || field.includes('units') || field.includes('spaces') ? 'number' : 'text'}
+                    name={field}
+                    value={use[field]}
+                    onChange={(e) => handleChange(e, index)}
+                    className="input-field"
+                    placeholder={field.replace(/_/g, ' ')}
+                  />
+                )}
+
+                {/* Show errors for required fields */}
+                {errors[`${field}_${index}`] && (
+                  <span className="error-text">{errors[`${field}_${index}`]}</span>
+                )}
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={() => handleRemoveUse(index)}
+              className="remove-use-button"
+            >
               Remove This Use
             </button>
           </div>

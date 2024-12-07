@@ -44,37 +44,72 @@ router.post("/api/setbacks", (req, res) => {
 
 // Insert data into Permitted_Uses table
 router.post("/api/permitted-uses", (req, res) => {
-  const { property_id, uses } = req.body;  // expects 'uses' as an array of use objects
-  
-  // Ensure 'uses' is an array
-  if (!Array.isArray(uses)) {
-    return res.status(400).json({ error: 'Uses should be an array' });
+  const { property_id, uses } = req.body;  // expects 'uses' as an array of zoning details
+
+  // Validate input
+  if (!property_id || !Array.isArray(uses) || uses.length === 0) {
+    return res.status(400).json({ error: "Invalid input. 'property_id' and 'uses' are required." });
   }
 
-  // Prepare the SQL query and values
-  const sql = `INSERT INTO Permitted_Uses (property_id, use_type, max_height_ft, additional_notes) VALUES (?, ?, ?, ?)`;
+  // Prepare SQL query
+  const sql = `
+    INSERT INTO lot_zoning_details 
+    (property_id, zoning_type, use_type, lot_area_sqft, lot_width_ft, lot_depth_ft, 
+    setback_front_ft, setback_back_ft, setback_side_ft, max_height_ft, 
+    floor_area_ratio, density_units_per_lot, parking_spaces_required, open_space_sqft) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
 
-  // Loop through each use entry and insert it into the database
+  // Insert each zoning detail entry
   const insertQueries = uses.map((use) => {
     return new Promise((resolve, reject) => {
-      const { use_type, max_height_ft, additional_notes } = use;
-      db.query(sql, [property_id, use_type, max_height_ft, additional_notes], (err, result) => {
-        if (err) return reject(err);
-        resolve(result.insertId);
-      });
+      const {
+        zoning_type, use_type, lot_area_sqft, lot_width_ft, lot_depth_ft,
+        setback_front_ft, setback_back_ft, setback_side_ft, max_height_ft,
+        floor_area_ratio, density_units_per_lot, parking_spaces_required, open_space_sqft
+      } = use;
+
+      // Validate required fields
+      if (
+        !zoning_type || !use_type || lot_area_sqft == null || lot_width_ft == null || 
+        lot_depth_ft == null || setback_front_ft == null || setback_back_ft == null || 
+        setback_side_ft == null || max_height_ft == null || floor_area_ratio == null || 
+        density_units_per_lot == null || parking_spaces_required == null || 
+        open_space_sqft == null
+      ) {
+        return reject(new Error("Missing required zoning details."));
+      }
+
+      // Execute SQL query
+      db.query(
+        sql, 
+        [
+          property_id, zoning_type, use_type, lot_area_sqft, lot_width_ft, lot_depth_ft, 
+          setback_front_ft, setback_back_ft, setback_side_ft, max_height_ft, 
+          floor_area_ratio, density_units_per_lot, parking_spaces_required, open_space_sqft
+        ],
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result.insertId);
+        }
+      );
     });
   });
 
-  // Wait for all inserts to complete and return the result
+  // Wait for all inserts to complete and send response
   Promise.all(insertQueries)
     .then((insertIds) => {
-      res.status(200).json({ message: 'Uses added successfully', use_ids: insertIds });
+      res.status(200).json({
+        message: "Lot zoning details added successfully.",
+        use_ids: insertIds,
+      });
     })
     .catch((err) => {
-      console.error('Error inserting permitted uses:', err);
-      res.status(500).json({ error: 'Error inserting permitted uses' });
+      console.error("Error inserting lot zoning details:", err.message);
+      res.status(500).json({ error: "Error inserting lot zoning details." });
     });
 });
+
 
 
 // Insert data into ADU_Details table

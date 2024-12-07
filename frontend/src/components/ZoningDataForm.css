@@ -4,9 +4,7 @@
 .form-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin: 20px;
-    padding: 20px;
+    align-items: center;   
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
@@ -69,4 +67,8 @@
     color: #aaa;
     font-style: italic;
   }
-  
+ /* ZoningDataForm.css or a new CSS file */
+
+
+
+
