@@ -55,7 +55,7 @@ const PropertyDetails = () => {
   );
 
   const renderNestedTable = (nestedData, isOuterRow = false) => (
-    <table className="nested-table">
+    <table className="nested-table"> {/* Use nested-table class to avoid unwanted styles */}
       <tbody>
         {Object.entries(nestedData).map(([subKey, subValue]) => (
           <tr key={subKey}>
@@ -231,8 +231,6 @@ const PropertyDetails = () => {
           </table>
         </div>
       )}
-
-    
 
       <div className="details-footer">
         <button onClick={handleBack} className="footer-back-button">
