@@ -15,7 +15,7 @@ const PropertiesForm = () => {
     height_limit_ft: '',
     depth_ft: '',
     width_ft: '',
-    building_sqft: '', // Added field
+    building_sqft: '',
   });
   const [errors, setErrors] = useState({});
 
@@ -39,7 +39,6 @@ const PropertiesForm = () => {
       axios.post('http://localhost:5000/api/properties', formData)
         .then(response => {
           console.log(response.data);
-          // Store the property_id in localStorage or state for next forms
           localStorage.setItem('property_id', response.data.property_id);
           navigate('/setbacks');
         })
@@ -54,8 +53,10 @@ const PropertiesForm = () => {
       <h2 className="form-title">Properties Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="property-form">
         <div className="form-group">
+          <label htmlFor="address" className="form-label">Address *</label>
           <input
             type="text"
+            id="address"
             name="address"
             value={formData.address}
             onChange={handleChange}
@@ -64,9 +65,12 @@ const PropertiesForm = () => {
           />
           {errors.address && <span className="error-text">{errors.address}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="apn" className="form-label">APN *</label>
           <input
             type="text"
+            id="apn"
             name="apn"
             value={formData.apn}
             onChange={handleChange}
@@ -75,9 +79,12 @@ const PropertiesForm = () => {
           />
           {errors.apn && <span className="error-text">{errors.apn}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="pincode" className="form-label">Pincode *</label>
           <input
             type="text"
+            id="pincode"
             name="pincode"
             value={formData.pincode}
             onChange={handleChange}
@@ -86,9 +93,12 @@ const PropertiesForm = () => {
           />
           {errors.pincode && <span className="error-text">{errors.pincode}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="zoning" className="form-label">Zoning *</label>
           <input
             type="text"
+            id="zoning"
             name="zoning"
             value={formData.zoning}
             onChange={handleChange}
@@ -97,9 +107,12 @@ const PropertiesForm = () => {
           />
           {errors.zoning && <span className="error-text">{errors.zoning}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="plot_area_sqft" className="form-label">Plot Area (sqft) *</label>
           <input
             type="number"
+            id="plot_area_sqft"
             name="plot_area_sqft"
             value={formData.plot_area_sqft}
             onChange={handleChange}
@@ -108,9 +121,12 @@ const PropertiesForm = () => {
           />
           {errors.plot_area_sqft && <span className="error-text">{errors.plot_area_sqft}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="height_limit_ft" className="form-label">Height Limit (ft) *</label>
           <input
             type="number"
+            id="height_limit_ft"
             name="height_limit_ft"
             value={formData.height_limit_ft}
             onChange={handleChange}
@@ -119,9 +135,12 @@ const PropertiesForm = () => {
           />
           {errors.height_limit_ft && <span className="error-text">{errors.height_limit_ft}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="depth_ft" className="form-label">Depth (ft) *</label>
           <input
             type="number"
+            id="depth_ft"
             name="depth_ft"
             value={formData.depth_ft}
             onChange={handleChange}
@@ -130,9 +149,12 @@ const PropertiesForm = () => {
           />
           {errors.depth_ft && <span className="error-text">{errors.depth_ft}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="width_ft" className="form-label">Width (ft) *</label>
           <input
             type="number"
+            id="width_ft"
             name="width_ft"
             value={formData.width_ft}
             onChange={handleChange}
@@ -141,10 +163,13 @@ const PropertiesForm = () => {
           />
           {errors.width_ft && <span className="error-text">{errors.width_ft}</span>}
         </div>
+
         <div className="form-group">
+          <label htmlFor="building_sqft" className="form-label">Building Area (sqft) *</label>
           <input
             type="number"
-            name="building_sqft" // Added field
+            id="building_sqft"
+            name="building_sqft"
             value={formData.building_sqft}
             onChange={handleChange}
             placeholder="Building Area (sqft)"
@@ -152,6 +177,7 @@ const PropertiesForm = () => {
           />
           {errors.building_sqft && <span className="error-text">{errors.building_sqft}</span>}
         </div>
+
         <button type="button" onClick={handleSubmit} className="submit-button">Next</button>
       </form>
     </div>

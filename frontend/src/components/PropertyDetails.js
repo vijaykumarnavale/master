@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable'; // Import the plugin
 import './Details.css'; // Optional CSS file for styling
 
 const PropertyDetails = () => {
@@ -16,6 +18,11 @@ const PropertyDetails = () => {
   const handleCreateAP = () => {
     console.log('Creating architectural plan for:', propertyData);
     alert('Architectural plan created successfully!');
+  };
+
+  const handleCreateAP1 = (key) => {
+    console.log(`Creating architectural plan for Permitted Uses: ${key}`);
+    alert(`Architectural plan created for ${key}!`);
   };
 
   const capitalizeFieldName = (fieldName) => {
@@ -42,7 +49,7 @@ const PropertyDetails = () => {
     </div>
   );
 
-  const renderNestedTable = (nestedData) => (
+  const renderNestedTable = (nestedData, isOuterRow = false) => (
     <table className="nested-table">
       <tbody>
         {Object.entries(nestedData).map(([subKey, subValue]) => (
@@ -55,14 +62,36 @@ const PropertyDetails = () => {
             </th>
             <td>
               {typeof subValue === 'object' && !Array.isArray(subValue)
-                ? renderNestedTable(subValue)
+                ? renderNestedTable(subValue, false) // False for nested rows
                 : subValue.toString()}
             </td>
+            {/* Render "Create AP1" button only for outer rows */}
+            {isOuterRow && (
+              <td>
+                <button
+                  onClick={() => handleCreateAP1(subKey)}
+                  className="create-ap1-button"
+                >
+                  Create AP1 for {capitalizeFieldName(subKey)}
+                </button>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
     </table>
   );
+
+  const handlePrint = () => {
+    window.print(); // Print the current page
+  };
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+    doc.text('Property Details', 10, 10);
+    doc.autoTable({ html: '.details-table' }); // Automatically generate a table from the HTML
+    doc.save('property-details.pdf');
+  };
 
   return (
     <div className="details-container">
@@ -71,16 +100,21 @@ const PropertyDetails = () => {
         <tbody>
           {Object.entries(propertyData).map(([key, value]) => (
             <tr key={key}>
-              <th
-              
-                onClick={() => handleKeyClick(key, value)}
-              >
+              <th onClick={() => handleKeyClick(key, value)}>
                 {capitalizeFieldName(key)}
               </th>
               <td>
-                {typeof value === 'object' && !Array.isArray(value)
-                  ? renderNestedTable(value)
-                  : value.toString()}
+                {key === 'permitted_uses' ? (
+                  <>
+                    {typeof value === 'object' && !Array.isArray(value)
+                      ? renderNestedTable(value, true) // Pass `true` for outer rows
+                      : value.toString()}
+                  </>
+                ) : (
+                  typeof value === 'object' && !Array.isArray(value)
+                    ? renderNestedTable(value)
+                    : value.toString()
+                )}
               </td>
             </tr>
           ))}
@@ -93,6 +127,16 @@ const PropertyDetails = () => {
         </button>
         <button onClick={handleCreateAP} className="footer-create-ap-button">
           Create AP
+        </button>
+      </div>
+
+      {/* Buttons at bottom-right */}
+      <div className="bottom-right-buttons">
+        <button onClick={handlePrint} className="print-button">
+          Print
+        </button>
+        <button onClick={handleDownloadPDF} className="download-pdf-button">
+          Download PDF
         </button>
       </div>
 

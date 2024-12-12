@@ -50,8 +50,10 @@ const ADUDetailsForm = () => {
       <h2 className="form-title">ADU Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="property-form">
         <div className="form-group">
+          <label htmlFor="adu_type" className="input-label">ADU Type</label>
           <select
             name="adu_type"
+            id="adu_type"
             value={formData.adu_type}
             onChange={handleChange}
             className="input-field"
@@ -63,9 +65,11 @@ const ADUDetailsForm = () => {
           {errors.adu_type && <span className="error-text">{errors.adu_type}</span>}
         </div>
         <div className="form-group">
+          <label htmlFor="adu_count" className="input-label">Number of ADUs</label>
           <input
             type="number"
             name="adu_count"
+            id="adu_count"
             value={formData.adu_count}
             onChange={handleChange}
             placeholder="Number of ADUs"
@@ -74,9 +78,11 @@ const ADUDetailsForm = () => {
           {errors.adu_count && <span className="error-text">{errors.adu_count}</span>}
         </div>
         <div className="form-group">
+          <label htmlFor="adu_max_sqft" className="input-label">Max ADU Size (sqft)</label>
           <input
             type="number"
             name="adu_max_sqft"
+            id="adu_max_sqft"
             value={formData.adu_max_sqft}
             onChange={handleChange}
             placeholder="Max ADU Size (sqft)"
@@ -85,9 +91,11 @@ const ADUDetailsForm = () => {
           {errors.adu_max_sqft && <span className="error-text">{errors.adu_max_sqft}</span>}
         </div>
         <div className="form-group">
+          <label htmlFor="jadu_count" className="input-label">Number of JADUs</label>
           <input
             type="number"
             name="jadu_count" // New field
+            id="jadu_count"
             value={formData.jadu_count}
             onChange={handleChange}
             placeholder="Number of JADUs"
@@ -96,9 +104,11 @@ const ADUDetailsForm = () => {
           {errors.jadu_count && <span className="error-text">{errors.jadu_count}</span>}
         </div>
         <div className="form-group">
+          <label htmlFor="jadu_max_sqf" className="input-label">Max JADU Size (sqft)</label>
           <input
             type="number"
             name="jadu_max_sqf" // New field
+            id="jadu_max_sqf"
             value={formData.jadu_max_sqf}
             onChange={handleChange}
             placeholder="Max JADU Size (sqft)"

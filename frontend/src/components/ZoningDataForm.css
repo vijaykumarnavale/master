@@ -1,74 +1,59 @@
-/* PropertiesForm.css */
-
-/* Basic form container styling */
+/* ZoningDataForm.css */
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;   
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Form title */
-  .form-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  /* Form input fields */
-  .property-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .input-field {
-    padding: 8px;
-    margin: 7px 0;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
-  }
-  
-  .input-field:focus {
-    border-color: #4CAF50;
-    outline: none;
-  }
-  
-  /* Submit button styling */
-  .submit-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    color: white;
-    background-color: #4CAF50; /* Green background */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submit-button:hover {
-    background-color: #45a049; /* Darker green on hover */
-  }
-  
-  .submit-button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-  }
-  
-  /* Optional - make inputs look more modern */
-  .input-field::placeholder {
-    color: #aaa;
-    font-style: italic;
-  }
- /* ZoningDataForm.css or a new CSS file */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.form-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
 
+.property-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+}
 
+.form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 15px;
+}
 
+.input-label {
+  width: 150px; /* Adjust the width as needed */
+  text-align: right;
+  margin-right: 20px; /* Increased margin for more space */
+  font-weight: bold;
+}
+
+.input-field {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.submit-button {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}

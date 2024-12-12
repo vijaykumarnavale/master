@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/api/property/:property_id', (req, res) => {
     const propertyId = req.params.property_id;
 
-    // SQL query to join multiple tables and fetch property details
+    // SQL query to join multiple tables and fetch property details, including ADU fields
     const query = `
         SELECT 
             p.address, 
@@ -34,7 +34,10 @@ router.get('/api/property/:property_id', (req, res) => {
             u.parking_spaces_required,
             u.open_space_sqft,
             a.adu_type, 
-            a.adu_max_sqft, 
+            a.adu_max_sqft,
+            a.adu_count,        -- Add adu_count
+            a.jadu_count,       -- Add jadu_count
+            a.jadu_max_sqf,     -- Add jadu_max_sqf
             pr.parking_spaces
         FROM Properties p
         LEFT JOIN Setbacks s ON p.property_id = s.property_id
@@ -98,6 +101,9 @@ router.get('/api/property/:property_id', (req, res) => {
             permitted_uses: permittedUses,
             adu_type: property.adu_type,
             adu_max_sqft: property.adu_max_sqft,
+            adu_count: property.adu_count,  // Add adu_count
+            jadu_count: property.jadu_count, // Add jadu_count
+            jadu_max_sqf: property.jadu_max_sqf, // Add jadu_max_sqf
             parking_spaces: property.parking_spaces,
         };
 

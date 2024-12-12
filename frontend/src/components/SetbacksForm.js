@@ -14,6 +14,7 @@ const SetbacksForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -31,6 +32,8 @@ const SetbacksForm = () => {
   const handleSubmit = () => {
     if (!validateForm()) return;
 
+    setIsSubmitting(true); // Disable the submit button when submitting
+
     axios.post('http://localhost:5000/api/setbacks', formData)
       .then(response => {
         console.log(response.data);
@@ -38,6 +41,9 @@ const SetbacksForm = () => {
       })
       .catch(error => {
         console.error('Error submitting setbacks data:', error);
+      })
+      .finally(() => {
+        setIsSubmitting(false); // Re-enable the button after submission
       });
   };
 
@@ -46,40 +52,48 @@ const SetbacksForm = () => {
       <h2 className="form-title">Setbacks Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="property-form">
         <div className="form-group">
+          <label htmlFor="front_ft" className="input-label">Front Setback (ft)</label>
           <input
             type="number"
             name="front_ft"
+            id="front_ft"
             value={formData.front_ft}
             onChange={handleChange}
-            placeholder="Front Setback (ft)"
             className="input-field"
           />
           {errors.front_ft && <span className="error-text">{errors.front_ft}</span>}
         </div>
         <div className="form-group">
+          <label htmlFor="back_ft" className="input-label">Back Setback (ft)</label>
           <input
             type="number"
             name="back_ft"
+            id="back_ft"
             value={formData.back_ft}
             onChange={handleChange}
-            placeholder="Back Setback (ft)"
             className="input-field"
           />
           {errors.back_ft && <span className="error-text">{errors.back_ft}</span>}
         </div>
         <div className="form-group">
+          <label htmlFor="side_ft" className="input-label">Side Setback (ft)</label>
           <input
             type="number"
             name="side_ft"
+            id="side_ft"
             value={formData.side_ft}
             onChange={handleChange}
-            placeholder="Side Setback (ft)"
             className="input-field"
           />
           {errors.side_ft && <span className="error-text">{errors.side_ft}</span>}
         </div>
-        <button type="button" onClick={handleSubmit} className="submit-button">
-          Next
+        <button
+          type="button"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="submit-button"
+        >
+          {isSubmitting ? 'Submitting...' : 'Next'}
         </button>
       </form>
     </div>

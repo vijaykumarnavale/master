@@ -24,7 +24,6 @@ const ParkingRequirementsForm = () => {
       [name]: type === 'checkbox' ? checked : value
     });
   };
-  
 
   const validateForm = () => {
     if (!formData.parking_spaces) {
@@ -64,31 +63,40 @@ const ParkingRequirementsForm = () => {
     <div className="form-container">
       <h2 className="form-title">Parking Requirements Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="property-form">
-        <input
-          type="number"
-          name="parking_spaces"
-          value={formData.parking_spaces}
-          onChange={handleChange}
-          placeholder="Parking Spaces"
-          className="input-field"
-        />
         <div className="form-group">
-          <label>
+          <label htmlFor="parking_spaces" className="input-label">Parking Spaces</label>
+          <input
+            type="number"
+            name="parking_spaces"
+            id="parking_spaces"
+            value={formData.parking_spaces}
+            onChange={handleChange}
+            placeholder="Parking Spaces"
+            className="input-field"
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="checkbox-label">
             <input
               type="checkbox"
               name="eligible_for_bonus"
               checked={formData.eligible_for_bonus}
               onChange={handleChange}
+              id="eligible_for_bonus"
             />
             Eligible for Bonus
           </label>
         </div>
+
         {formData.eligible_for_bonus && (
           <>
             <div className="form-group">
+              <label htmlFor="bonus_type" className="input-label">Bonus Type</label>
               <input
                 type="text"
                 name="bonus_type"
+                id="bonus_type"
                 value={formData.bonus_type}
                 onChange={handleChange}
                 placeholder="Bonus Type (e.g., Very Low Income, Senior Housing)"
@@ -96,9 +104,11 @@ const ParkingRequirementsForm = () => {
               />
             </div>
             <div className="form-group">
+              <label htmlFor="bonus_percentage" className="input-label">Bonus Percentage (%)</label>
               <input
                 type="number"
                 name="bonus_percentage"
+                id="bonus_percentage"
                 value={formData.bonus_percentage}
                 onChange={handleChange}
                 placeholder="Bonus Percentage (%)"
@@ -107,6 +117,7 @@ const ParkingRequirementsForm = () => {
             </div>
           </>
         )}
+
         <button
           type="button"
           onClick={handleSubmit}
@@ -116,6 +127,7 @@ const ParkingRequirementsForm = () => {
           {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
       </form>
+
       {/* Add the ToastContainer to display the toast messages */}
       <ToastContainer
         position="top-right"
