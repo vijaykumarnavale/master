@@ -10,6 +10,11 @@ const PropertyDetails = () => {
   const { propertyData } = location.state;
 
   const [popupData, setPopupData] = useState(null);
+  const [isPermittedUsesOpen, setIsPermittedUsesOpen] = useState(false); // State for collapsible section
+  const [isPropertyDetailsOpen, setIsPropertyDetailsOpen] = useState(true); // State for property details collapsible
+  const [isSetbackDetailsOpen, setIsSetbackDetailsOpen] = useState(false); // State for setback details collapsible
+  const [isAdUJaduDetailsOpen, setIsAdUJaduDetailsOpen] = useState(false); // State for ADU-JADU details collapsible
+  const [isParkingDetailsOpen, setIsParkingDetailsOpen] = useState(false); // State for parking details collapsible
 
   const handleBack = () => {
     navigate(-1); // Go back to the previous page
@@ -93,33 +98,141 @@ const PropertyDetails = () => {
     doc.save('property-details.pdf');
   };
 
+  const propertyFields = [
+    'address',
+    'zoning',
+    'plot_area_sqft',
+    'pincode',
+    'height_limit_ft',
+    'depth_ft',
+    'width_ft',
+    'building_sqft',
+  ];
+
+  const setbackFields = ['front_ft', 'back_ft', 'side_ft'];
+
+  const aduJaduFields = [
+    'adu_type',
+    'adu_max_sqft',
+    'adu_count',
+    'jadu_count',
+    'jadu_max_sqf'
+  ];
+
+  // Only parking_spaces field
+  const parkingFields = ['parking_spaces'];
+
   return (
     <div className="details-container">
-      <h2>Property Details</h2>
-      <table className="details-table">
-        <tbody>
-          {Object.entries(propertyData).map(([key, value]) => (
-            <tr key={key}>
-              <th onClick={() => handleKeyClick(key, value)}>
-                {capitalizeFieldName(key)}
-              </th>
-              <td>
-                {key === 'permitted_uses' ? (
-                  <>
-                    {typeof value === 'object' && !Array.isArray(value)
-                      ? renderNestedTable(value, true) // Pass `true` for outer rows
-                      : value.toString()}
-                  </>
-                ) : (
-                  typeof value === 'object' && !Array.isArray(value)
-                    ? renderNestedTable(value)
-                    : value.toString()
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Collapsible Section for Property Details */}
+      <div
+        className="collapsible-header"
+        onClick={() => setIsPropertyDetailsOpen(!isPropertyDetailsOpen)}
+      >
+        Property Details
+        <span>{isPropertyDetailsOpen ? '-' : '+'}</span>
+      </div>
+      {isPropertyDetailsOpen && (
+        <div className="collapsible-content">
+          <table className="details-table">
+            <tbody>
+              {propertyFields.map((field) => (
+                <tr key={field}>
+                  <th>{capitalizeFieldName(field)}</th>
+                  <td>{propertyData[field] || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Collapsible Section for Setback Details */}
+      <div
+        className="collapsible-header"
+        onClick={() => setIsSetbackDetailsOpen(!isSetbackDetailsOpen)}
+      >
+        Setback Details
+        <span>{isSetbackDetailsOpen ? '-' : '+'}</span>
+      </div>
+      {isSetbackDetailsOpen && (
+        <div className="collapsible-content">
+          <table className="details-table">
+            <tbody>
+              {setbackFields.map((field) => (
+                <tr key={field}>
+                  <th>{capitalizeFieldName(field)}</th>
+                  <td>{propertyData[field] || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Collapsible Section for Permitted Uses */}
+      <div
+        className="collapsible-header"
+        onClick={() => setIsPermittedUsesOpen(!isPermittedUsesOpen)}
+      >
+        Permitted Uses
+        <span>{isPermittedUsesOpen ? '-' : '+'}</span>
+      </div>
+      {isPermittedUsesOpen && (
+        <div className="collapsible-content">
+          {typeof propertyData.permitted_uses === 'object' && !Array.isArray(propertyData.permitted_uses)
+            ? renderNestedTable(propertyData.permitted_uses, true) // Pass true for outer rows
+            : propertyData.permitted_uses.toString()}
+        </div>
+      )}
+
+      {/* Collapsible Section for ADU-JADU Details */}
+      <div
+        className="collapsible-header"
+        onClick={() => setIsAdUJaduDetailsOpen(!isAdUJaduDetailsOpen)}
+      >
+        ADU-JADU Details
+        <span>{isAdUJaduDetailsOpen ? '-' : '+'}</span>
+      </div>
+      {isAdUJaduDetailsOpen && (
+        <div className="collapsible-content">
+          <table className="details-table">
+            <tbody>
+              {aduJaduFields.map((field) => (
+                <tr key={field}>
+                  <th>{capitalizeFieldName(field)}</th>
+                  <td>{propertyData[field] || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Collapsible Section for Parking Details */}
+      <div
+        className="collapsible-header"
+        onClick={() => setIsParkingDetailsOpen(!isParkingDetailsOpen)}
+      >
+        Parking Details
+        <span>{isParkingDetailsOpen ? '-' : '+'}</span>
+      </div>
+      {isParkingDetailsOpen && (
+        <div className="collapsible-content">
+          <table className="details-table">
+            <tbody>
+              {parkingFields.map((field) => (
+                <tr key={field}>
+                  <th>{capitalizeFieldName(field)}</th>
+                  <td>{propertyData[field] || 'N/A'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+    
 
       <div className="details-footer">
         <button onClick={handleBack} className="footer-back-button">

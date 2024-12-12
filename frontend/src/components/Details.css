@@ -1,6 +1,6 @@
 /* Global Container Styling */
 .details-container {
-  margin: 0 auto;  /* Center the container */
+  margin: 30px auto;  /* Center the container */
   border: 1px solid #ddd;
   border-radius: 8px;
   max-width: 1000px;
@@ -140,15 +140,15 @@
 /* Bottom-right buttons */
 .bottom-right-buttons {
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   right: 380px;
   display: flex;
-  gap: 10px;
+  gap: 20px;
 }
 
 .print-button,
 .download-pdf-button {
-  padding: 8px 15px;
+  padding: 1px 15px;
   background-color: #007BFF;
   color: white;
   border: none;
@@ -160,3 +160,24 @@
 .download-pdf-button:hover {
   background-color: #0056b3;
 }
+
+
+/* Collapsible Header Styling */
+.collapsible-header {
+  background-color: #004b75;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  height: 25px;
+  justify-content: space-between;
+  margin-bottom: 10px; /* Add margin to create space below the collapsible header */
+  transition: background-color 0.3s ease; /* Add smooth transition for hover effect */
+}
+
+/* Hover Effect for Collapsible Header */
+.collapsible-header:hover {
+  background-color: #fd7e14; /* Change the background color to #fd7e14 on hover */
+  color:black;
+}
+
