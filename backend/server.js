@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const bodyParser = require('body-parser');
 const registerRoute = require('./routes/register');
 const loginRoute = require('./routes/login');
@@ -13,6 +14,8 @@ const getSingleData = require('./routes/search');
 const post_data = require('./routes/post_data');
 const getAllPropertiesData = require('./routes/get_property_data');
 const getPermitedUsesData = require('./routes/get_permited_uses_data');
+const fileUpload = require('./routes/file_upload');
+
 
 const cors = require('cors');
 
@@ -39,7 +42,8 @@ app.use('/', getSingleData);
 app.use('/',post_data);
 app.use('/',getAllPropertiesData);
 app.use('/',getPermitedUsesData);
-
+app.use('/', fileUpload);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Home Route
 app.get('/', (req, res) => {

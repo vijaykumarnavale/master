@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from './UserSidebar';
 import Popup from './Popup'; // Assuming Popup is a modal for logout confirmation
 import Properties from './PropertiesForm';
+import ViewRules from './ViewRules'; // Importing ViewRules component
 
 const Dashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -47,7 +48,10 @@ const Dashboard = () => {
 
         {/* If no menu is selected and popup is not showing, display a welcome message */}
         {!selectedMenu && !showPopup && <h1>Welcome to the Dashboard</h1>}
+        
+        {/* Render the selected component based on the selected menu */}
         {selectedMenu === 'zoningData' && <Properties />}
+        {selectedMenu === 'viewRules' && <ViewRules />} {/* ViewRules component */}
       </div>
     </div>
   );

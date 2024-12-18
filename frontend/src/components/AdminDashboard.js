@@ -2,39 +2,42 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Signup from '../pages/Signup';
-import AllUsers from './AllUsers'; // Import All Users component
+import AllUsers from './AllUsers'; 
 import Popup from './Popup';
-import ArchitecturalPlan from './ArchitecturalPlan'; // Import Architectural Plan component
-import MEPInformation from './MEPInformation'; // Import MEP Information component
-import ViewAutoCADDesign from './ViewAutoCADDesign'; // Import View AutoCAD Design component
-import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for Toastify
+import ArchitecturalPlan from './ArchitecturalPlan'; 
+import MEPInformation from './MEPInformation'; 
+import ViewAutoCADDesign from './ViewAutoCADDesign'; 
+// import RulesAndRegulations from './RulesAndRegulations'; 
+import AddRule from './AddRule'; 
+import ViewRules from './ViewRules'; 
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 import Search from './Search';
 
 const Dashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState('');
-  const [showPopup, setShowPopup] = useState(false); // Track popup visibility
+  const [showPopup, setShowPopup] = useState(false); 
   const navigate = useNavigate();
 
   const handleMenuClick = (menu) => {
-    setSelectedMenu(menu);
-    if (menu === 'logout') {
+    if (menu === 'rulesAndRegulations') {
+      setSelectedMenu(menu);
+    } else if (menu === 'logout') {
       handleLogout();
+    } else {
+      setSelectedMenu(menu);
     }
   };
 
   const handleLogout = () => {
-    // Clear user session
     localStorage.removeItem('authToken');
-    // Show the popup
     setShowPopup(true);
-    // Display the toast notification
-    toast.success('You have been logged out successfully.'); // Success message on logout
+    toast.success('You have been logged out successfully.'); 
   };
 
   const closePopup = () => {
     setShowPopup(false);
-    navigate('/login'); // Redirect to login page
+    navigate('/login'); 
   };
 
   return (
@@ -48,14 +51,29 @@ const Dashboard = () => {
           />
         )}
         {selectedMenu === 'userRegistration' && <Signup />}
-        {selectedMenu === 'allUsers' && <AllUsers />} {/* Render All Users */}
-        {selectedMenu === 'architecturalPlan' && <ArchitecturalPlan />} {/* Architectural Plan */}
-        {selectedMenu === 'mepInformation' && <MEPInformation />} {/* MEP Information */}
-        {selectedMenu === 'viewAutoCADDesign' && <ViewAutoCADDesign />} {/* View AutoCAD Design */}
-        {!selectedMenu && !showPopup && <><h1>Welcome to the Dashboard</h1><Search/></>}
+        {selectedMenu === 'allUsers' && <AllUsers />} 
+        {selectedMenu === 'architecturalPlan' && <ArchitecturalPlan />} 
+        {selectedMenu === 'mepInformation' && <MEPInformation />} 
+        {selectedMenu === 'viewAutoCADDesign' && <ViewAutoCADDesign />} 
+        {selectedMenu === 'rulesAndRegulations' && (
+          <div>
+            <h2>Rules and Regulations</h2>
+            <ul className="submenu">
+              <li onClick={() => setSelectedMenu('addRule')}>Add Rule</li>
+              <li onClick={() => setSelectedMenu('viewRules')}>View Rules</li>
+            </ul>
+          </div>
+        )}
+        {selectedMenu === 'addRule' && <AddRule />} 
+        {selectedMenu === 'viewRules' && <ViewRules />} 
+        {!selectedMenu && !showPopup && (
+          <>
+            <h1>Welcome to the Dashboard</h1>
+            <Search />
+          </>
+        )}
       </div>
 
-      {/* ToastContainer to display the toast messages */}
       <ToastContainer />
     </div>
   );

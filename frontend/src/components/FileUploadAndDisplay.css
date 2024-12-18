@@ -1,0 +1,85 @@
+.container {
+    width: 80%;
+    margin: auto;
+  }
+  
+  .upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  
+  .upload-label {
+    color: #666;
+    cursor: pointer;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
+  
+  .upload-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .upload-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .upload-status {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .progress-bar {
+    height: 8px;
+    background-color: #3498db;
+    border-radius: 5px;
+    transition: width 0.3s;
+  }
+  
+  .progress-bar.success {
+    background-color: #2ecc71;
+  }
+  
+  .progress-bar.error {
+    background-color: #e74c3c;
+  }
+  
+  .progress-text {
+    font-size: 12px;
+    color: #333;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  
+  .file-selected {
+    margin-top: 10px;
+    color: #555;
+    font-size: 14px;
+  }
+  
