@@ -1,41 +1,66 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
 .navbar {
-    background-color: #333;
-    padding: 1rem;
-  }
-  
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo-img {
-    width: 120px;
-    height: 40px;
-    object-fit: contain;
-  }
-  
-  
-  .navbar-links {
-    display: flex;
-  }
-  
-  .nav-link {
-    color: white;
-    margin-left: 20px;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: background 0.3s;
-  }
-  
-  .nav-link:hover {
-    background-color: #555;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #f4a261;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Logo Styles */
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #f4a261;
+  text-decoration: none;
+}
+
+/* Navigation Links */
+.navbar-links {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.navbar-links a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+}
+
+.navbar-links a:hover {
+  color: #f4a261;
+}
+
+/* Login Button */
+.auth-buttons {
+  margin-left: auto;
+}
+
+.login-btn {
+  text-decoration: none;
+  padding: 10px 15px;
+  background-color: #f4a261;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #e68a3d;
+}

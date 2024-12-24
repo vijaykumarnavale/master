@@ -1,15 +1,105 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
 .home {
-    text-align: center;
-    padding: 50px 20px;
-  }
-  
-  .home h1 {
-    font-size: 3rem;
-    color: #333;
-  }
-  
-  .home p {
-    font-size: 1.2rem;
-    color: #666;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #f4a261;
+}
+
+.logo1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f4a261;
+  text-decoration: none; /* Ensures no underline */
+}
+
+/* Optional: If you want to target the Link directly */
+a {
+  text-decoration: none; /* Ensures all links have no underline */
+}
+
+.nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+}
+.nav a:hover {
+  color: #f4a261;
+}
+.auth-buttons .login-btn,
+.auth-buttons .signup-btn {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.login-btn {
+  background-color: #f4a261;
+  color: white;
+  width: 100px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 80px;
+  text-align: center;
+}
+
+.intro h1 {
+  font-size: 48px;
+  margin: 20px 0;
+  color: #333;
+}
+
+.intro p {
+  font-size: 18px;
+  color: #666;
+}
+
+.more-info-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f4a261;
+  border: none;
+  color: white;
+  width: 200px;
+  cursor: pointer;
+}
+
+.features {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.feature {
+  text-align: center;
+  margin: 0 20px;
+}
+
+.feature span {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f4a261;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
