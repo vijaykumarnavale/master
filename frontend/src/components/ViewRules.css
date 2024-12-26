@@ -1,0 +1,15 @@
+.view-button {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width:90px;
+  }
+  
+  .view-button .fa-eye {
+    margin-right: 5px; /* Add space between the icon and text */
+  }
+  

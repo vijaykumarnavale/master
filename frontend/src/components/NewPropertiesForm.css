@@ -1,0 +1,93 @@
+/* NewPropertiesForm.css */
+
+.new-form-container {
+  max-width: 80%;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+}
+
+.new-form-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.new-property-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.new-form-group {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.new-form-group:last-child {
+  margin-right: 0;
+}
+
+.new-form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.new-input-field {
+  width: 80%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.new-error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.new-submit-button {
+  padding: 10px;
+  background-color: #fc481f;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 10%;
+  margin-top: 20px;
+  margin-left: 80%;
+}
+
+.new-submit-button:hover {
+  background-color: #e4411d;
+}
+
+.new-submit-button:disabled {
+  background-color: #ccc;
+}
+
+.new-forgot-password-link {
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.new-forgot-password-link:hover {
+  color: #0056b3;
+}
+.red-asterisk {
+  color: red;
+}

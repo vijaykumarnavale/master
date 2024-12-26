@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify'; // Import Toastify components
 import 'react-toastify/dist/ReactToastify.css'; // Import the Toastify CSS
-import './ZoningDataForm.css'; // Reuse the same CSS file for styling
+import './ParkingRequirementsForm.css'; // Update the CSS file name
 import './Error.css';
 
 const ParkingRequirementsForm = () => {
@@ -60,11 +60,11 @@ const ParkingRequirementsForm = () => {
   };
 
   return (
-    <div className="form-container">
-      <h2 className="form-title">Parking Requirements Details</h2>
-      <form onSubmit={(e) => e.preventDefault()} className="property-form">
-        <div className="form-group">
-          <label htmlFor="parking_spaces" className="input-label">Parking Spaces</label>
+    <div className="parking-form-container">
+      <h2 className="parking-form-title">Parking Requirements Details</h2>
+      <form onSubmit={(e) => e.preventDefault()} className="parking-property-form">
+        <div className="parking-form-group">
+          <label htmlFor="parking_spaces" className="parking-form-label">Parking Spaces <span className="red-asterisk">*</span></label>
           <input
             type="number"
             name="parking_spaces"
@@ -72,12 +72,12 @@ const ParkingRequirementsForm = () => {
             value={formData.parking_spaces}
             onChange={handleChange}
             placeholder="Parking Spaces"
-            className="input-field"
+            className="parking-input-field"
           />
         </div>
 
-        <div className="form-group">
-          <label className="checkbox-label">
+        <div className="parking-form-group">
+          <div className="parking-checkbox-container">
             <input
               type="checkbox"
               name="eligible_for_bonus"
@@ -85,14 +85,14 @@ const ParkingRequirementsForm = () => {
               onChange={handleChange}
               id="eligible_for_bonus"
             />
-            Eligible for Bonus
-          </label>
+            <label htmlFor="eligible_for_bonus" className="parking-checkbox-label">Eligible for Bonus</label>
+          </div>
         </div>
 
         {formData.eligible_for_bonus && (
           <>
-            <div className="form-group">
-              <label htmlFor="bonus_type" className="input-label">Bonus Type</label>
+            <div className="parking-form-group">
+              <label htmlFor="bonus_type" className="parking-form-label">Bonus Type <span className="red-asterisk">*</span></label>
               <input
                 type="text"
                 name="bonus_type"
@@ -100,11 +100,11 @@ const ParkingRequirementsForm = () => {
                 value={formData.bonus_type}
                 onChange={handleChange}
                 placeholder="Bonus Type (e.g., Very Low Income, Senior Housing)"
-                className="input-field"
+                className="parking-input-field"
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="bonus_percentage" className="input-label">Bonus Percentage (%)</label>
+            <div className="parking-form-group">
+              <label htmlFor="bonus_percentage" className="parking-form-label">Bonus Percentage (%) <span className="red-asterisk">*</span></label>
               <input
                 type="number"
                 name="bonus_percentage"
@@ -112,7 +112,7 @@ const ParkingRequirementsForm = () => {
                 value={formData.bonus_percentage}
                 onChange={handleChange}
                 placeholder="Bonus Percentage (%)"
-                className="input-field"
+                className="parking-input-field"
               />
             </div>
           </>
@@ -122,7 +122,7 @@ const ParkingRequirementsForm = () => {
           type="button"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="submit-button"
+          className="parking-submit-button"
         >
           {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>

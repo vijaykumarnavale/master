@@ -3,9 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './ZoningDataForm.css';
+import './PermittedUses.css'; // Update the CSS file name
 import './Error.css';
-import './PermittedUses.css';
 
 const PermittedUsesForm = () => {
   const navigate = useNavigate();
@@ -96,14 +95,14 @@ const PermittedUsesForm = () => {
   ];
 
   return (
-    <div className="form-container">
-      <h2 className="form-title">Lot Zoning Details</h2>
-      <form onSubmit={(e) => e.preventDefault()} className="property-form">
+    <div className="lot-form-container">
+      <h2 className="lot-form-title">Lot Zoning Details</h2>
+      <form onSubmit={(e) => e.preventDefault()} className="lot-property-form">
         {formData.uses.map((use, index) => (
-          <div key={index} className="use-form-group">
-            {Object.keys(use).map((field) => (
-              <div className="form-group" key={field}>
-                <label htmlFor={`${field}_${index}`} className="form-label">
+          <div key={index} className="lot-use-form-group">
+            {Object.keys(use).map((field, i) => (
+              <div className={`lot-form-group ${i % 2 === 0 ? 'row' : ''}`} key={field}>
+                <label htmlFor={`${field}_${index}`} className="lot-form-label">
                   {field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                 </label>
                 {field === 'use_type' ? (
@@ -112,7 +111,7 @@ const PermittedUsesForm = () => {
                     name={field}
                     value={use[field]}
                     onChange={(e) => handleChange(e, index)}
-                    className="input-field"
+                    className="lot-input-field"
                   >
                     <option value="" disabled>Select Use Type</option>
                     {useTypeOptions.map((option, idx) => (
@@ -126,32 +125,33 @@ const PermittedUsesForm = () => {
                     name={field}
                     value={use[field]}
                     onChange={(e) => handleChange(e, index)}
-                    className="input-field"
+                    className="lot-input-field"
                   />
                 )}
                 {errors[`${field}_${index}`] && (
-                  <span className="error-text">{errors[`${field}_${index}`]}</span>
+                  <span className="lot-error-text">{errors[`${field}_${index}`]}</span>
                 )}
               </div>
             ))}
             <button
               type="button"
               onClick={() => handleRemoveUse(index)}
-              className="remove-use-button"
+              className="lot-remove-use-button"
             >
               Remove This Use
             </button>
           </div>
         ))}
-        <button type="button" onClick={handleAddUse} className="add-use-button">
+        <button type="button" onClick={handleAddUse} className="lot-add-use-button">
           Add Another Use
         </button>
-        <button type="button" onClick={handleSubmit} className="submit-button">
+        <button type="button" onClick={handleSubmit} className="lot-submit-button">
           Next
         </button>
       </form>
     </div>
   );
+  
 };
 
 export default PermittedUsesForm;

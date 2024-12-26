@@ -10,13 +10,13 @@ const Gallery = () => {
       <h1 className="gallery-title">Gallery</h1>
       <div className="gallery-content">
         <div className="gallery-item">
-          <img src={Img211} alt="Gallery Image 1" />
+          <img src={Img211} alt="Gallery img1" />
         </div>
         <div className="gallery-item">
-          <img src={Img212} alt="Gallery Image 2" />
+          <img src={Img212} alt="Gallery img2 "/>
         </div>
         <div className="gallery-item">
-          <img src={Img213} alt="Gallery Image 3" />
+          <img src={Img213} alt="Gallery img3" />
         </div>
       </div>
     </div>

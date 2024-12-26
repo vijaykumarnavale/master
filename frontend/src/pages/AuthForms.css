@@ -24,7 +24,7 @@
   
   input,
   select {
-    width: 100%;
+    width: 95%;
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -54,5 +54,18 @@
   .success {
     color: rgb(0, 131, 0);
     margin-bottom: 10px;
+  }
+  
+  .forgot-password-link {
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+  }
+  
+  .forgot-password-link:hover {
+    color: #0056b3;
   }
   

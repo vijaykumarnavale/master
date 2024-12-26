@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './ZoningDataForm.css';
+import './SetbacksForm.css';
 import './Error.css';
 
 const SetbacksForm = () => {
@@ -48,50 +48,50 @@ const SetbacksForm = () => {
   };
 
   return (
-    <div className="form-container">
-      <h2 className="form-title">Setbacks Details</h2>
-      <form onSubmit={(e) => e.preventDefault()} className="property-form">
-        <div className="form-group">
-          <label htmlFor="front_ft" className="input-label">Front Setback (ft)</label>
+    <div className="setbacks-form-container">
+      <h2 className="setbacks-form-title">Setbacks Details</h2>
+      <form onSubmit={(e) => e.preventDefault()} className="setbacks-property-form">
+        <div className="setbacks-form-group">
+          <label htmlFor="front_ft" className="setbacks-input-label">Front Setback (ft) <span className="red-asterisk">*</span></label>
           <input
             type="number"
             name="front_ft"
             id="front_ft"
             value={formData.front_ft}
             onChange={handleChange}
-            className="input-field"
+            className="setbacks-input-field"
           />
-          {errors.front_ft && <span className="error-text">{errors.front_ft}</span>}
+          {errors.front_ft && <span className="setbacks-error-text">{errors.front_ft}</span>}
         </div>
-        <div className="form-group">
-          <label htmlFor="back_ft" className="input-label">Back Setback (ft)</label>
+        <div className="setbacks-form-group">
+          <label htmlFor="back_ft" className="setbacks-input-label">Back Setback (ft) <span className="red-asterisk">*</span></label>
           <input
             type="number"
             name="back_ft"
             id="back_ft"
             value={formData.back_ft}
             onChange={handleChange}
-            className="input-field"
+            className="setbacks-input-field"
           />
-          {errors.back_ft && <span className="error-text">{errors.back_ft}</span>}
+          {errors.back_ft && <span className="setbacks-error-text">{errors.back_ft}</span>}
         </div>
-        <div className="form-group">
-          <label htmlFor="side_ft" className="input-label">Side Setback (ft)</label>
+        <div className="setbacks-form-group">
+          <label htmlFor="side_ft" className="setbacks-input-label">Side Setback (ft) <span className="red-asterisk">*</span></label>
           <input
             type="number"
             name="side_ft"
             id="side_ft"
             value={formData.side_ft}
             onChange={handleChange}
-            className="input-field"
+            className="setbacks-input-field"
           />
-          {errors.side_ft && <span className="error-text">{errors.side_ft}</span>}
+          {errors.side_ft && <span className="setbacks-error-text">{errors.side_ft}</span>}
         </div>
         <button
           type="button"
           onClick={handleSubmit}
           disabled={isSubmitting}
-          className="submit-button"
+          className="setbacks-submit-button"
         >
           {isSubmitting ? 'Submitting...' : 'Next'}
         </button>

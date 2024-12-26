@@ -1,85 +1,151 @@
 .container {
-    width: 80%;
-    margin: auto;
-  }
-  
-  .upload-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2px dashed #ccc;
-    padding: 20px;
-    margin: 20px 0;
-    text-align: center;
-  }
-  
-  .upload-label {
-    color: #666;
-    cursor: pointer;
-  }
-  
-  input[type="file"] {
-    display: none;
-  }
-  
-  .upload-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .upload-btn:hover {
-    background-color: #45a049;
-  }
-  
-  .upload-status {
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .progress-bar {
-    height: 8px;
-    background-color: #3498db;
-    border-radius: 5px;
-    transition: width 0.3s;
-  }
-  
-  .progress-bar.success {
-    background-color: #2ecc71;
-  }
-  
-  .progress-bar.error {
-    background-color: #e74c3c;
-  }
-  
-  .progress-text {
-    font-size: 12px;
-    color: #333;
-  }
-  
-  table {
+  width: 80%;
+  margin: auto;
+}
+
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed #ccc;
+  padding: 20px;
+  margin: 20px 0;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
+  width: 50%;
+  margin-left: 200px;
+}
+
+.upload-box:hover {
+  border-color:blue;
+  background-color: #f9fff9;
+}
+
+.upload-label {
+  color: #666;
+  cursor: pointer;
+}
+
+.upload-label:hover {
+  color: blue;
+}
+input[type="file"] {
+  display: none;
+}
+
+.upload-btn {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 150px;
+  transition: background-color 0.3s;
+}
+
+.upload-btn:hover {
+  background-color: #45a049;
+}
+
+.upload-status {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #3498db;
+  border-radius: 5px;
+  transition: width 0.3s;
+}
+
+.progress-bar.success {
+  background-color: #2ecc71;
+}
+
+.progress-bar.error {
+  background-color: #e74c3c;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #333;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+table button {
+  padding: 5px 10px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+table button:hover {
+  background-color: #c0392b;
+}
+
+.file-selected {
+  margin-top: 10px;
+  color: #555;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .container {
     width: 100%;
-    border-collapse: collapse;
+    padding: 10px;
   }
-  
-  table th, table td {
-    border: 1px solid #ddd;
-    padding: 8px;
+
+  .upload-box {
+    padding: 15px;
   }
-  
-  table th {
-    background-color: #f2f2f2;
-    text-align: left;
+
+  table {
+    font-size: 12px;
   }
-  
-  .file-selected {
-    margin-top: 10px;
-    color: #555;
-    font-size: 14px;
-  }
-  
+}
+
+.delete-btn {
+  display: inline-block;
+  background-color: #ff4d4d; /* Red background for the delete button */
+  border: none;
+  color: white;
+  font-size: 16px;
+  padding: 5px 10px;  /* Adjust the padding for the button height */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 40px;  /* Set the height of the button */
+  width: 40px; /* Optional: Set a fixed width for the button */
+  text-align: center;
+  line-height: 30px;  /* Center the icon vertically */
+}
+
+.delete-btn:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
+}
+
+.delete-btn:focus {
+  outline: none; /* Remove the focus outline */
+}

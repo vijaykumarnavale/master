@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';  // Import FontAwesomeIcon
+import { faEye } from '@fortawesome/free-solid-svg-icons';  // Import the eye icon
+import './ViewRules.css';
 const ViewRules = () => {
   const [files, setFiles] = useState([]);
 
@@ -46,7 +48,11 @@ const ViewRules = () => {
                 </a>
               </td>
               <td>
-                <button onClick={() => handleViewFile(file.file_path)}>View</button> {/* View as a button */}
+                <button onClick={() => handleViewFile(file.file_path)} className="view-button">
+                  {/* Add eye icon to the button */}
+                  <FontAwesomeIcon icon={faEye} />
+                  View
+                </button>
               </td>
             </tr>
           ))}

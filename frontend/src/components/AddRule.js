@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';  // Import faEye
+import { ToastContainer, toast } from 'react-toastify';  // Import Toastify
+import 'react-toastify/dist/ReactToastify.css';  // Import CSS for Toastify
 import "./FileUploadAndDisplay.css";
 
 const FileUploadAndDisplay = () => {
@@ -44,10 +48,12 @@ const FileUploadAndDisplay = () => {
       });
       updateStatus(file.name, "success");
       fetchFiles();
+      toast.success("File uploaded successfully!");  // Show success toast
       setFileName(""); // Clear the file name after upload
     } catch (error) {
       console.error("Error uploading file:", error);
       updateStatus(file.name, "error");
+      toast.error("Upload failed! Try again.");  // Show error toast
     }
   };
 
@@ -80,8 +86,10 @@ const FileUploadAndDisplay = () => {
     try {
       await axios.delete(`http://localhost:5000/files/${id}`);
       setFiles(files.filter((file) => file.id !== id));
+      toast.success("File deleted successfully!");  // Show success toast
     } catch (error) {
       console.error("Error deleting file:", error);
+      toast.error("Error deleting the file. Please try again.");  // Show error toast
     }
   };
 
@@ -98,11 +106,18 @@ const FileUploadAndDisplay = () => {
         <label htmlFor="file-input" className="upload-label">
           Click here or drag and drop a file to upload
         </label>
-        <input id="file-input" type="file" onChange={handleFileChange} />
+        <input
+          id="file-input"
+          type="file"
+          onChange={handleFileChange}
+          style={{ display: "none" }} // Hide the input element
+        />
         {fileName && <p className="file-selected">Selected File: {fileName}</p>}
-        <button type="submit" className="upload-btn">
-          Upload
-        </button>
+        <div className="upload-btn-container">
+          <button type="submit" className="upload-btn">
+            Upload
+          </button>
+        </div>
       </form>
 
       {/* Upload Status */}
@@ -112,17 +127,19 @@ const FileUploadAndDisplay = () => {
             <span>{file.name}</span>
           </div>
           <div
-            className={`progress-bar ${
-              file.status === "success" ? "success" : file.status === "error" ? "error" : "uploading"
-            }`}
-            style={{ width: `${file.progress}%` }}
+            className={`progress-bar ${file.status === "success"
+                ? "success"
+                : file.status === "error"
+                ? "error"
+                : "uploading"}`}
+            style={{ width: `30%` }}
           ></div>
           <span className="progress-text">
             {file.status === "uploading"
               ? `${file.progress}%`
               : file.status === "success"
-              ? "Upload Successful!"
-              : "Upload Failed! Try Again"}
+              ? "File Upload Successful!"
+              : "File Upload Failed! Try Again"}
           </span>
         </div>
       ))}
@@ -148,17 +165,23 @@ const FileUploadAndDisplay = () => {
                   href={`http://localhost:5000${file.file_path}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="view-file-link"
                 >
-                  View
+                  <FontAwesomeIcon icon={faEye} />
                 </a>
               </td>
               <td>
-                <button onClick={() => handleDelete(file.id)}>Delete</button>
+                <button onClick={() => handleDelete(file.id)} className="delete-btn">
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {/* Toast Notification Container */}
+      <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
 };
