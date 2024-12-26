@@ -1,0 +1,26 @@
+.gallery-page {
+  text-align: center;
+  padding: 20px;
+}
+
+.gallery-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.gallery-content {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.gallery-item {
+  width: 30%;
+  margin: 10px;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}

@@ -13,9 +13,9 @@ const Navbar = () => {
       <nav className="nav">
         {/* Use Link for Home */}
         <Link to="/">Home</Link>
-        <a href="#about">About</a>
-        <a href="#gallery">Gallery</a>
-        <a href="#contact">Contact</a>
+        <a href="/about">About</a>
+        <Link to="/gallery">Gallery</Link>
+        <Link to="/contact">Contact</Link>
       </nav>
       <div className="auth-buttons">
       <Link to="/login"><button className="login-btn">Log In</button></Link>

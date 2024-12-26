@@ -1,0 +1,105 @@
+/* Contact Page Styles */
+.contact-page {
+  padding: 40px;
+  background-color: #f4f4f4;
+  text-align: center;
+}
+
+.contact-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Container for both sections (Contact Info and Form) */
+.contact-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Left Side - Contact Info */
+.contact-info {
+  flex: 1 1 45%; /* Adjust size and allow resizing */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info p {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 10px 0;
+}
+
+.contact-social-media h3 {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.contact-social-media a {
+  margin: 0 10px;
+  font-size: 1.5rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.contact-social-media a:hover {
+  color: #0073e6;
+}
+
+/* Right Side - Contact Form */
+.contact-form-container {
+  flex: 1 1 45%; /* Adjust size and allow resizing */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-input, .contact-textarea {
+  width: 70%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.contact-textarea {
+  height: 150px;
+}
+
+.contact-submit {
+  width: 50%;
+  padding: 12px;
+  background-color: #fc481f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.contact-submit:hover {
+  background-color: #005bb5;
+}
+
+/* Make it responsive */
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .contact-info, .contact-form-container {
+    flex: 1 1 100%;
+  }
+}

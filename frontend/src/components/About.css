@@ -1,0 +1,72 @@
+.about-page {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .about-title {
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .about-description {
+    font-size: 18px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+  }
+  
+  .about-contact {
+    margin: 20px 0;
+  }
+  
+  .about-contact-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .about-contact p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  .about-social-media {
+    margin-top: 15px;
+  }
+  
+  .about-social-media h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .social-icon {
+    font-size: 24px;
+    color: #666;
+    margin: 0 10px;
+    transition: color 0.3s ease;
+  }
+  
+  .social-icon:hover {
+    color: #fc481f; /* Highlight color for icons */
+  }
+  
+  .about-map {
+    margin: 30px 0;
+  }
+  
+  .about-map-title {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  iframe {
+    border: none;
+    border-radius: 10px;
+  }
+  

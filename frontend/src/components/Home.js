@@ -1,22 +1,10 @@
 import React from 'react';
 import './Home.css';
 
+
 const Home = () => {
   return (
     <div className="home">
-      {/* <header className="header">
-        <div className="logo">Nanak Architect</div>
-        <nav className="nav">
-          <a href="/">Home</a>
-          <a href="#about">About</a>
-          <a href="#gallery">Gallery</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <div className="auth-buttons">
-          <button className="login-btn">Log In</button>
-        </div>
-      </header> */}
-
       <main className="main-content">
         <div className="intro">
           <h1>Architect</h1>

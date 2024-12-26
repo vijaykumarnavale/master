@@ -1,6 +1,9 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+
 import AdminDashboard from './components/AdminDashboard';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
@@ -15,6 +18,9 @@ import PermittedUsesForm from './components/PermittedUsesForm';
 import ADUDetailsForm from './components/ADUDetailsForm';
 import ParkingRequirementsForm from './components/ParkingRequirementsForm';
 import PropertyDetails from './components/PropertyDetails';
+import Gallery from './components/Gallery';
+import Contact from './components/Contact';
+import About from './components/About';
 
 const App = () => {
   return (
@@ -34,6 +40,9 @@ const App = () => {
         <Route path="/adu-details" element={<ADUDetailsForm />} />
         <Route path="/parking-requirements" element={<ParkingRequirementsForm />} />
         <Route path="/property-details" element={<PropertyDetails />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/gallery" element={<Gallery />} />
+        <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
     </Router>
