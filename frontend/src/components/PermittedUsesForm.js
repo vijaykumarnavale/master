@@ -96,43 +96,45 @@ const PermittedUsesForm = () => {
 
   return (
     <div className="lot-form-container">
-      <h2 className="lot-form-title">Lot Zoning Details</h2>
+      <h2 className="lot-form-title">Permitted Uses Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="lot-property-form">
         {formData.uses.map((use, index) => (
           <div key={index} className="lot-use-form-group">
-            {Object.keys(use).map((field, i) => (
-              <div className={`lot-form-group ${i % 2 === 0 ? 'row' : ''}`} key={field}>
-                <label htmlFor={`${field}_${index}`} className="lot-form-label">
-                  {field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
-                </label>
-                {field === 'use_type' ? (
-                  <select
-                    id={`${field}_${index}`}
-                    name={field}
-                    value={use[field]}
-                    onChange={(e) => handleChange(e, index)}
-                    className="lot-input-field"
-                  >
-                    <option value="" disabled>Select Use Type</option>
-                    {useTypeOptions.map((option, idx) => (
-                      <option key={idx} value={option}>{option}</option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    type={field.includes('sqft') || field.includes('ft') || field.includes('units') || field.includes('spaces') ? 'number' : 'text'}
-                    id={`${field}_${index}`}
-                    name={field}
-                    value={use[field]}
-                    onChange={(e) => handleChange(e, index)}
-                    className="lot-input-field"
-                  />
-                )}
-                {errors[`${field}_${index}`] && (
-                  <span className="lot-error-text">{errors[`${field}_${index}`]}</span>
-                )}
-              </div>
-            ))}
+            <div className="lot-form-row">
+              {Object.keys(use).map((field, i) => (
+                <div className={`lot-form-group ${i % 2 === 0 ? 'half-width' : 'half-width-second'}`} key={field}>
+                  <label htmlFor={`${field}_${index}`} className="lot-form-label">
+                    {field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                  </label>
+                  {field === 'use_type' ? (
+                    <select
+                      id={`${field}_${index}`}
+                      name={field}
+                      value={use[field]}
+                      onChange={(e) => handleChange(e, index)}
+                      className="lot-input-field"
+                    >
+                      <option value="" disabled>Select Use Type</option>
+                      {useTypeOptions.map((option, idx) => (
+                        <option key={idx} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type={field.includes('sqft') || field.includes('ft') || field.includes('units') || field.includes('spaces') ? 'number' : 'text'}
+                      id={`${field}_${index}`}
+                      name={field}
+                      value={use[field]}
+                      onChange={(e) => handleChange(e, index)}
+                      className="lot-input-field"
+                    />
+                  )}
+                  {errors[`${field}_${index}`] && (
+                    <span className="lot-error-text">{errors[`${field}_${index}`]}</span>
+                  )}
+                </div>
+              ))}
+            </div>
             <button
               type="button"
               onClick={() => handleRemoveUse(index)}
@@ -151,7 +153,6 @@ const PermittedUsesForm = () => {
       </form>
     </div>
   );
-  
 };
 
 export default PermittedUsesForm;
