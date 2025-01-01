@@ -3,6 +3,8 @@ import axios from 'axios'; // Import axios
 import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for Toastify
 import './AuthForms.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
+import { faUser, faEnvelope, faPhone, faLock, faUserTag } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -19,7 +21,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Reset previous messages
     setLoading(true);
 
     const userData = {
@@ -59,62 +60,85 @@ const Signup = () => {
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <label htmlFor="full_name">Full Name</label>
-          <input
-            type="text"
-            id="full_name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            placeholder="Enter your full name"
-            required
-          />
+          <div className="input-with-icon">
+            <FontAwesomeIcon icon={faUser} />
+            <input
+              type="text"
+              id="full_name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
         </div>
         <div className="input-group">
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            required
-          />
+          <div className="input-with-icon">
+            <FontAwesomeIcon icon={faEnvelope} />
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
         </div>
         <div className="input-group">
           <label htmlFor="contact_number">Contact Number</label>
-          <input
-            type="text"
-            id="contact_number"
-            value={contactNumber}
-            onChange={(e) => setContactNumber(e.target.value)}
-            placeholder="Enter your contact number"
-            required
-          />
+          <div className="input-with-icon">
+            <FontAwesomeIcon icon={faPhone} />
+            <input
+              type="text"
+              id="contact_number"
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
+              placeholder="Enter your contact number"
+              required
+            />
+          </div>
         </div>
         <div className="input-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-            required
-          />
+          <div className="input-with-icon">
+            <FontAwesomeIcon icon={faLock} />
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+            />
+          </div>
         </div>
         <div className="input-group">
           <label htmlFor="role">Role</label>
-          <select
-            id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="User">User</option>
-            <option value="Admin">Admin</option>
-          </select>
+          <div className="input-with-icon">
+            <FontAwesomeIcon icon={faUserTag} />
+            <select
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="User">User</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
         </div>
 
         <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? 'Signing Up...' : 'Register'}
+          {loading ? (
+            <>
+              <FontAwesomeIcon icon={faLock} spin /> Signing Up...
+            </>
+          ) : (
+            <>
+              <FontAwesomeIcon icon={faUserTag} /> Register
+            </>
+          )}
         </button>
       </form>
 

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
+import { faKey, faLock } from '@fortawesome/free-solid-svg-icons'; // Import the key and lock icons
 
 const ResetPasswordPage = () => {
   const [newPassword, setPassword] = useState('');
@@ -67,7 +69,10 @@ const ResetPasswordPage = () => {
 
       <form onSubmit={handlePasswordResetSubmit}>
         <div className="input-group">
-          <label htmlFor="password">New Password</label>
+          <label htmlFor="password">
+            <FontAwesomeIcon icon={faLock} style={{ marginRight: '8px' }} />
+            New Password
+          </label>
           <input
             type="password"
             id="password"
@@ -78,7 +83,10 @@ const ResetPasswordPage = () => {
           />
         </div>
         <div className="input-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">
+            <FontAwesomeIcon icon={faLock} style={{ marginRight: '8px' }} />
+            Confirm Password
+          </label>
           <input
             type="password"
             id="confirmPassword"
@@ -93,6 +101,7 @@ const ResetPasswordPage = () => {
         {message && <div className="success">{message}</div>}
 
         <button type="submit" className="submit-btn" disabled={loading || !token}>
+          <FontAwesomeIcon icon={faKey} style={{ marginRight: '8px' }} />
           {loading ? 'Resetting Password...' : 'Reset Password'}
         </button>
       </form>

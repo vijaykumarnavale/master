@@ -127,6 +127,7 @@ const PermittedUsesForm = () => {
                       value={use[field]}
                       onChange={(e) => handleChange(e, index)}
                       className="lot-input-field"
+                      placeholder={field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                     />
                   )}
                   {errors[`${field}_${index}`] && (
@@ -140,15 +141,15 @@ const PermittedUsesForm = () => {
               onClick={() => handleRemoveUse(index)}
               className="lot-remove-use-button"
             >
-              Remove This Use
+              <i className="fa fa-trash" style={{ marginRight: '8px' }}></i>Remove This Use
             </button>
           </div>
         ))}
         <button type="button" onClick={handleAddUse} className="lot-add-use-button">
-          Add Another Use
+          <i className="fa fa-plus" style={{ marginRight: '8px' }}></i>Add Another Use
         </button>
         <button type="button" onClick={handleSubmit} className="lot-submit-button">
-          Next
+          <span>Next</span> <i className="fa fa-arrow-right" style={{ marginLeft: '8px' }}></i>
         </button>
       </form>
     </div>

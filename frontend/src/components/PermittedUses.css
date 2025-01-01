@@ -1,16 +1,16 @@
 .lot-form-container {
-  max-width: 50%;
+  max-width: 74%;
   margin: 0 auto;
   margin-top: 20px;
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
 }
 
 .lot-form-title {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* Increased space below the title */
   font-size: 24px;
   font-weight: bold;
 }
@@ -45,10 +45,11 @@
 
 .lot-input-field {
   width: 100%;
-  padding: 8px;
+  padding: 8px; /* Increased padding for better input field size */
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  box-sizing: border-box; /* Ensures padding is included in the width */
 }
 
 .lot-error-text {
@@ -78,19 +79,6 @@
   background-color: #ccc;
 }
 
-.lot-forgot-password-link {
-  color: #007bff;
-  text-decoration: underline;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 10px;
-  display: inline-block;
-}
-
-.lot-forgot-password-link:hover {
-  color: #0056b3;
-}
-
 .red-asterisk {
   color: red;
 }
@@ -106,7 +94,7 @@
   margin-top: 20px;
   align-self: flex-end;
   width: 100%; /* Make the button span the width */
-  max-width: 200px; /* Limit width for better control */
+  max-width: 180px; /* Limit width for better control */
 }
 
 .lot-add-use-button:hover {
@@ -124,7 +112,7 @@
   font-size: 14px;
   margin-top: 10px;
   width: 100%; /* Button also spans the width */
-  max-width: 200px; /* Limit width for better control */
+  max-width: 170px; /* Limit width for better control */
   align-self: center;
 }
 
@@ -156,3 +144,19 @@
   margin-top: 0;
   margin-right: 10px;
 }
+
+@media (max-width: 768px) {
+  .lot-form-container {
+    max-width: 90%;
+  }
+  .lot-submit-button {
+    width: 100%;
+    margin-left: 0;
+  }
+  .lot-add-use-button,
+  .lot-remove-use-button {
+    width: 100%;
+  }
+}
+
+

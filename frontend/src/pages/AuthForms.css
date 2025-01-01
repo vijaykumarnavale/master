@@ -68,4 +68,29 @@
   .forgot-password-link:hover {
     color: #0056b3;
   }
-  
+  /* Style for the input container with icons */
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Style for the icon inside the input field */
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 10px; /* Space between icon and input text */
+  color: #888; /* Icon color */
+  font-size: 18px; /* Icon size */
+  pointer-events: none; /* Prevents clicks on the icon */
+}
+
+/* Style for the input field to provide space for the icon */
+.input-with-icon input {
+  width: 100%;
+  padding-left: 30px; /* Adjust padding to make space for the icon */
+}
+
+/* Optional: Change icon color on focus */
+.input-with-icon input:focus + .input-icon {
+  color: #fc481f; /* Color of the icon when input is focused */
+}

@@ -1,87 +1,126 @@
 /* SetbacksDataForm.css */
 
+/* Container styling */
 .setbacks-form-container {
-    max-width: 30%;
-    margin: 0 auto;
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+  max-width: 30%;
+  margin: 0 auto;
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+}
+
+.setbacks-form-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.setbacks-property-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.setbacks-form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.setbacks-form-group {
+  flex: 1;
+  margin-right: 10px;
+  margin-top: 15px;
+  margin-left: 65px;
+}
+
+.setbacks-form-group:last-child {
+  margin-right: 0;
+}
+
+.setbacks-form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.setbacks-input-field {
+  width: 80%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.setbacks-error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.setbacks-submit-button {
+  padding: 10px;
+  background-color: #fc481f;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 20%;
+  margin-top: 20px;
+  margin-left: 70%;
+}
+
+.setbacks-submit-button:hover {
+  background-color: #e4411d;
+}
+
+.setbacks-submit-button:disabled {
+  background-color: #ccc;
+}
+
+.red-asterisk {
+  color: red;
+}
+
+/* Icon inside the input field */
+.input-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px; /* Position the icon within the left padding of the input */
+  color: #888; /* Light gray color for the icon */
+  font-size: 18px; /* Adjust size of icon */
+}
+
+.setbacks-input-field {
+  width: 100%;
+  padding: 8px 8px 8px 30px; /* Extra padding to make space for the icon */
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.setbacks-input-field:focus {
+  border-color: #fc481f; /* Color change on focus */
+}
+
+.setbacks-input-field::placeholder {
+  color: #bbb;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .setbacks-form-container {
+      max-width: 90%;
   }
-  
-  .setbacks-form-title {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .setbacks-property-form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .setbacks-form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
-  
-  .setbacks-form-group {
-    flex: 1;
-    margin-right: 10px;
-    margin-top: 15px;
-    margin-left: 65px;
-  }
-  
-  .setbacks-form-group:last-child {
-    margin-right: 0;
-    
-  }
-  
-  .setbacks-form-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    
-  }
-  
-  .setbacks-input-field {
-    width: 80%;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    
-  }
-  
-  .setbacks-error-text {
-    color: red;
-    font-size: 12px;
-    margin-top: 5px;
-  }
-  
+
   .setbacks-submit-button {
-    padding: 10px;
-    background-color: #fc481f;
-    color: white;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 20%;
-    margin-top: 20px;
-    margin-left: 70%;
+      width: 100%;
+      margin-left: 0;
   }
-  
-  .setbacks-submit-button:hover {
-    background-color: #e4411d;
-  }
-  
-  .setbacks-submit-button:disabled {
-    background-color: #ccc;
-  }
-  
-  .red-asterisk {
-    color: red;
-  }
-  
+}

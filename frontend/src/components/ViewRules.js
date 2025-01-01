@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';  // Import FontAwesomeIcon
-import { faEye } from '@fortawesome/free-solid-svg-icons';  // Import the eye icon
+import { faEye, faFile, faLink } from '@fortawesome/free-solid-svg-icons';  // Import the eye, file, and link icons
 import './ViewRules.css';
+
 const ViewRules = () => {
   const [files, setFiles] = useState([]);
 
@@ -40,17 +41,20 @@ const ViewRules = () => {
           {files.map((file) => (
             <tr key={file.id}>
               <td>{file.id}</td> {/* Displaying the file ID */}
-              <td>{file.filename}</td>
               <td>
-                {/* Make the file path URL clickable */}
+                <FontAwesomeIcon icon={faFile} style={{ marginRight: '8px' }} />
+                {file.filename}
+              </td>
+              <td>
                 <a href={`http://localhost:5000${file.file_path}`} target="_blank" rel="noopener noreferrer">
+                  <FontAwesomeIcon icon={faLink} style={{ marginRight: '8px' }} />
                   {`http://localhost:5000${file.file_path}`}
                 </a>
               </td>
               <td>
                 <button onClick={() => handleViewFile(file.file_path)} className="view-button">
                   {/* Add eye icon to the button */}
-                  <FontAwesomeIcon icon={faEye} />
+                  <FontAwesomeIcon icon={faEye} style={{ marginRight: '8px' }} />
                   View
                 </button>
               </td>

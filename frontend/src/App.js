@@ -3,6 +3,8 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import 'font-awesome/css/font-awesome.min.css';
+
 
 import AdminDashboard from './components/AdminDashboard';
 import Home from './components/Home';

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Search.css'; // Optional styling
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
+import { faSearch } from '@fortawesome/free-solid-svg-icons'; // Import the search icon
 
 const SearchAndRecords = () => {
   const [query, setQuery] = useState('');
@@ -43,6 +45,8 @@ const SearchAndRecords = () => {
           placeholder="Enter APN, address, pincode, or search query"
         />
         <button onClick={handleSearch} disabled={loading}>
+          {/* Adding the search icon inside the button */}
+          <FontAwesomeIcon icon={faSearch} style={{ marginRight: '8px' }} />
           {loading ? 'Searching...' : 'Search'}
         </button>
       </div>

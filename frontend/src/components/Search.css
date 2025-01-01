@@ -53,3 +53,13 @@
 .records-table th {
   background-color: #f4f4f4;
 }
+.search-bar button .fa-search {
+  margin-right: 8px; /* Space between the icon and text */
+  font-size: 16px; /* Adjust the icon size */
+}
+
+.search-bar button {
+  display: flex;
+  align-items: center; /* Ensures the icon and text are vertically aligned */
+  justify-content: center; /* Centers the content inside the button */
+}

@@ -1,7 +1,6 @@
 import React from 'react';
 import './Home.css';
 
-
 const Home = () => {
   return (
     <div className="home">
@@ -9,7 +8,10 @@ const Home = () => {
         <div className="intro">
           <h1>Architect</h1>
           <p>Let's build your dream of having a home</p>
-          <button className="more-info-btn">More Info</button>
+          <button className="more-info-btn">
+            <i className="fas fa-info-circle" style={{ marginRight: '8px' }}></i>
+            More Info
+          </button>
         </div>
         <div className="features">
           <div className="feature">

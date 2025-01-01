@@ -81,4 +81,19 @@
   .red-asterisk {
     color: red;
   }
+  .adu-input-container {
+    position: relative;
+  }
+  
+  .adu-input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+  }
+  
+  .adu-input-field {
+    padding-left: 30px; /* Adjust padding to make space for the icon */
+  }
   

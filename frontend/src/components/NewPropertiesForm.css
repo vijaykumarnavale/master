@@ -7,7 +7,7 @@
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 5px 20px rgba(16, 11, 11, 0.6);
 }
 
 .new-form-title {
@@ -90,4 +90,18 @@
 }
 .red-asterisk {
   color: red;
+}
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.new-input-field {
+  padding-left: 30px; /* Add some padding to the left to make space for the icon */
 }

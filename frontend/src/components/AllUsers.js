@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faSave, faTimes, faUser, faEnvelope, faPhone, faTag } from '@fortawesome/free-solid-svg-icons';
 import 'react-toastify/dist/ReactToastify.css'; // Import react-toastify styles
 import './AllUsers.css'; // Import custom CSS
 
@@ -60,6 +60,7 @@ const AllUsers = () => {
         <tr key={user.id}>
           <td>{user.id}</td>
           <td>
+            <FontAwesomeIcon icon={faUser} /> 
             <input
               type="text"
               value={editingUser.full_name}
@@ -67,6 +68,7 @@ const AllUsers = () => {
             />
           </td>
           <td>
+            <FontAwesomeIcon icon={faEnvelope} /> 
             <input
               type="email"
               value={editingUser.email}
@@ -74,6 +76,7 @@ const AllUsers = () => {
             />
           </td>
           <td>
+            <FontAwesomeIcon icon={faPhone} /> 
             <input
               type="text"
               value={editingUser.contact_number}
@@ -81,6 +84,7 @@ const AllUsers = () => {
             />
           </td>
           <td>
+            <FontAwesomeIcon icon={faTag} /> 
             <input
               type="text"
               value={editingUser.role}
@@ -102,10 +106,18 @@ const AllUsers = () => {
     return (
       <tr key={user.id}>
         <td>{user.id}</td>
-        <td>{user.full_name}</td>
-        <td>{user.email}</td>
-        <td>{user.contact_number}</td>
-        <td>{user.role}</td>
+        <td>
+          <FontAwesomeIcon icon={faUser} /> {user.full_name}
+        </td>
+        <td>
+          <FontAwesomeIcon icon={faEnvelope} /> {user.email}
+        </td>
+        <td>
+          <FontAwesomeIcon icon={faPhone} /> {user.contact_number}
+        </td>
+        <td>
+          <FontAwesomeIcon icon={faTag} /> {user.role}
+        </td>
         <td>
           <button className="btn btn-edit" onClick={() => setEditingUser(user)}>
             <FontAwesomeIcon icon={faEdit} />

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';  // Import faEye
+import { faTrash, faEye, faCloudUploadAlt, faUpload } from '@fortawesome/free-solid-svg-icons';  // Import faUpload icon
 import { ToastContainer, toast } from 'react-toastify';  // Import Toastify
 import 'react-toastify/dist/ReactToastify.css';  // Import CSS for Toastify
+import { useDropzone } from 'react-dropzone';  // Import useDropzone for drag and drop
 import "./FileUploadAndDisplay.css";
 
 const FileUploadAndDisplay = () => {
@@ -93,6 +94,14 @@ const FileUploadAndDisplay = () => {
     }
   };
 
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      setFile(acceptedFiles[0]);
+      setFileName(acceptedFiles[0].name);
+    },
+    accept: '.jpg,.png,.pdf,.docx', // You can specify accepted file types
+  });
+
   useEffect(() => {
     fetchFiles();
   }, []);
@@ -102,23 +111,22 @@ const FileUploadAndDisplay = () => {
       <h2>Rules and Regulations</h2>
 
       {/* File Upload Box */}
-      <form onSubmit={handleSubmit} className="upload-box">
-        <label htmlFor="file-input" className="upload-label">
-          Click here or drag and drop a file to upload
-        </label>
-        <input
-          id="file-input"
-          type="file"
-          onChange={handleFileChange}
-          style={{ display: "none" }} // Hide the input element
-        />
-        {fileName && <p className="file-selected">Selected File: {fileName}</p>}
-        <div className="upload-btn-container">
-          <button type="submit" className="upload-btn">
-            Upload
-          </button>
+      <div className="upload-box" {...getRootProps()}>
+        <input {...getInputProps()} onChange={handleFileChange} />
+        <div className="upload-box-content">
+          <FontAwesomeIcon icon={faCloudUploadAlt} size="2x" />
+          <p className={`upload-message ${file && uploadStatus.some(status => status.name === file.name && status.status === "success") ? 'success-file' : ''}`}>
+            {file ? `Selected File: ${fileName}` : "Click or drag a file to upload"}
+          </p>
         </div>
-      </form>
+      </div>
+
+      {/* Upload Button Outside the Upload Box */}
+      <div className="upload-btn-container">
+        <button type="button" onClick={handleSubmit} className="upload-btn">
+          <FontAwesomeIcon icon={faUpload} /> Upload  {/* Added upload icon here */}
+        </button>
+      </div>
 
       {/* Upload Status */}
       {uploadStatus.map((file, index) => (
@@ -132,7 +140,7 @@ const FileUploadAndDisplay = () => {
                 : file.status === "error"
                 ? "error"
                 : "uploading"}`}
-            style={{ width: `30%` }}
+            style={{ width: `40%` }}
           ></div>
           <span className="progress-text">
             {file.status === "uploading"

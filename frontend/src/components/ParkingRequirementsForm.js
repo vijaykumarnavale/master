@@ -5,6 +5,8 @@ import { toast, ToastContainer } from 'react-toastify'; // Import Toastify compo
 import 'react-toastify/dist/ReactToastify.css'; // Import the Toastify CSS
 import './ParkingRequirementsForm.css'; // Update the CSS file name
 import './Error.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import Font Awesome
+import { faCheck, faParking, faInfoCircle } from '@fortawesome/free-solid-svg-icons'; // Import required icons
 
 const ParkingRequirementsForm = () => {
   const navigate = useNavigate();
@@ -63,17 +65,21 @@ const ParkingRequirementsForm = () => {
     <div className="parking-form-container">
       <h2 className="parking-form-title">Parking Requirements Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="parking-property-form">
+        
         <div className="parking-form-group">
           <label htmlFor="parking_spaces" className="parking-form-label">Parking Spaces <span className="red-asterisk">*</span></label>
-          <input
-            type="number"
-            name="parking_spaces"
-            id="parking_spaces"
-            value={formData.parking_spaces}
-            onChange={handleChange}
-            placeholder="Parking Spaces"
-            className="parking-input-field"
-          />
+          <div className="input-with-icon">
+            <FontAwesomeIcon icon={faParking} className="input-icon" />
+            <input
+              type="number"
+              name="parking_spaces"
+              id="parking_spaces"
+              value={formData.parking_spaces}
+              onChange={handleChange}
+              placeholder="Parking Spaces"
+              className="parking-input-field"
+            />
+          </div>
         </div>
 
         <div className="parking-form-group">
@@ -93,27 +99,34 @@ const ParkingRequirementsForm = () => {
           <>
             <div className="parking-form-group">
               <label htmlFor="bonus_type" className="parking-form-label">Bonus Type <span className="red-asterisk">*</span></label>
-              <input
-                type="text"
-                name="bonus_type"
-                id="bonus_type"
-                value={formData.bonus_type}
-                onChange={handleChange}
-                placeholder="Bonus Type (e.g., Very Low Income, Senior Housing)"
-                className="parking-input-field"
-              />
+              <div className="input-with-icon">
+                <FontAwesomeIcon icon={faInfoCircle} className="input-icon" />
+                <input
+                  type="text"
+                  name="bonus_type"
+                  id="bonus_type"
+                  value={formData.bonus_type}
+                  onChange={handleChange}
+                  placeholder="Bonus Type (e.g., Very Low Income, Senior Housing)"
+                  className="parking-input-field"
+                />
+              </div>
             </div>
+
             <div className="parking-form-group">
               <label htmlFor="bonus_percentage" className="parking-form-label">Bonus Percentage (%) <span className="red-asterisk">*</span></label>
-              <input
-                type="number"
-                name="bonus_percentage"
-                id="bonus_percentage"
-                value={formData.bonus_percentage}
-                onChange={handleChange}
-                placeholder="Bonus Percentage (%)"
-                className="parking-input-field"
-              />
+              <div className="input-with-icon">
+                <FontAwesomeIcon icon={faInfoCircle} className="input-icon" />
+                <input
+                  type="number"
+                  name="bonus_percentage"
+                  id="bonus_percentage"
+                  value={formData.bonus_percentage}
+                  onChange={handleChange}
+                  placeholder="Bonus Percentage (%)"
+                  className="parking-input-field"
+                />
+              </div>
             </div>
           </>
         )}
@@ -124,7 +137,12 @@ const ParkingRequirementsForm = () => {
           disabled={isSubmitting}
           className="parking-submit-button"
         >
-          {isSubmitting ? 'Submitting...' : 'Submit'}
+          {isSubmitting ? 'Submitting...' : (
+            <>
+              Submit
+              <FontAwesomeIcon icon={faCheck} style={{ marginLeft: '8px' }} />
+            </>
+          )}
         </button>
       </form>
 
