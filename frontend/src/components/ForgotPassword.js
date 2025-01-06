@@ -7,11 +7,15 @@ const ForgotPassword = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Load API base URL from environment variables
+  const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
+
   const handleForgotPassword = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:5000/forgot-password', { email });
+      // Use the environment variable for the API URL
+      await axios.post(`${apiBaseUrl}/forgot-password`, { email });
       navigate('/email-sent'); // Redirect to confirmation page
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong.');

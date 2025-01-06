@@ -10,13 +10,16 @@ const ResetPasswordPage = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const location = useLocation();  // Get location object from React Router
+  const location = useLocation(); // Get location object from React Router
   const navigate = useNavigate();
-  
+
+  // Load API base URL from environment variables
+  const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
+
   // Extract token from the URL query string
   const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get('token');  // Get token from query string
-  
+  const token = queryParams.get('token'); // Get token from query string
+
   useEffect(() => {
     if (!token) {
       setError('Invalid or expired token.');
@@ -39,9 +42,10 @@ const ResetPasswordPage = () => {
 
     try {
       // Send the POST request with the token and new password
-      const response = await axios.post('http://localhost:5000/reset-password', 
-        { newPassword, token },  // Use `password` from the state variable
-        { headers: { 'Content-Type': 'application/json' } }  // Add content-type header
+      const response = await axios.post(
+        `${apiBaseUrl}/reset-password`, // Use the environment variable for the API URL
+        { newPassword, token }, // Use `password` from the state variable
+        { headers: { 'Content-Type': 'application/json' } } // Add content-type header
       );
 
       // If the response contains a success message

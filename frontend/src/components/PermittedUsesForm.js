@@ -6,6 +6,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import './PermittedUses.css'; // Update the CSS file name
 import './Error.css';
 
+// Utility function to format field names
+const formatFieldName = (field) => {
+  return field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+};
+
 const PermittedUsesForm = () => {
   const navigate = useNavigate();
 
@@ -76,9 +81,18 @@ const PermittedUsesForm = () => {
 
   const handleSubmit = () => {
     if (!validateForm()) return;
-    axios.post('http://localhost:5000/api/permitted-uses', formData)
-      .then(() => navigate('/adu-details'))
-      .catch(error => console.error('Error submitting zoning details:', error));
+    
+    const apiUrl = process.env.REACT_APP_NODE_API_URL; // Use the environment variable
+
+    axios.post(`${apiUrl}/api/permitted-uses`, formData)
+      .then(() => {
+        toast.success('Permitted uses submitted successfully!');
+        navigate('/adu-details');
+      })
+      .catch(error => {
+        console.error('Error submitting zoning details:', error);
+        toast.error('Failed to submit permitted uses.');
+      });
   };
 
   const useTypeOptions = [
@@ -104,7 +118,7 @@ const PermittedUsesForm = () => {
               {Object.keys(use).map((field, i) => (
                 <div className={`lot-form-group ${i % 2 === 0 ? 'half-width' : 'half-width-second'}`} key={field}>
                   <label htmlFor={`${field}_${index}`} className="lot-form-label">
-                    {field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                    {formatFieldName(field)}
                   </label>
                   {field === 'use_type' ? (
                     <select
@@ -127,7 +141,7 @@ const PermittedUsesForm = () => {
                       value={use[field]}
                       onChange={(e) => handleChange(e, index)}
                       className="lot-input-field"
-                      placeholder={field.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
+                      placeholder={formatFieldName(field)}
                     />
                   )}
                   {errors[`${field}_${index}`] && (

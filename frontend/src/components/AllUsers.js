@@ -16,7 +16,7 @@ const AllUsers = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/users');
+        const response = await axios.get(`${process.env.REACT_APP_NODE_API_URL}/users`);
         setUsers(response.data);
       } catch (error) {
         toast.error('Error fetching users');
@@ -31,7 +31,7 @@ const AllUsers = () => {
   // Handle Delete
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/users/${id}`);
+      await axios.delete(`${process.env.REACT_APP_NODE_API_URL}/users/${id}`);
       setUsers(users.filter((user) => user.id !== id));
       toast.success('User deleted successfully');
     } catch (error) {
@@ -43,7 +43,7 @@ const AllUsers = () => {
   // Handle Edit (Save Changes)
   const handleEdit = async (user) => {
     try {
-      await axios.put(`http://localhost:5000/users/${user.id}`, user);
+      await axios.put(`${process.env.REACT_APP_NODE_API_URL}/users/${user.id}`, user);
       setUsers(users.map((u) => (u.id === user.id ? user : u)));
       setEditingUser(null);
       toast.success('User updated successfully');

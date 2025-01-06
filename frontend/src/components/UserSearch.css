@@ -1,0 +1,93 @@
+/* Container for the search bar */
+.search-container {
+  margin: 20px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto; /* Center the search bar */
+}
+
+/* Search bar layout */
+.search-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #f8f8f8; /* Light background for contrast */
+  border-radius: 30px; /* Rounded edges for a modern look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
+  padding: 5px;
+  border:dashed;
+}
+
+/* Input field styling */
+.search-bar input {
+  flex-grow: 1; /* Input expands to fill available space */
+  padding: 10px 15px;
+  font-size: 16px;
+  /* border: dashed; Remove border */
+  border-radius: 30px; /* Match container shape */
+  outline: none; /* Remove focus outline */
+  background-color: transparent; /* Blend with container background */
+}
+
+/* Search button styling */
+.search-bar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px; /* Rounded edges */
+  transition: all 0.5s ease; /* Smooth hover effects */
+}
+
+/* Hover effect for search button */
+.search-bar button:hover {
+  background-color: #3e8e41; /* Darker green on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+}
+
+/* Disabled state for search button */
+.search-bar button:disabled {
+  background-color: #ccc; /* Gray background */
+  cursor: not-allowed; /* Change cursor */
+}
+
+/* Icon styling inside the button */
+.search-bar button .fa-search {
+  margin-right: 8px; /* Space between icon and text */
+  font-size: 18px; /* Adjust icon size */
+}
+
+/* Error message styling */
+.error {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Table styling */
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.records-table th,
+.records-table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.records-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}

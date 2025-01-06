@@ -7,10 +7,13 @@ import './ViewRules.css';
 const ViewRules = () => {
   const [files, setFiles] = useState([]);
 
+  // Load API base URL from environment variables
+  const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
+
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/files');
+        const response = await axios.get(`${apiBaseUrl}/files`);
         setFiles(response.data);
       } catch (error) {
         console.error('Error fetching files:', error);
@@ -18,11 +21,11 @@ const ViewRules = () => {
     };
 
     fetchFiles();
-  }, []);
+  }, [apiBaseUrl]);
 
   // Function to open file in a new tab
   const handleViewFile = (filePath) => {
-    window.open(`http://localhost:5000${filePath}`, '_blank');
+    window.open(`${apiBaseUrl}${filePath}`, '_blank');
   };
 
   return (
@@ -46,9 +49,9 @@ const ViewRules = () => {
                 {file.filename}
               </td>
               <td>
-                <a href={`http://localhost:5000${file.file_path}`} target="_blank" rel="noopener noreferrer">
+                <a href={`${apiBaseUrl}${file.file_path}`} target="_blank" rel="noopener noreferrer">
                   <FontAwesomeIcon icon={faLink} style={{ marginRight: '8px' }} />
-                  {`http://localhost:5000${file.file_path}`}
+                  {`${apiBaseUrl}${file.file_path}`}
                 </a>
               </td>
               <td>

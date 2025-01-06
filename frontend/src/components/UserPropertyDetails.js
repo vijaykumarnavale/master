@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable'; // Import the plugin
-import './Details.css'; // Optional CSS file for styling
+import './UserPropertyDetails.css'; // Optional CSS file for styling
 
 const PropertyDetails = () => {
   const location = useLocation();
@@ -23,11 +23,6 @@ const PropertyDetails = () => {
   const handleCreateAP = () => {
     console.log('Creating architectural plan for:', propertyData);
     alert('Architectural plan created successfully!');
-  };
-
-  const handleCreateAP1 = (key) => {
-    console.log(`Creating architectural plan for Permitted Uses: ${key}`);
-    alert(`Architectural plan created for ${key}!`);
   };
 
   const capitalizeFieldName = (fieldName) => {
@@ -54,8 +49,8 @@ const PropertyDetails = () => {
     </div>
   );
 
-  const renderNestedTable = (nestedData, isOuterRow = false) => (
-    <table className="nested-table"> {/* Use nested-table class to avoid unwanted styles */}
+  const renderNestedTable = (nestedData) => (
+    <table className="nested-table">
       <tbody>
         {Object.entries(nestedData).map(([subKey, subValue]) => (
           <tr key={subKey}>
@@ -67,20 +62,9 @@ const PropertyDetails = () => {
             </th>
             <td>
               {typeof subValue === 'object' && !Array.isArray(subValue)
-                ? renderNestedTable(subValue, false) // False for nested rows
+                ? renderNestedTable(subValue) // Recursively render nested rows
                 : subValue.toString()}
             </td>
-            {/* Render "Create AP1" button only for outer rows */}
-            {isOuterRow && (
-              <td>
-                <button
-                  onClick={() => handleCreateAP1(subKey)}
-                  className="create-ap1-button"
-                >
-                  Create AP1 for {capitalizeFieldName(subKey)}
-                </button>
-              </td>
-            )}
           </tr>
         ))}
       </tbody>
@@ -180,7 +164,7 @@ const PropertyDetails = () => {
       {isPermittedUsesOpen && (
         <div className="collapsible-content">
           {typeof propertyData.permitted_uses === 'object' && !Array.isArray(propertyData.permitted_uses)
-            ? renderNestedTable(propertyData.permitted_uses, true) // Pass true for outer rows
+            ? renderNestedTable(propertyData.permitted_uses)
             : propertyData.permitted_uses.toString()}
         </div>
       )}
@@ -205,14 +189,6 @@ const PropertyDetails = () => {
               ))}
             </tbody>
           </table>
-          <div className="adu-jadu-button-container">
-            <button
-              onClick={() => handleCreateAP1('ADU-JADU Details')}
-              className="adu-create-ap-button"
-            >
-              Create AP for ADU-JADU
-            </button>
-          </div>
         </div>
       )}
 

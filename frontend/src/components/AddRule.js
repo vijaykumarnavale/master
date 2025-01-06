@@ -13,6 +13,9 @@ const FileUploadAndDisplay = () => {
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState(""); // State to track the file name
 
+  // Load API base URL from environment variables
+  const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
+
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
@@ -38,7 +41,7 @@ const FileUploadAndDisplay = () => {
     setUploadStatus([...uploadStatus, fileData]);
 
     try {
-      await axios.post("http://localhost:5000/upload", formData, {
+      await axios.post(`${apiBaseUrl}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (progressEvent) => {
           const percentCompleted = Math.round(
@@ -76,7 +79,7 @@ const FileUploadAndDisplay = () => {
 
   const fetchFiles = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/files");
+      const response = await axios.get(`${apiBaseUrl}/files`);
       setFiles(response.data);
     } catch (error) {
       console.error("Error fetching files:", error);
@@ -85,7 +88,7 @@ const FileUploadAndDisplay = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/files/${id}`);
+      await axios.delete(`${apiBaseUrl}/files/${id}`);
       setFiles(files.filter((file) => file.id !== id));
       toast.success("File deleted successfully!");  // Show success toast
     } catch (error) {
@@ -104,7 +107,7 @@ const FileUploadAndDisplay = () => {
 
   useEffect(() => {
     fetchFiles();
-  }, []);
+  });
 
   return (
     <div className="container">
@@ -170,7 +173,7 @@ const FileUploadAndDisplay = () => {
               <td>{file.filename}</td>
               <td>
                 <a
-                  href={`http://localhost:5000${file.file_path}`}
+                  href={`${apiBaseUrl}${file.file_path}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="view-file-link"

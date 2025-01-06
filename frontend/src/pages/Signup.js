@@ -18,6 +18,9 @@ const Signup = () => {
   const notifySuccess = (message) => toast.success(message);
   const notifyError = (message) => toast.error(message);
 
+  // Load the API base URL from the environment variable
+  const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
+console.log(apiBaseUrl);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -32,8 +35,8 @@ const Signup = () => {
     };
 
     try {
-      // Replace with your API endpoint
-      const response = await axios.post('http://localhost:5000/register', userData);
+      // Use the environment variable for the API endpoint
+      const response = await axios.post(`${apiBaseUrl}/register`, userData);
 
       // Handle success response
       notifySuccess(response.data.message);

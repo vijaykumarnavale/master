@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './UserSidebar';
-import Popup from './Popup'; // Assuming Popup is a modal for logout confirmation
+import { toast, ToastContainer } from 'react-toastify'; // Importing Toastify components
+import 'react-toastify/dist/ReactToastify.css'; // Importing Toastify styles
 import Properties from './PropertiesForm';
 import ViewRules from './ViewRules'; // Importing ViewRules component
+import UserSearch from './UserSearch';
 
 const Dashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState('');
-  const [showPopup, setShowPopup] = useState(false); // Track popup visibility
   const navigate = useNavigate();
 
   // Handle the selection of a menu item
@@ -22,14 +23,14 @@ const Dashboard = () => {
   const handleLogout = () => {
     // Clear user session
     localStorage.removeItem('authToken');
-    // Show the popup
-    setShowPopup(true);
-  };
+    
+    // Display toast notification
+    toast.success('You have been logged out successfully.');
 
-  // Close the popup and redirect to the login page
-  const closePopup = () => {
-    setShowPopup(false);
-    navigate('/login'); // Redirect to login page after logout
+    // Redirect to login page after a short delay (optional, to allow the toast to appear)
+    setTimeout(() => {
+      navigate('/login');
+    }, 2000); // Adjust the timeout as needed (in ms)
   };
 
   return (
@@ -38,21 +39,16 @@ const Dashboard = () => {
       <Sidebar onMenuClick={handleMenuClick} />
 
       <div style={{ flex: 1, padding: '20px' }}>
-        {/* If the user has logged out, show the Popup */}
-        {showPopup && (
-          <Popup
-            message="You have been logged out successfully."
-            onClose={closePopup} // Handle the close button in the Popup
-          />
-        )}
+        {/* If no menu is selected, display a welcome message */}
+        {!selectedMenu && <UserSearch />}
 
-        {/* If no menu is selected and popup is not showing, display a welcome message */}
-        {!selectedMenu && !showPopup && <h1>Welcome to the Dashboard</h1>}
-        
         {/* Render the selected component based on the selected menu */}
         {selectedMenu === 'zoningData' && <Properties />}
         {selectedMenu === 'viewRules' && <ViewRules />} {/* ViewRules component */}
       </div>
+
+      {/* Toastify container to display toast messages */}
+      <ToastContainer />
     </div>
   );
 };

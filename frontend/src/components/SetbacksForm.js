@@ -36,7 +36,10 @@ const SetbacksForm = () => {
 
     setIsSubmitting(true); // Disable the submit button when submitting
 
-    axios.post('http://localhost:5000/api/setbacks', formData)
+    // Use the URL from the .env file
+    const apiUrl = process.env.REACT_APP_NODE_API_URL;
+
+    axios.post(`${apiUrl}/api/setbacks`, formData)
       .then(response => {
         console.log(response.data);
         navigate('/permitted-uses');

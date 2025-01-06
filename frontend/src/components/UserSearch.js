@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Search.css'; // Optional styling
+import './UserSearch.css'; // Optional styling
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
 import { faSearch } from '@fortawesome/free-solid-svg-icons'; // Import the search icon
 
@@ -28,7 +28,7 @@ const SearchAndRecords = () => {
   const handleViewData = async (propertyId) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_NODE_API_URL}/api/property/${propertyId}`);
-      navigate('/property-details', { state: { propertyData: response.data } });
+      navigate('/user-property-details', { state: { propertyData: response.data } });
     } catch (err) {
       console.error('Error fetching property data:', err);
       alert('Failed to fetch property data. Please try again.');

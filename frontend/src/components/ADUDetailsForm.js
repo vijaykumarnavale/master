@@ -36,7 +36,7 @@ const ADUDetailsForm = () => {
   const handleSubmit = () => {
     if (!validateForm()) return;
 
-    axios.post('http://localhost:5000/api/adu-details', formData)
+    axios.post(`${process.env.REACT_APP_NODE_API_URL}/api/adu-details`, formData)
       .then(response => {
         console.log(response.data);
         navigate('/parking-requirements');

@@ -23,6 +23,7 @@ import PropertyDetails from './components/PropertyDetails';
 import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import About from './components/About';
+import UserPropertyDetails from './components/UserPropertyDetails';
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
         <Route path="/adu-details" element={<ADUDetailsForm />} />
         <Route path="/parking-requirements" element={<ParkingRequirementsForm />} />
         <Route path="/property-details" element={<PropertyDetails />} />
+        <Route path="/user-property-details" element={<UserPropertyDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />

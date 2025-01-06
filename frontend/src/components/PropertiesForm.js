@@ -38,7 +38,7 @@ const PropertiesForm = () => {
 
   const handleSubmit = () => {
     if (validateForm()) {
-      axios.post('http://localhost:5000/api/properties', formData)
+      axios.post(`${process.env.REACT_APP_NODE_API_URL}/api/properties`, formData)
         .then(response => {
           console.log(response.data);
           localStorage.setItem('property_id', response.data.property_id);

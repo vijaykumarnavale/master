@@ -33,12 +33,29 @@
 }
 
 .logout-item {
-  color: #e74c3c; /* Red for logout */
+  background-color: #ff4d4d; /* Bright red for logout */
+  color: #ffffff; /* White text */
+  padding: 10px 20px; /* Add some padding for clickability */
+  font-size: 16px; /* Text size for readability */
+  font-weight: bold; /* Bold text for emphasis */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change cursor on hover */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .logout-item:hover {
-  background-color: #c0392b;
+  background-color: #d43f3f; /* Darker red on hover */
+  color: #ffefc2; /* Slightly off-white text for contrast */
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
+
+.logout-item:active {
+  background-color: #b32d2d; /* Even darker red when clicked */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce shadow on click */
+}
+
 
 .menu-item svg {
   margin-right: 8px;

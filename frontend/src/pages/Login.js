@@ -15,6 +15,9 @@ const Login = () => {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const navigate = useNavigate();
 
+  // Load API base URL from environment variables
+  const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
+
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -22,7 +25,7 @@ const Login = () => {
     const userData = { email, password };
 
     try {
-      const response = await axios.post('http://localhost:5000/login', userData);
+      const response = await axios.post(`${apiBaseUrl}/login`, userData); // Use environment variable for API URL
       toast.success(response.data.message);
       setLoading(false);
 
@@ -46,7 +49,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/forgot-password', { email: forgotPasswordEmail });
+      const response = await axios.post(`${apiBaseUrl}/forgot-password`, { email: forgotPasswordEmail }); // Use environment variable for API URL
       toast.success(response.data.message);
       setForgotPasswordEmail('');
       setIsForgotPassword(false);
