@@ -39,11 +39,11 @@ router.get('/api/property/:property_id', (req, res) => {
             a.jadu_count,       -- Add jadu_count
             a.jadu_max_sqf,     -- Add jadu_max_sqf
             pr.parking_spaces
-        FROM Properties p
-        LEFT JOIN Setbacks s ON p.property_id = s.property_id
+        FROM properties p
+        LEFT JOIN setbacks s ON p.property_id = s.property_id
         LEFT JOIN lot_zoning_details u ON p.property_id = u.property_id
-        LEFT JOIN ADU_Details a ON p.property_id = a.property_id
-        LEFT JOIN Parking_Requirements pr ON p.property_id = pr.property_id
+        LEFT JOIN adu_details a ON p.property_id = a.property_id
+        LEFT JOIN parking_requirements pr ON p.property_id = pr.property_id
         WHERE p.property_id = ?;
     `;
 
