@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEye, faCloudUploadAlt, faUpload } from '@fortawesome/free-solid-svg-icons';  // Import faUpload icon
-import { ToastContainer, toast } from 'react-toastify';  // Import Toastify
-import 'react-toastify/dist/ReactToastify.css';  // Import CSS for Toastify
-import { useDropzone } from 'react-dropzone';  // Import useDropzone for drag and drop
+import { faTrash, faEye, faCloudUploadAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDropzone } from 'react-dropzone';
 import "./FileUploadAndDisplay.css";
 
 const FileUploadAndDisplay = () => {
   const [files, setFiles] = useState([]);
-  const [uploadStatus, setUploadStatus] = useState([]); // To track upload progress
+  const [uploadStatus, setUploadStatus] = useState([]);
   const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState(""); // State to track the file name
+  const [fileName, setFileName] = useState("");
 
-  // Load API base URL from environment variables
   const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
-    setFileName(selectedFile ? selectedFile.name : ""); // Set the file name
+    setFileName(selectedFile ? selectedFile.name : "");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) {
-      alert("Please select a file to upload.");
+      toast.warning("Please select a file to upload.");
       return;
     }
 
@@ -38,7 +37,7 @@ const FileUploadAndDisplay = () => {
       status: "uploading",
     };
 
-    setUploadStatus([...uploadStatus, fileData]);
+    setUploadStatus((prev) => [...prev, fileData]);
 
     try {
       await axios.post(`${apiBaseUrl}/upload`, formData, {
@@ -51,13 +50,14 @@ const FileUploadAndDisplay = () => {
         },
       });
       updateStatus(file.name, "success");
-      fetchFiles();
-      toast.success("File uploaded successfully!");  // Show success toast
-      setFileName(""); // Clear the file name after upload
+      toast.success("File uploaded successfully!");
+      setFile(null); // Reset file
+      setFileName(""); // Reset file name
+      fetchFiles(); // Fetch updated files
     } catch (error) {
       console.error("Error uploading file:", error);
       updateStatus(file.name, "error");
-      toast.error("Upload failed! Try again.");  // Show error toast
+      toast.error("Upload failed! Try again.");
     }
   };
 
@@ -89,11 +89,11 @@ const FileUploadAndDisplay = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${apiBaseUrl}/files/${id}`);
-      setFiles(files.filter((file) => file.id !== id));
-      toast.success("File deleted successfully!");  // Show success toast
+      setFiles((prev) => prev.filter((file) => file.id !== id));
+      toast.success("File deleted successfully!");
     } catch (error) {
       console.error("Error deleting file:", error);
-      toast.error("Error deleting the file. Please try again.");  // Show error toast
+      toast.error("Error deleting the file. Please try again.");
     }
   };
 
@@ -102,18 +102,17 @@ const FileUploadAndDisplay = () => {
       setFile(acceptedFiles[0]);
       setFileName(acceptedFiles[0].name);
     },
-    accept: '.jpg,.png,.pdf,.docx', // You can specify accepted file types
+    accept: '.jpg,.png,.pdf,.docx',
   });
 
   useEffect(() => {
     fetchFiles();
-  });
+  }, []); // Dependency array ensures this runs only once on component mount
 
   return (
     <div className="container">
       <h2>Rules and Regulations</h2>
 
-      {/* File Upload Box */}
       <div className="upload-box" {...getRootProps()}>
         <input {...getInputProps()} onChange={handleFileChange} />
         <div className="upload-box-content">
@@ -124,14 +123,12 @@ const FileUploadAndDisplay = () => {
         </div>
       </div>
 
-      {/* Upload Button Outside the Upload Box */}
       <div className="upload-btn-container">
         <button type="button" onClick={handleSubmit} className="upload-btn">
-          <FontAwesomeIcon icon={faUpload} /> Upload  {/* Added upload icon here */}
+          <FontAwesomeIcon icon={faUpload} /> Upload
         </button>
       </div>
 
-      {/* Upload Status */}
       {uploadStatus.map((file, index) => (
         <div key={index} className="upload-status">
           <div className="file-info">
@@ -143,7 +140,7 @@ const FileUploadAndDisplay = () => {
                 : file.status === "error"
                 ? "error"
                 : "uploading"}`}
-            style={{ width: `40%` }}
+            style={{ width: `${file.progress}%` }}
           ></div>
           <span className="progress-text">
             {file.status === "uploading"
@@ -155,7 +152,6 @@ const FileUploadAndDisplay = () => {
         </div>
       ))}
 
-      {/* Uploaded Files Table */}
       <h3>Uploaded Files</h3>
       <table>
         <thead>
@@ -191,7 +187,6 @@ const FileUploadAndDisplay = () => {
         </tbody>
       </table>
 
-      {/* Toast Notification Container */}
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
   );
