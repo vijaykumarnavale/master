@@ -16,7 +16,7 @@ router.post("/api/properties", (req, res) => {
   } = req.body;
 
   const sql = `
-      INSERT INTO Properties 
+      INSERT INTO properties 
       (address, apn, pincode, zoning, plot_area_sqft, height_limit_ft, depth_ft, width_ft, building_sqft)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
@@ -35,7 +35,7 @@ router.post("/api/properties", (req, res) => {
 // Insert data into Setbacks table
 router.post("/api/setbacks", (req, res) => {
   const { property_id, front_ft, back_ft, side_ft } = req.body;
-  const sql = `INSERT INTO Setbacks (property_id, front_ft, back_ft, side_ft) VALUES (?, ?, ?, ?)`;
+  const sql = `INSERT INTO setbacks (property_id, front_ft, back_ft, side_ft) VALUES (?, ?, ?, ?)`;
   db.query(sql, [property_id, front_ft, back_ft, side_ft], (err, result) => {
     if (err) return res.status(500).json({ error: err });
     res.status(200).json({ setback_id: result.insertId });
@@ -124,7 +124,7 @@ router.post("/api/adu-details", (req, res) => {
   } = req.body;
 
   const sql = `
-    INSERT INTO ADU_Details 
+    INSERT INTO adu_details 
     (property_id, adu_type, adu_count, adu_max_sqft, jadu_count, jadu_max_sqf) 
     VALUES (?, ?, ?, ?, ?, ?)
   `;
@@ -151,7 +151,7 @@ router.post("/api/parking-requirements", (req, res) => {
   } = req.body;
 
   const sql = `
-    INSERT INTO Parking_Requirements 
+    INSERT INTO parking_requirements 
     (property_id, parking_spaces, Eligible_For_Bonus, Bonus_Type, Bonus_Percentage) 
     VALUES (?, ?, ?, ?, ?)
   `;
