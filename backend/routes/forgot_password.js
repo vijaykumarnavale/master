@@ -40,7 +40,7 @@ router.post('/forgot-password', async (req, res) => {
 
       const user = rows[0];
       const resetToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      const resetUrl = `http://localhost:3000/reset-password?token=${resetToken}`;
+      const resetUrl = `https://nanakarchitect.com/reset-password?token=${resetToken}`;
 
       // Render EJS template
       const emailHTML = await ejs.renderFile(path.join(__dirname, '../views/resetEmail.ejs'), { resetUrl });
