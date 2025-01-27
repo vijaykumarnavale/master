@@ -3,52 +3,61 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './SetbacksForm.css';
 import './Error.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import Font Awesome
-import { faArrowRight, faRuler } from '@fortawesome/free-solid-svg-icons'; // Import icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faRuler } from '@fortawesome/free-solid-svg-icons';
 
 const SetbacksForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    property_id: localStorage.getItem('property_id'),
+    property_id: localStorage.getItem('property_id') || '',
     front_ft: '',
     back_ft: '',
-    side_ft: ''
+    side_ft: '',
   });
 
-  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.front_ft) newErrors.front_ft = 'Front setback is required.';
-    if (!formData.back_ft) newErrors.back_ft = 'Back setback is required.';
-    if (!formData.side_ft) newErrors.side_ft = 'Side setback is required.';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = () => {
-    if (!validateForm()) return;
+    if (!formData.property_id) {
+      alert("Property ID is missing. Please refresh the page and try again.");
+      return;
+    }
 
-    setIsSubmitting(true); // Disable the submit button when submitting
+    const sanitizedData = {
+      ...formData,
+      front_ft: formData.front_ft === '' ? null : formData.front_ft,
+      back_ft: formData.back_ft === '' ? null : formData.back_ft,
+      side_ft: formData.side_ft === '' ? null : formData.side_ft,
+    };
 
-    // Use the URL from the .env file
+    setIsSubmitting(true);
+
     const apiUrl = process.env.REACT_APP_NODE_API_URL;
+    if (!apiUrl) {
+      console.error("API URL is not defined in the environment variables.");
+      setIsSubmitting(false);
+      return;
+    }
 
-    axios.post(`${apiUrl}/api/setbacks`, formData)
+    axios.post(`${apiUrl}/api/setbacks`, sanitizedData)
       .then(response => {
         console.log(response.data);
         navigate('/permitted-uses');
       })
       .catch(error => {
         console.error('Error submitting setbacks data:', error);
+        if (error.response && error.response.data && error.response.data.message) {
+          alert(`Error: ${error.response.data.message}`);
+        } else {
+          alert('An unexpected error occurred. Please try again.');
+        }
       })
       .finally(() => {
-        setIsSubmitting(false); // Re-enable the button after submission
+        setIsSubmitting(false);
       });
   };
 
@@ -56,10 +65,9 @@ const SetbacksForm = () => {
     <div className="setbacks-form-container">
       <h2 className="setbacks-form-title">Setbacks Details</h2>
       <form onSubmit={(e) => e.preventDefault()} className="setbacks-property-form">
-        {/* Front Setback */}
         <div className="setbacks-form-group">
           <label htmlFor="front_ft" className="setbacks-input-label">
-            Front Setback (ft) <span className="red-asterisk">*</span>
+            Front Setback (ft)
           </label>
           <div className="input-icon-container">
             <FontAwesomeIcon icon={faRuler} className="input-icon" />
@@ -72,13 +80,11 @@ const SetbacksForm = () => {
               className="setbacks-input-field"
             />
           </div>
-          {errors.front_ft && <span className="setbacks-error-text">{errors.front_ft}</span>}
         </div>
 
-        {/* Back Setback */}
         <div className="setbacks-form-group">
           <label htmlFor="back_ft" className="setbacks-input-label">
-            Back Setback (ft) <span className="red-asterisk">*</span>
+            Back Setback (ft)
           </label>
           <div className="input-icon-container">
             <FontAwesomeIcon icon={faRuler} className="input-icon" />
@@ -91,13 +97,11 @@ const SetbacksForm = () => {
               className="setbacks-input-field"
             />
           </div>
-          {errors.back_ft && <span className="setbacks-error-text">{errors.back_ft}</span>}
         </div>
 
-        {/* Side Setback */}
         <div className="setbacks-form-group">
           <label htmlFor="side_ft" className="setbacks-input-label">
-            Side Setback (ft) <span className="red-asterisk">*</span>
+            Side Setback (ft)
           </label>
           <div className="input-icon-container">
             <FontAwesomeIcon icon={faRuler} className="input-icon" />
@@ -110,10 +114,8 @@ const SetbacksForm = () => {
               className="setbacks-input-field"
             />
           </div>
-          {errors.side_ft && <span className="setbacks-error-text">{errors.side_ft}</span>}
         </div>
 
-        {/* Submit Button */}
         <button
           type="button"
           onClick={handleSubmit}

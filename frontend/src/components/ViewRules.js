@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';  // Import FontAwesomeIcon
-import { faEye, faFile, faLink } from '@fortawesome/free-solid-svg-icons';  // Import the eye, file, and link icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
+import { faEye, faFile } from '@fortawesome/free-solid-svg-icons'; // Import the eye and file icons
 import './ViewRules.css';
 
 const ViewRules = () => {
@@ -36,7 +36,6 @@ const ViewRules = () => {
           <tr>
             <th>File ID</th>
             <th>Filename</th>
-            <th>File Path</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -47,12 +46,6 @@ const ViewRules = () => {
               <td>
                 <FontAwesomeIcon icon={faFile} style={{ marginRight: '8px' }} />
                 {file.filename}
-              </td>
-              <td>
-                <a href={`${apiBaseUrl}${file.file_path}`} target="_blank" rel="noopener noreferrer">
-                  <FontAwesomeIcon icon={faLink} style={{ marginRight: '8px' }} />
-                  {`${apiBaseUrl}${file.file_path}`}
-                </a>
               </td>
               <td>
                 <button onClick={() => handleViewFile(file.file_path)} className="view-button">

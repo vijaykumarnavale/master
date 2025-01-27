@@ -18,6 +18,7 @@ import PropertiesForm from './components/PropertiesForm';
 import SetbacksForm from './components/SetbacksForm';
 import PermittedUsesForm from './components/PermittedUsesForm';
 import ADUDetailsForm from './components/ADUDetailsForm';
+import JADUDetailsForm from './components/JADUDetailsForm';
 import ParkingRequirementsForm from './components/ParkingRequirementsForm';
 import PropertyDetails from './components/PropertyDetails';
 import Gallery from './components/Gallery';
@@ -41,6 +42,7 @@ const App = () => {
         <Route path="/setbacks" element={<SetbacksForm />} />
         <Route path="/permitted-uses" element={<PermittedUsesForm />} />
         <Route path="/adu-details" element={<ADUDetailsForm />} />
+        <Route path="/jadu-details" element={<JADUDetailsForm />} />
         <Route path="/parking-requirements" element={<ParkingRequirementsForm />} />
         <Route path="/property-details" element={<PropertyDetails />} />
         <Route path="/user-property-details" element={<UserPropertyDetails />} />

@@ -1,0 +1,97 @@
+.adu-form-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+  }
+  
+  .adu-form-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .adu-row {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .adu-form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .adu-input-field {
+    flex: 1;
+    min-width: 180px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  
+  .remove-row-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width:16%;
+  }
+  .add-row-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width:20%;
+  }
+  
+  .adu-submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width:20%;
+    margin-left: 60%;
+  }
+  
+  .add-row-button {
+    background-color: #fc481f;
+    color: #fff;
+    margin-top: 10px;
+  }
+  
+  .add-row-button:hover {
+    background-color: #cc0000;
+  }
+  
+  .remove-row-button {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .remove-row-button:hover {
+    background-color: #a71d2a;
+  }
+  
+  .adu-submit-button {
+    background-color: #28a745;
+    color: white;
+    margin-top: 20px;
+  }
+  
+  .adu-submit-button:hover {
+    background-color: #218838;
+  }
+  

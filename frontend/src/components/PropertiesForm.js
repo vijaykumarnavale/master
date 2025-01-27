@@ -4,7 +4,7 @@ import axios from 'axios';
 import './NewPropertiesForm.css';  
 import './Error.css';  
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faMapMarkerAlt, faMapPin, faSearchLocation, faBuilding, faRulerCombined, faRuler } from '@fortawesome/free-solid-svg-icons'; // Import necessary icons
+import { faArrowRight, faMapMarkerAlt, faMapPin, faSearchLocation, faBuilding, faRulerCombined, faRuler, faParking, faHome } from '@fortawesome/free-solid-svg-icons'; // Import necessary icons
 
 const PropertiesForm = () => {
   const navigate = useNavigate();
@@ -18,6 +18,8 @@ const PropertiesForm = () => {
     depth_ft: '',
     width_ft: '',
     building_sqft: '',
+    parking_spaces: '',
+    garages: '',
   });
   const [errors, setErrors] = useState({});
 
@@ -215,8 +217,46 @@ const PropertiesForm = () => {
             </div>
             {errors.building_sqft && <span className="new-error-text">{errors.building_sqft}</span>}
           </div>
+
+
+          <div className="new-form-group">
+            <label htmlFor="parking_spaces" className="new-form-label">Parking Spaces <span className="red-asterisk">*</span></label>
+            <div className="input-with-icon">
+              <FontAwesomeIcon icon={faParking} className="input-icon" />
+              <input
+                type="number"
+                id="parking_spaces"
+                name="parking_spaces"
+                value={formData.parking_spaces}
+                onChange={handleChange}
+                placeholder="Number of Parking Spaces"
+                className="new-input-field"
+              />
+            </div>
+            {errors.parking_spaces && <span className="new-error-text">{errors.parking_spaces}</span>}
+          </div>
         </div>
 
+       
+        <div className="new-form-row">
+          <div className="new-form-group">
+            <label htmlFor="garages" className="new-form-label">Garages <span className="red-asterisk">*</span></label>
+            <div className="input-with-icon">
+              <FontAwesomeIcon icon={faHome} className="input-icon" />
+              <input
+                type="number"
+                id="garages"
+                name="garages"
+                value={formData.garages}
+                onChange={handleChange}
+                placeholder="Number of Garages"
+                className="new-input-field"
+              />
+            </div>
+            {errors.garages && <span className="new-error-text">{errors.garages}</span>}
+          </div>
+          
+</div>
         {/* "Next" button with Font Awesome icon */}
         <button type="button" onClick={handleSubmit} className="new-submit-button">
           <FontAwesomeIcon icon={faArrowRight} style={{ marginRight: '8px' }} />  {/* Font Awesome right arrow */}

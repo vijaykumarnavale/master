@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEye, faCloudUploadAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -33,7 +33,6 @@ const FileUploadAndDisplay = () => {
 
     const fileData = {
       name: file.name,
-      progress: 0,
       status: "uploading",
     };
 
@@ -42,12 +41,6 @@ const FileUploadAndDisplay = () => {
     try {
       await axios.post(`${apiBaseUrl}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          updateProgress(file.name, percentCompleted);
-        },
       });
       updateStatus(file.name, "success");
       toast.success("File uploaded successfully!");
@@ -61,30 +54,22 @@ const FileUploadAndDisplay = () => {
     }
   };
 
-  const updateProgress = (fileName, progress) => {
-    setUploadStatus((prev) =>
-      prev.map((file) =>
-        file.name === fileName ? { ...file, progress } : file
-      )
-    );
-  };
-
   const updateStatus = (fileName, status) => {
     setUploadStatus((prev) =>
       prev.map((file) =>
-        file.name === fileName ? { ...file, status, progress: 100 } : file
+        file.name === fileName ? { ...file, status } : file
       )
     );
   };
 
-  const fetchFiles = async () => {
+  const fetchFiles = useCallback(async () => {
     try {
       const response = await axios.get(`${apiBaseUrl}/files`);
       setFiles(response.data);
     } catch (error) {
       console.error("Error fetching files:", error);
     }
-  };
+  }, [apiBaseUrl]);
 
   const handleDelete = async (id) => {
     try {
@@ -107,7 +92,7 @@ const FileUploadAndDisplay = () => {
 
   useEffect(() => {
     fetchFiles();
-  }, []); // Dependency array ensures this runs only once on component mount
+  }, [fetchFiles]); // Add fetchFiles as a dependency
 
   return (
     <div className="container">
@@ -128,29 +113,6 @@ const FileUploadAndDisplay = () => {
           <FontAwesomeIcon icon={faUpload} /> Upload
         </button>
       </div>
-
-      {uploadStatus.map((file, index) => (
-        <div key={index} className="upload-status">
-          <div className="file-info">
-            <span>{file.name}</span>
-          </div>
-          <div
-            className={`progress-bar ${file.status === "success"
-                ? "success"
-                : file.status === "error"
-                ? "error"
-                : "uploading"}`}
-            style={{ width: `${file.progress}%` }}
-          ></div>
-          <span className="progress-text">
-            {file.status === "uploading"
-              ? `${file.progress}%`
-              : file.status === "success"
-              ? "File Upload Successful!"
-              : "File Upload Failed! Try Again"}
-          </span>
-        </div>
-      ))}
 
       <h3>Uploaded Files</h3>
       <table>
