@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'; // Importing Toastify styles
 import Properties from './PropertiesForm';
 import ViewRules from './ViewRules'; // Importing ViewRules component
 import UserSearch from './UserSearch';
+import ZoningRules from './ZoningRules';
 
 const Dashboard = () => {
   const [selectedMenu, setSelectedMenu] = useState('');
@@ -45,6 +46,7 @@ const Dashboard = () => {
         {/* Render the selected component based on the selected menu */}
         {selectedMenu === 'zoningData' && <Properties />}
         {selectedMenu === 'viewRules' && <ViewRules />} {/* ViewRules component */}
+        {selectedMenu === 'zoningRules' && <ZoningRules />} {/* New Zoning Rules page */}
       </div>
 
       {/* Toastify container to display toast messages */}
@@ -52,5 +54,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;

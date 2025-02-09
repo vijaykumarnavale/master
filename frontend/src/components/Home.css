@@ -5,6 +5,14 @@ body {
   color: #333;
 }
 
+.logo-image {
+  height: 50px; /* Adjust size */
+  width: auto;
+}
+.home {
+
+}
+
 a {
   text-decoration: none; /* Ensures all links have no underline */
 }
@@ -16,15 +24,8 @@ a {
 }
 
 .nav a:hover {
-  color: #fc481f;
+  color: #0335ff;
   text-decoration: underline;
-}
-
-/* Home Layout */
-.home {
-  display: flex;
-  flex-direction: column;
-  min-height: 90vh;
 }
 
 .header {
@@ -33,7 +34,7 @@ a {
   align-items: center;
   padding: 20px;
   background-color: #f4f4f4;
-  border-bottom: 2px solid #fc481f;
+  border-bottom: 2px solid #1f31fc;
 }
 
 .logo1 {
@@ -70,6 +71,14 @@ a {
   flex: 1;
   padding: 80px 20px;
   text-align: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 63vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .intro h1 {
@@ -80,7 +89,7 @@ a {
 
 .intro p {
   font-size: 18px;
-  color: #666;
+  color: blue;
   margin-bottom: 20px;
 }
 
@@ -120,11 +129,13 @@ a {
 
 .feature p {
   font-size: 16px;
-  color: #555;
+  color:rgb(0, 0, 0);
   margin-top: 10px;
+  background-color: #ffffff;
+  width: 340px;
 }
 
-/* Footer */
+/* Footer */ 
 .footer {
   background-color: #333;
   color: white;

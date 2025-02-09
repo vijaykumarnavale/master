@@ -8,18 +8,40 @@
 }
 
 /* Main Table Styling */
-.details-table, .nested-table {
+.details-table{
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  color:red;
 }
 
-.details-table th, .details-table td, 
-.nested-table th, .nested-table td {
+.nested-table {
+  width: 70%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  color:red;
+}
+
+.details-table th, .details-table td {
   border: 1px solid #ddd;
   padding: 8px 10px;
   text-align: left;
   font-size: 16px;
+}
+
+.nested-table th {
+  border: 1px solid #ddd;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 16px;
+}
+
+.nested-table td {
+  border: 1px solid #ddd;
+  padding: 0px 20px;
+  text-align: left;
+  font-size: 16px;
+  color:blue;
 }
 
 .details-table th, .nested-table th {
@@ -60,8 +82,8 @@
 /* Clickable Cell Styling */
 .clickable-key {
   cursor: pointer;
-  color: #007bff;
-  text-decoration: underline;
+  /* color: #007bff; */
+  /* text-decoration: underline; */
 }
 
 /* Popup Overlay */

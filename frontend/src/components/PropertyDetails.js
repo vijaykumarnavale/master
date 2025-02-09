@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable'; // Import the plugin
-import './UserPropertyDetails.css'; // Optional CSS file for styling
+import 'jspdf-autotable';
+import './UserPropertyDetails.css';
 
 const PropertyDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { propertyData } = location.state;
+  const { propertyData } = location.state || {};
 
   const [popupData, setPopupData] = useState(null);
   const [isSectionOpen, setIsSectionOpen] = useState({
@@ -19,12 +19,14 @@ const PropertyDetails = () => {
   });
 
   const handleBack = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-1);
   };
 
   const handleCreateAP = () => {
-    console.log('Creating architectural plan for:', propertyData);
-    alert('Architectural plan created successfully!');
+    if (propertyData) {
+      console.log('Creating architectural plan for:', propertyData);
+      alert('Architectural plan created successfully!');
+    }
   };
 
   const handleCreateAP1 = (key) => {
@@ -37,7 +39,7 @@ const PropertyDetails = () => {
   };
 
   const handleKeyClick = (key, value) => {
-    if (typeof value === 'object' && !Array.isArray(value)) {
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       setPopupData({ key, value });
     }
   };
@@ -48,7 +50,7 @@ const PropertyDetails = () => {
       <ul>
         {Object.entries(popupData.value).map(([key, value]) => (
           <li key={key}>
-            <strong>{capitalizeFieldName(key)}:</strong> {value.toString()}
+            <strong>{capitalizeFieldName(key)}:</strong> {value?.toString() || 'N/A'}
           </li>
         ))}
       </ul>
@@ -56,48 +58,62 @@ const PropertyDetails = () => {
     </div>
   );
 
-  const renderNestedTable = (nestedData, isOuterRow = false) => (
-    <table className="nested-table">
-      <tbody>
-        {Object.entries(nestedData).map(([subKey, subValue]) => (
-          <tr key={subKey}>
-            <th
-              className="clickable-key"
-              onClick={() => handleKeyClick(subKey, subValue)}
-            >
-              {capitalizeFieldName(subKey)}
-            </th>
-            <td>
-              {typeof subValue === 'object' && !Array.isArray(subValue)
-                ? renderNestedTable(subValue)
-                : subValue.toString()}
-            </td>
-            {isOuterRow && (
+  const renderNestedTable = (nestedData, isOuterRow = false) => {
+    if (!nestedData || typeof nestedData !== 'object') {
+      return <div>No data available</div>;
+    }
+
+    return (
+      <table className="nested-table">
+        <tbody>
+          {Object.entries(nestedData).map(([subKey, subValue]) => (
+            <tr key={subKey}>
+              <th
+                className="clickable-key"
+                onClick={() => handleKeyClick(subKey, subValue)}
+              >
+                {capitalizeFieldName(subKey)}
+              </th>
               <td>
-                <button
-                  onClick={() => handleCreateAP1(subKey)}
-                  className="create-ap1-button"
-                >
-                  Create AP1 for {capitalizeFieldName(subKey)}
-                </button>
+                {typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
+                  ? renderNestedTable(subValue)
+                  : subValue?.toString() || 'N/A'}
               </td>
-            )}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+              {isOuterRow && (
+                <td>
+                  <button
+                    onClick={() => handleCreateAP1(subKey)}
+                    className="create-ap1-button"
+                  >
+                    Create AP1 for {capitalizeFieldName(subKey)}
+                  </button>
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   const handlePrint = () => {
-    window.print(); // Print the current page
+    window.print();
   };
 
   const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-    doc.text('Property Details', 10, 10);
-    doc.autoTable({ html: '.details-table' });
-    doc.save('property-details.pdf');
+    if (propertyData) {
+      const doc = new jsPDF();
+      doc.text('Property Details', 10, 10);
+      doc.autoTable({ html: '.details-table' });
+      doc.save('property-details.pdf');
+    } else {
+      alert('No data available to download as PDF.');
+    }
   };
+
+  if (!propertyData) {
+    return <div>No property data available.</div>;
+  }
 
   const sections = [
     {
@@ -125,7 +141,9 @@ const PropertyDetails = () => {
       title: 'Permitted Uses',
       key: 'permittedUses',
       render: () =>
-        typeof propertyData.permitted_uses === 'object' && !Array.isArray(propertyData.permitted_uses)
+        propertyData.permitted_uses &&
+        typeof propertyData.permitted_uses === 'object' &&
+        !Array.isArray(propertyData.permitted_uses)
           ? renderNestedTable(propertyData.permitted_uses, true)
           : propertyData.permitted_uses?.toString() || 'N/A',
     },
@@ -133,7 +151,9 @@ const PropertyDetails = () => {
       title: 'ADU Details',
       key: 'aduDetails',
       render: () =>
-        typeof propertyData.adu_details === 'object' && !Array.isArray(propertyData.adu_details)
+        propertyData.adu_details &&
+        typeof propertyData.adu_details === 'object' &&
+        !Array.isArray(propertyData.adu_details)
           ? renderNestedTable(propertyData.adu_details, true)
           : propertyData.adu_details?.toString() || 'N/A',
     },
@@ -141,7 +161,9 @@ const PropertyDetails = () => {
       title: 'JADU Details',
       key: 'jaduDetails',
       render: () =>
-        typeof propertyData.jadu_details === 'object' && !Array.isArray(propertyData.jadu_details)
+        propertyData.jadu_details &&
+        typeof propertyData.jadu_details === 'object' &&
+        !Array.isArray(propertyData.jadu_details)
           ? renderNestedTable(propertyData.jadu_details, true)
           : propertyData.jadu_details?.toString() || 'N/A',
     },
@@ -151,10 +173,15 @@ const PropertyDetails = () => {
     <div className="details-container">
       {sections.map(({ title, key, fields, render }) => (
         <div key={key}>
-          <div className="collapsible-header" onClick={() => setIsSectionOpen((prevState) => ({
-            ...prevState,
-            [key]: !prevState[key],
-          }))}>
+          <div
+            className="collapsible-header"
+            onClick={() =>
+              setIsSectionOpen((prevState) => ({
+                ...prevState,
+                [key]: !prevState[key],
+              }))
+            }
+          >
             {title}
             <span>{isSectionOpen[key] ? '-' : '+'}</span>
           </div>

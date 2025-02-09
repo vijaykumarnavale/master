@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './UserPropertyDetails.css'; // Optional CSS file for styling
-
 const PropertyDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { propertyData } = location.state;
+  const { propertyData } = location.state || {};
 
   const [popupData, setPopupData] = useState(null);
   const [isSectionOpen, setIsSectionOpen] = useState({
@@ -25,7 +24,7 @@ const PropertyDetails = () => {
   };
 
   const handleKeyClick = (key, value) => {
-    if (typeof value === 'object' && !Array.isArray(value)) {
+    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
       setPopupData({ key, value });
     }
   };
@@ -36,7 +35,7 @@ const PropertyDetails = () => {
       <ul>
         {Object.entries(popupData.value).map(([key, value]) => (
           <li key={key}>
-            <strong>{capitalizeFieldName(key)}:</strong> {value.toString()}
+            <strong>{capitalizeFieldName(key)}:</strong> {value?.toString() || 'N/A'}
           </li>
         ))}
       </ul>
@@ -44,27 +43,32 @@ const PropertyDetails = () => {
     </div>
   );
 
-  const renderNestedTable = (nestedData) => (
-    <table className="nested-table">
-      <tbody>
-        {Object.entries(nestedData).map(([subKey, subValue]) => (
-          <tr key={subKey}>
-            <th
-              className="clickable-key"
-              onClick={() => handleKeyClick(subKey, subValue)}
-            >
-              {capitalizeFieldName(subKey)}
-            </th>
-            <td>
-              {typeof subValue === 'object' && !Array.isArray(subValue)
-                ? renderNestedTable(subValue) // Recursively render nested rows
-                : subValue.toString()}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+  const renderNestedTable = (nestedData) => {
+    if (!nestedData || typeof nestedData !== 'object') {
+      return <div>No data available</div>;
+    }
+    return (
+      <table className="nested-table">
+        <tbody>
+          {Object.entries(nestedData).map(([subKey, subValue]) => (
+            <tr key={subKey}>
+              <th
+                className="clickable-key"
+                onClick={() => handleKeyClick(subKey, subValue)}
+              >
+                {capitalizeFieldName(subKey)}
+              </th>
+              <td>
+                {typeof subValue === 'object' && subValue !== null && !Array.isArray(subValue)
+                  ? renderNestedTable(subValue) // Recursively render nested rows
+                  : subValue?.toString() || 'N/A'}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   const toggleSection = (section) => {
     setIsSectionOpen((prevState) => ({
@@ -72,6 +76,10 @@ const PropertyDetails = () => {
       [section]: !prevState[section],
     }));
   };
+
+  if (!propertyData) {
+    return <div>No property data available.</div>;
+  }
 
   const sections = [
     {
@@ -99,7 +107,9 @@ const PropertyDetails = () => {
       title: 'Permitted Uses',
       key: 'permittedUses',
       render: () =>
-        typeof propertyData.permitted_uses === 'object' && !Array.isArray(propertyData.permitted_uses)
+        propertyData.permitted_uses &&
+        typeof propertyData.permitted_uses === 'object' &&
+        !Array.isArray(propertyData.permitted_uses)
           ? renderNestedTable(propertyData.permitted_uses)
           : propertyData.permitted_uses?.toString() || 'N/A',
     },
@@ -107,7 +117,9 @@ const PropertyDetails = () => {
       title: 'ADU Details',
       key: 'aduDetails',
       render: () =>
-        typeof propertyData.adu_details === 'object' && !Array.isArray(propertyData.adu_details)
+        propertyData.adu_details &&
+        typeof propertyData.adu_details === 'object' &&
+        !Array.isArray(propertyData.adu_details)
           ? renderNestedTable(propertyData.adu_details)
           : propertyData.adu_details?.toString() || 'N/A',
     },
@@ -115,7 +127,9 @@ const PropertyDetails = () => {
       title: 'JADU Details',
       key: 'jaduDetails',
       render: () =>
-        typeof propertyData.jadu_details === 'object' && !Array.isArray(propertyData.jadu_details)
+        propertyData.jadu_details &&
+        typeof propertyData.jadu_details === 'object' &&
+        !Array.isArray(propertyData.jadu_details)
           ? renderNestedTable(propertyData.jadu_details)
           : propertyData.jadu_details?.toString() || 'N/A',
     },

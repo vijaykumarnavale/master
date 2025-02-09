@@ -1,19 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
-import { faHome, faInfoCircle, faImage, faPhoneAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faInfoCircle, faImage, faPhoneAlt, faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+import LogoImage from '../components/images/logo.png'; // Ensure the correct path
 
 const Navbar = () => {
   return (
     <header className="header">
-      <div>
+      <div className="logo-container">
         <Link to="/">
-          <div className="logo1">Nanak Architect</div>
+          <img src={LogoImage} alt="Nanak Architect Logo" className="logo-image" />
         </Link>
       </div>
+
       <nav className="nav">
-        {/* Use Link for Home */}
         <Link to="/" className="nav-item">
           <FontAwesomeIcon icon={faHome} style={{ marginRight: '8px' }} />
           Home
@@ -31,6 +32,7 @@ const Navbar = () => {
           Contact
         </Link>
       </nav>
+
       <div className="auth-buttons">
         <Link to="/login">
           <button className="login-btn">

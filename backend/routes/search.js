@@ -18,18 +18,16 @@ router.get('/search', (req, res) => {
     OR pincode LIKE ?
   `;
 
-  // Use the query with searchTerm, wrapping it in % for partial matching
   const searchTerm = `%${query}%`;
 
-  // Execute the query using the callback function approach
   db.query(sql, [searchTerm, searchTerm, searchTerm], (err, results) => {
     if (err) {
       console.error('Error executing query:', err);
       return res.status(500).json({ error: 'Failed to fetch records from the database' });
     }
 
-    // Return the filtered results
-    res.json({ records: results });
+    // ✅ Always return an array, even if empty
+    res.status(200).json({ records: results });
   });
 });
 

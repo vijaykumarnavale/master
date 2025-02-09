@@ -16,7 +16,7 @@
   border-radius: 30px; /* Rounded edges for a modern look */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
   padding: 5px;
-  border:dashed;
+  border:groove;
 }
 
 /* Input field styling */

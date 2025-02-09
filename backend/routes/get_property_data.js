@@ -2,7 +2,7 @@ const express = require('express');
 const db = require('../config/db'); // Import your MySQL connection
 const router = express.Router();
 
-// Route to fetch property details by property_id
+// Route to fetch property details by property_id up
 router.get('/api/property/:property_id', (req, res) => {
     const propertyId = req.params.property_id;
 

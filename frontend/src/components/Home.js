@@ -1,12 +1,13 @@
 import React from 'react';
 import './Home.css';
+import backgroundImage from './images/architect.png'; // Adjust the path if necessary
 
 const Home = () => {
   return (
-    <div className="home">
-      <main className="main-content">
+    <div >
+      <main className="main-content" style={{ backgroundImage: `url(${backgroundImage})` }}>
         <div className="intro">
-          <h1>Architect</h1>
+          <h1>Nanak Architect</h1>
           <p>Let's build your dream of having a home</p>
           <button className="more-info-btn">
             <i className="fas fa-info-circle" style={{ marginRight: '8px' }}></i>
@@ -15,16 +16,13 @@ const Home = () => {
         </div>
         <div className="features">
           <div className="feature">
-            <span>1</span>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+            <p>Designing Dreams, Building Realities.</p>
           </div>
           <div className="feature">
-            <span>2</span>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+            <p>Transforming Ideas into Iconic Designs.</p>
           </div>
           <div className="feature">
-            <span>3</span>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+            <p>Where Vision Meets Structure.</p>
           </div>
         </div>
       </main>

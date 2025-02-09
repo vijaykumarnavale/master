@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+
+   
+  }
+  
+  h2 {
+    color: #333;
+  }
+  
+  .zone-label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  .zone-select {
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  .zone-button {
+    padding: 8px 12px;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
+  
+  .zone-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .zone-table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .zone-table thead {
+    background-color: #f2f2f2;
+  }
+  
+  .zone-table, .zone-table th, .zone-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+  }
+  
+  .zone-table th {
+    background-color: #007bff;
+    color: white;
+  }
+  

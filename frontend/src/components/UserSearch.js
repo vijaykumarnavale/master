@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './UserSearch.css'; // Optional styling
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
-import { faSearch } from '@fortawesome/free-solid-svg-icons'; // Import the search icon
+import './UserSearch.css'; // Import CSS file for styling
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SearchAndRecords = () => {
   const [query, setQuery] = useState('');
@@ -11,32 +13,106 @@ const SearchAndRecords = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const debounceRef = useRef(null); // Ref to store timeout for debouncing
 
-  const handleSearch = async () => {
+  const apiUrl = process.env.REACT_APP_NODE_API_URL || 'http://localhost:5000'; // Fallback for local testing
+
+  // Function to validate query input
+  const validateQuery = (input) => {
+    if (!input.trim()) {
+      setError('Search query cannot be empty.');
+    //  toast.warn('Please enter a valid search query.', { position: 'top-right', autoClose: 3000 });
+      return false;
+    }
+    return true;
+  };
+
+  // Memoized function to fetch records
+  const fetchRecords = useCallback(async (searchQuery) => {
+    if (!validateQuery(searchQuery)) return;
+
     setLoading(true);
     setError(null);
+    setRecords([]); // Clear previous records
+
     try {
-      const response = await axios.get(`${process.env.REACT_APP_NODE_API_URL}/search?query=${query}`);
-      setRecords(response.data.records);
+      if (!apiUrl) {
+        throw new Error('API URL is not set. Check your .env file.');
+      }
+
+      const response = await axios.get(`${apiUrl}/search`, {
+        params: { query: searchQuery.trim() }, // Ensure trimmed query
+      });
+
+      console.log('API Response:', response.data);
+
+      if (response.data?.records && Array.isArray(response.data.records)) {
+        if (response.data.records.length > 0) {
+          setRecords(response.data.records);
+        } else {
+          setRecords([]);
+          setError('No records found Please try again.');
+        }
+      } else {
+        throw new Error('Invalid response format from server.');
+      }
     } catch (err) {
-      setError('Failed to fetch records. Please try again.');
+      console.error('Search API Error:', err);
+
+      if (err.response) {
+        // API responded with a status outside the 2xx range
+        console.error('Response Data:', err.response.data);
+        setError(err.response.data?.message || 'Server returned an error.');
+      } else if (err.request) {
+        // No response received
+        setError('No response from the server. Please check your internet connection.');
+      } else {
+        // Other errors
+        setError(err.message);
+      }
+      toast.error('Error fetching records. Check console for details.', { position: 'top-right', autoClose: 3000 });
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]); // Memoized using `useCallback`
+
+  // Debounce effect
+  useEffect(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      if (query) fetchRecords(query);
+    }, 500); // Delay of 500ms
+
+    return () => clearTimeout(debounceRef.current);
+  }, [query, fetchRecords]); // Added `fetchRecords` to dependencies
 
   const handleViewData = async (propertyId) => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_NODE_API_URL}/api/property/${propertyId}`);
+      if (!apiUrl) {
+        throw new Error('API URL is not set. Check your .env file.');
+      }
+
+      const response = await axios.get(`${apiUrl}/api/property/${propertyId}`);
+      console.log('Property Data:', response.data);
+
+      if (!response.data) {
+        throw new Error('Invalid property data received.');
+      }
+
       navigate('/user-property-details', { state: { propertyData: response.data } });
     } catch (err) {
       console.error('Error fetching property data:', err);
-      alert('Failed to fetch property data. Please try again.');
+      toast.error('Failed to fetch property details.', { position: 'top-right', autoClose: 3000 });
     }
   };
 
   return (
     <div className="search-container">
+      <ToastContainer /> {/* Toastify Container for notifications */}
+      
       <div className="search-bar">
         <input
           type="text"
@@ -44,8 +120,7 @@ const SearchAndRecords = () => {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Enter APN, address, pincode, or search query"
         />
-        <button onClick={handleSearch} disabled={loading}>
-          {/* Adding the search icon inside the button */}
+        <button onClick={() => fetchRecords(query)} disabled={loading}>
           <FontAwesomeIcon icon={faSearch} style={{ marginRight: '8px' }} />
           {loading ? 'Searching...' : 'Search'}
         </button>
@@ -53,7 +128,9 @@ const SearchAndRecords = () => {
 
       {error && <div className="error">{error}</div>}
 
-      {records.length > 0 && (
+      {loading && <div className="loader">Loading...</div>} {/* Optional loading indicator */}
+
+      {records.length > 0 ? (
         <table className="records-table">
           <thead>
             <tr>
@@ -61,11 +138,6 @@ const SearchAndRecords = () => {
               <th>Address</th>
               <th>APN</th>
               <th>Pincode</th>
-              <th>Zoning</th>
-              <th>Plot Area (sqft)</th>
-              <th>Height Limit (ft)</th>
-              <th>Depth (ft)</th>
-              <th>Width (ft)</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -76,20 +148,15 @@ const SearchAndRecords = () => {
                 <td>{record.address}</td>
                 <td>{record.apn}</td>
                 <td>{record.pincode}</td>
-                <td>{record.zoning}</td>
-                <td>{record.plot_area_sqft}</td>
-                <td>{record.height_limit_ft}</td>
-                <td>{record.depth_ft}</td>
-                <td>{record.width_ft}</td>
                 <td>
-                  <button onClick={() => handleViewData(record.property_id)}>
-                    View Data
-                  </button>
+                  <button onClick={() => handleViewData(record.property_id)}>View</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      ) : (
+        !loading && error === 'No records found.' && <div className="no-records"></div>
       )}
     </div>
   );

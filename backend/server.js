@@ -15,7 +15,7 @@ const post_data = require('./routes/post_data');
 const getAllPropertiesData = require('./routes/get_property_data');
 const getPermitedUsesData = require('./routes/get_permited_uses_data');
 const fileUpload = require('./routes/file_upload');
-
+const zoningRules=require('./routes/zoning_rules');
 
 const cors = require('cors');
 
@@ -45,6 +45,7 @@ app.use('/',getAllPropertiesData);
 app.use('/',getPermitedUsesData);
 app.use('/', fileUpload);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/',zoningRules);
 
 // Home Route
 app.get('/', (req, res) => {

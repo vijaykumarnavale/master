@@ -69,7 +69,6 @@ const JADUDetailsForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Sanitize the data to replace empty strings with null
     const sanitizedRows = sanitizeData(rows);
 
     try {
@@ -80,7 +79,6 @@ const JADUDetailsForm = () => {
       toast.success('Form submitted successfully!');
       console.log('API Response:', response.data);
 
-      // Reset the form after submission
       setRows([
         {
           property_id: localStorage.getItem('property_id') || '',
@@ -119,44 +117,45 @@ const JADUDetailsForm = () => {
     { name: 'no_of_units', type: 'number', placeholder: 'Number of Units' },
   ];
 
-  const renderField = (field, row, index) => {
-    if (field.type === 'select') {
-      return (
-        <select
-          name={field.name}
-          value={row[field.name]}
-          onChange={(e) => handleInputChange(index, e)}
-          className="adu-input-field"
-        >
-          <option value="">{field.placeholder}</option>
-          {field.options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      );
-    }
-    return (
-      <input
-        type={field.type}
-        name={field.name}
-        value={row[field.name]}
-        onChange={(e) => handleInputChange(index, e)}
-        placeholder={field.placeholder}
-        className="adu-input-field"
-      />
-    );
-  };
-
   return (
-    <div className="adu-form-container">
-      <h2 className="adu-form-title">JADU Details</h2>
-      <form onSubmit={handleSubmit} className="adu-property-form">
+    <div className="jadu-form-container">
+      <h2 className="jadu-form-title">JADU Details</h2>
+      <form onSubmit={handleSubmit} className="jadu-property-form">
         {rows.map((row, index) => (
-          <div key={index} className="adu-row">
-            <div className="adu-form-group">
-              {formFields.map((field) => renderField(field, row, index))}
+          <div key={index} className="jadu-row">
+            <div className="jadu-form-group">
+              {formFields.map((field) => (
+                <div key={field.name} className="jadu-input-group">
+                  <label htmlFor={`${field.name}_${index}`}>{field.placeholder}:</label>
+                  {field.type === 'select' ? (
+                    <select
+                      id={`${field.name}_${index}`}
+                      name={field.name}
+                      value={row[field.name]}
+                      onChange={(e) => handleInputChange(index, e)}
+                      className="jadu-input-field"
+                    >
+                      <option value="">{field.placeholder}</option>
+                      {field.options.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      id={`${field.name}_${index}`}
+                      type={field.type}
+                      name={field.name}
+                      value={row[field.name]}
+                      onChange={(e) => handleInputChange(index, e)}
+                      placeholder={field.placeholder}
+                      className="jadu-input-field"
+                      min={field.type === 'number' ? 0 : undefined}
+                    />
+                  )}
+                </div>
+              ))}
               {rows.length > 1 && (
                 <button
                   type="button"
@@ -172,25 +171,11 @@ const JADUDetailsForm = () => {
         <button type="button" className="add-row-button" onClick={addRow}>
           <FontAwesomeIcon icon={faPlus} /> Add Another
         </button>
-        <button
-          type="submit"
-          className="adu-submit-button"
-          disabled={isSubmitting}
-        >
+        <button type="submit" className="jadu-submit-button" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting...' : 'Submit'} <FontAwesomeIcon icon={faCheck} />
         </button>
       </form>
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
     </div>
   );
 };
