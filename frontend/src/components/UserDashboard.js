@@ -40,13 +40,14 @@ const Dashboard = () => {
       <Sidebar onMenuClick={handleMenuClick} />
 
       <div style={{ flex: 1, padding: '20px' }}>
-        {/* If no menu is selected, display a welcome message */}
+        {/* Default content (UserSearch) if no menu is selected */}
         {!selectedMenu && <UserSearch />}
 
         {/* Render the selected component based on the selected menu */}
         {selectedMenu === 'zoningData' && <Properties />}
         {selectedMenu === 'viewRules' && <ViewRules />} {/* ViewRules component */}
         {selectedMenu === 'zoningRules' && <ZoningRules />} {/* New Zoning Rules page */}
+        {selectedMenu === 'zoningSearch' && <UserSearch />} {/* Zoning Search Page */}
       </div>
 
       {/* Toastify container to display toast messages */}
@@ -54,4 +55,5 @@ const Dashboard = () => {
     </div>
   );
 };
+
 export default Dashboard;

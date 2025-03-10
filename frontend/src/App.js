@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import 'font-awesome/css/font-awesome.min.css';
 
-
 import AdminDashboard from './components/AdminDashboard';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
@@ -25,6 +24,9 @@ import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import About from './components/About';
 import UserPropertyDetails from './components/UserPropertyDetails';
+import FloorPlan from './components/FloorPlan';
+import FloorPlan3d from './components/FloorPlan3d';
+
 
 const App = () => {
   return (
@@ -49,6 +51,8 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/floor-plan" element={<FloorPlan />} />
+        <Route path="/floorplan" element={<FloorPlan3d />} />
         </Routes>
       </div>
     </Router>

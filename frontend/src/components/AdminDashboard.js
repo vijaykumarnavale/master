@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Signup from '../pages/Signup';
 import AllUsers from './AllUsers'; 
-import ArchitecturalPlan from './ArchitecturalPlan'; 
+import ArchitecturalPlan from './FloorPlan3d'; 
 import MEPInformation from './MEPInformation'; 
 import ViewAutoCADDesign from './ViewAutoCADDesign'; 
 import AddRule from './AddRule'; 
@@ -49,6 +49,7 @@ const Dashboard = () => {
         {selectedMenu === 'architecturalPlan' && <ArchitecturalPlan />} 
         {selectedMenu === 'mepInformation' && <MEPInformation />} 
         {selectedMenu === 'viewAutoCADDesign' && <ViewAutoCADDesign />} 
+        {selectedMenu === 'zoningSearch' && <Search />} {/* Zoning Search Menu Option */}
         {selectedMenu === 'rulesAndRegulations' && (
           <div>
             <h2>Rules and Regulations</h2>

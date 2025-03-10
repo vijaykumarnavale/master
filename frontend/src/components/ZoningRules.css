@@ -16,42 +16,120 @@ body {
   }
   
   .zone-select {
-    padding: 5px;
+    padding: 10px;
     font-size: 16px;
-  }
+    width: 30%;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    background: #fff;
+    color: #333;
+    outline: none;
+    appearance: none; /* Removes default dropdown arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    font-weight: bold;
+}
+
+/* Custom arrow */
+.zone-select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="%23007bff" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+
+/* Hover effect */
+.zone-select:hover {
+    border-color: #0056b3;
+    box-shadow: 0 6px 15px rgba(0, 91, 187, 0.3);
+}
+
+/* Focus effect */
+.zone-select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 10px rgba(0, 91, 187, 0.5);
+}
+
+/* Disabled state */
+.zone-select:disabled {
+    background: #ddd;
+    cursor: not-allowed;
+    border-color: #bbb;
+}
+
   
   .zone-button {
-    padding: 8px 12px;
-    font-size: 16px;
-    margin-left: 10px;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #007bff, #0056b3);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    width: 15%;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+    outline: none;
+    margin-left: 10px;
+}
+
+.zone-button:hover {
+    background: linear-gradient(135deg, #0056b3, #003f7f);
+    box-shadow: 0 6px 15px rgba(0, 91, 187, 0.5);
+    transform: scale(1.05);
+}
+
+.zone-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 3px 8px rgba(0, 91, 187, 0.5);
+}
+
+.zone-button:focus {
+    outline: 3px solid rgba(0, 123, 255, 0.6);
+}
+/* Zoning Data Container */
+.zone-details-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.zone-detail-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 123, 255, 0.3);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  border-left: 5px solid #007bff;
+}
+
+.zone-detail-card:hover {
+  transform: scale(1.02);
+}
+
+/* Ensure spacing between fields */
+.zone-detail-card p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .zone-container {
+      width: 95%;
   }
   
-  .zone-button:hover {
-    background-color: #0056b3;
+  .zone-detail-card {
+      padding: 15px;
+      font-size: 14px;
   }
-  
-  .zone-table {
-    margin-top: 20px;
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .zone-table thead {
-    background-color: #f2f2f2;
-  }
-  
-  .zone-table, .zone-table th, .zone-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-  }
-  
-  .zone-table th {
-    background-color: #007bff;
-    color: white;
-  }
-  
+}

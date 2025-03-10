@@ -1,153 +1,115 @@
-import React, { useState } from 'react';
-import axios from 'axios'; // Import axios
-import { ToastContainer, toast } from 'react-toastify'; // Import react-toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import the default styles for Toastify
-import './AuthForms.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon
-import { faUser, faEnvelope, faPhone, faLock, faUserTag } from '@fortawesome/free-solid-svg-icons'; // Import specific icons
+import React, { useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faEnvelope, faPhone, faLock, faUserTag, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
+
+const themeColors = {
+  background: "bg-gray-50",
+  card: "bg-white shadow-lg border border-gray-300",
+  text: "text-gray-900",
+  input: "border-gray-400 bg-gray-100 text-gray-800",
+  button: "bg-blue-700 hover:bg-blue-800",
+  accent: "text-blue-600 hover:text-blue-700",
+};
 
 const Signup = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [contactNumber, setContactNumber] = useState('');
-  const [role, setRole] = useState('User'); // Default role
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [role, setRole] = useState("User");
   const [loading, setLoading] = useState(false);
 
-  // Configure react-toastify
   const notifySuccess = (message) => toast.success(message);
   const notifyError = (message) => toast.error(message);
 
-  // Load the API base URL from the environment variable
   const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
-console.log(apiBaseUrl);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     const userData = {
       full_name: fullName,
-      email: email,
+      email,
       contact_number: contactNumber,
-      password: password,
-      role: role,
+      password,
+      role,
     };
 
     try {
-      // Use the environment variable for the API endpoint
       const response = await axios.post(`${apiBaseUrl}/register`, userData);
-
-      // Handle success response
       notifySuccess(response.data.message);
-      setFullName('');
-      setEmail('');
-      setContactNumber('');
-      setPassword('');
-      setRole('User');
+      setFullName("");
+      setEmail("");
+      setContactNumber("");
+      setPassword("");
+      setRole("User");
     } catch (err) {
-      // Handle error response
-      if (err.response) {
-        notifyError(err.response.data.message);
-      } else {
-        notifyError('An error occurred. Please try again later.');
-      }
+      notifyError(err.response?.data?.message || "An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="auth-form">
-      <h2>Add New User</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label htmlFor="full_name">Full Name</label>
-          <div className="input-with-icon">
-            <FontAwesomeIcon icon={faUser} />
-            <input
-              type="text"
-              id="full_name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
-        </div>
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
-          <div className="input-with-icon">
-            <FontAwesomeIcon icon={faEnvelope} />
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-        </div>
-        <div className="input-group">
-          <label htmlFor="contact_number">Contact Number</label>
-          <div className="input-with-icon">
-            <FontAwesomeIcon icon={faPhone} />
-            <input
-              type="text"
-              id="contact_number"
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
-              placeholder="Enter your contact number"
-              required
-            />
-          </div>
-        </div>
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
-          <div className="input-with-icon">
-            <FontAwesomeIcon icon={faLock} />
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-        </div>
-        <div className="input-group">
-          <label htmlFor="role">Role</label>
-          <div className="input-with-icon">
-            <FontAwesomeIcon icon={faUserTag} />
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            >
-              <option value="User">User</option>
-              <option value="Admin">Admin</option>
-            </select>
-          </div>
-        </div>
+    <motion.div className={`flex justify-center items-center min-h-screen ${themeColors.background} p-6`}>
+      <motion.div className={`w-full max-w-md ${themeColors.card} rounded-2xl p-8`}>
+        <h2 className={`text-center text-2xl font-bold ${themeColors.text} mb-6`}>Create an Account</h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {[ 
+            { label: "Full Name", value: fullName, setValue: setFullName, icon: faUser, type: "text", placeholder: "John Doe" },
+            { label: "Email", value: email, setValue: setEmail, icon: faEnvelope, type: "email", placeholder: "example@mail.com" },
+            { label: "Contact Number", value: contactNumber, setValue: setContactNumber, icon: faPhone, type: "text", placeholder: "123-456-7890" },
+            { label: "Password", value: password, setValue: setPassword, icon: faLock, type: "password", placeholder: "Enter password" },
+          ].map(({ label, value, setValue, icon, type, placeholder }, index) => (
+            <motion.div key={index} className="relative">
+              <label className={`block text-sm font-medium ${themeColors.text} mb-1`}>{label}</label>
+              <div className={`flex items-center border rounded-lg shadow-sm p-3 ${themeColors.input}`}>
+                <FontAwesomeIcon icon={icon} className="text-gray-500 mr-3" />
+                <input
+                  type={type}
+                  className="w-full bg-transparent outline-none"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder={placeholder}
+                  required
+                />
+              </div>
+            </motion.div>
+          ))}
+          <motion.div className="relative">
+            <label className={`block text-sm font-medium ${themeColors.text} mb-1`}>Role</label>
+            <div className={`flex items-center border rounded-lg shadow-sm p-3 ${themeColors.input}`}>
+              <FontAwesomeIcon icon={faUserTag} className="text-gray-500 mr-3" />
+              <select
+                className="w-full bg-transparent outline-none"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+          </motion.div>
 
-        <button type="submit" className="submit-btn" disabled={loading}>
-          {loading ? (
-            <>
-              <FontAwesomeIcon icon={faLock} spin /> Signing Up...
-            </>
-          ) : (
-            <>
-              <FontAwesomeIcon icon={faUserTag} /> Register
-            </>
-          )}
-        </button>
-      </form>
-
-      {/* Toast container for showing success or error messages */}
-      <ToastContainer />
-    </div>
+          <motion.button
+            type="submit"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={`w-full ${themeColors.button} text-white py-3 rounded-lg font-bold flex justify-center items-center gap-2 transition-transform transform hover:shadow-lg disabled:opacity-50`}
+            disabled={loading}
+          >
+            {loading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faUserTag} />}
+            {loading ? "Signing Up..." : "Register"}
+          </motion.button>
+        </form>
+        <ToastContainer />
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -189,7 +189,7 @@
   padding: 10px;
   cursor: pointer;
   display: flex;
-  height: 25px;
+  height: 45px;
   justify-content: space-between;
   margin-bottom: 10px; /* Add margin to create space below the collapsible header */
   transition: background-color 0.3s ease; /* Add smooth transition for hover effect */

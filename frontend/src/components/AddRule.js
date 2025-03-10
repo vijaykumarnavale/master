@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEye, faCloudUploadAlt, faUpload } from '@fortawesome/free-solid-svg-icons';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useDropzone } from 'react-dropzone';
-import "./FileUploadAndDisplay.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEye, faCloudUploadAlt, faUpload } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDropzone } from "react-dropzone";
 
 const FileUploadAndDisplay = () => {
   const [files, setFiles] = useState([]);
-  const [uploadStatus, setUploadStatus] = useState([]);
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
-
   const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
 
   const handleFileChange = (e) => {
@@ -31,35 +28,18 @@ const FileUploadAndDisplay = () => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const fileData = {
-      name: file.name,
-      status: "uploading",
-    };
-
-    setUploadStatus((prev) => [...prev, fileData]);
-
     try {
       await axios.post(`${apiBaseUrl}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      updateStatus(file.name, "success");
       toast.success("File uploaded successfully!");
-      setFile(null); // Reset file
-      setFileName(""); // Reset file name
-      fetchFiles(); // Fetch updated files
+      setFile(null);
+      setFileName("");
+      fetchFiles();
     } catch (error) {
       console.error("Error uploading file:", error);
-      updateStatus(file.name, "error");
       toast.error("Upload failed! Try again.");
     }
-  };
-
-  const updateStatus = (fileName, status) => {
-    setUploadStatus((prev) =>
-      prev.map((file) =>
-        file.name === fileName ? { ...file, status } : file
-      )
-    );
   };
 
   const fetchFiles = useCallback(async () => {
@@ -87,67 +67,60 @@ const FileUploadAndDisplay = () => {
       setFile(acceptedFiles[0]);
       setFileName(acceptedFiles[0].name);
     },
-    accept: '.jpg,.png,.pdf,.docx',
+    accept: ".jpg,.png,.pdf,.docx",
   });
 
   useEffect(() => {
     fetchFiles();
-  }, [fetchFiles]); // Add fetchFiles as a dependency
+  }, [fetchFiles]);
 
   return (
-    <div className="container">
-      <h2>Rules and Regulations</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">File Upload Manager</h2>
 
-      <div className="upload-box" {...getRootProps()}>
+      <div {...getRootProps()} className="border-2 border-dashed p-6 text-center cursor-pointer rounded-md bg-blue-50 hover:bg-blue-100">
         <input {...getInputProps()} onChange={handleFileChange} />
-        <div className="upload-box-content">
-          <FontAwesomeIcon icon={faCloudUploadAlt} size="2x" />
-          <p className={`upload-message ${file && uploadStatus.some(status => status.name === file.name && status.status === "success") ? 'success-file' : ''}`}>
-            {file ? `Selected File: ${fileName}` : "Click or drag a file to upload"}
-          </p>
-        </div>
+        <FontAwesomeIcon icon={faCloudUploadAlt} size="2x" className="text-blue-500" />
+        <p className="mt-2 text-gray-700">{file ? `Selected File: ${fileName}` : "Click or drag a file to upload"}</p>
       </div>
 
-      <div className="upload-btn-container">
-        <button type="button" onClick={handleSubmit} className="upload-btn">
-          <FontAwesomeIcon icon={faUpload} /> Upload
+      <div className="text-center mt-4">
+        <button onClick={handleSubmit} className="px-6 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+          <FontAwesomeIcon icon={faUpload} className="mr-2" /> Upload
         </button>
       </div>
 
-      <h3>Uploaded Files</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>File ID</th>
-            <th>Filename</th>
-            <th>File Path</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {files.map((file) => (
-            <tr key={file.id}>
-              <td>{file.id}</td>
-              <td>{file.filename}</td>
-              <td>
-                <a
-                  href={`${apiBaseUrl}${file.file_path}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="view-file-link"
-                >
-                  <FontAwesomeIcon icon={faEye} />
-                </a>
-              </td>
-              <td>
-                <button onClick={() => handleDelete(file.id)} className="delete-btn">
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
-              </td>
+      <h3 className="text-lg font-semibold mt-6 text-gray-800">Uploaded Files</h3>
+      <div className="overflow-x-auto">
+        <table className="w-full mt-4 border border-gray-300 rounded-lg shadow-md">
+          <thead>
+            <tr className="bg-gray-200 text-gray-700">
+              <th className="p-3">File ID</th>
+              <th className="p-3">Filename</th>
+              <th className="p-3">View</th>
+              <th className="p-3">Action</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {files.map((file) => (
+              <tr key={file.id} className="border-t hover:bg-gray-100">
+                <td className="p-3 text-center">{file.id}</td>
+                <td className="p-3 text-center text-gray-700">{file.filename}</td>
+                <td className="p-3 text-center">
+                  <a href={`${apiBaseUrl}${file.file_path}`} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                    <FontAwesomeIcon icon={faEye} />
+                  </a>
+                </td>
+                <td className="p-3 text-center">
+                  <button onClick={() => handleDelete(file.id)} className="text-red-500 hover:text-red-700 transition">
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover />
     </div>
@@ -155,4 +128,3 @@ const FileUploadAndDisplay = () => {
 };
 
 export default FileUploadAndDisplay;
-//up

@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify'; // Import Toastify
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
-import './Search.css'; // Optional styling
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SearchAndRecords = () => {
   const [query, setQuery] = useState('');
@@ -15,66 +14,48 @@ const SearchAndRecords = () => {
   const navigate = useNavigate();
   const debounceRef = useRef(null);
 
-  const apiUrl = process.env.REACT_APP_NODE_API_URL || 'http://localhost:5000'; // API URL fallback
+  const apiUrl = process.env.REACT_APP_NODE_API_URL || 'http://localhost:5000';
 
-  // Function to validate the query
   const validateQuery = (input) => {
     if (!input.trim()) {
       setError('Search query cannot be empty.');
-     // toast.warn('Please enter a valid search query.', { position: 'top-right', autoClose: 3000 });
       return false;
     }
     return true;
   };
 
-  // Memoized function to fetch records
   const fetchRecords = useCallback(async (searchQuery) => {
     if (!validateQuery(searchQuery)) return;
 
     setLoading(true);
     setError(null);
-    setRecords([]); // Clear previous records
+    setRecords([]);
 
     try {
       const response = await axios.get(`${apiUrl}/search`, {
         params: { query: searchQuery.trim() },
       });
 
-      console.log('API Response:', response.data);
-
       if (response.data?.records && Array.isArray(response.data.records)) {
-        if (response.data.records.length > 0) {
-          setRecords(response.data.records);
-        } else {
-          setRecords([]);
-          setError('No records found.');
-        }
+        setRecords(response.data.records.length > 0 ? response.data.records : []);
+        if (response.data.records.length === 0) setError('No records found.');
       } else {
         throw new Error('Invalid response format from server.');
       }
     } catch (err) {
-      console.error('Search API Error:', err);
-      if (err.response) {
-        setError(err.response.data?.message || 'Server returned an error.');
-      } else if (err.request) {
-        setError('No response from server. Check your internet connection.');
-      } else {
-        setError(err.message);
-      }
-      toast.error('Error fetching records. Check console for details.', { position: 'top-right', autoClose: 3000 });
+      const errorMessage = err.response?.data?.message || 'Error fetching records.';
+      setError(errorMessage);
+      toast.error(errorMessage, { position: 'top-right', autoClose: 3000 });
     } finally {
       setLoading(false);
     }
   }, [apiUrl]);
 
-  // Debounce effect to optimize API calls
   useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
+    if (debounceRef.current) clearTimeout(debounceRef.current);
 
     debounceRef.current = setTimeout(() => {
-      if (query) fetchRecords(query);
+      if (query.trim()) fetchRecords(query);
     }, 500);
 
     return () => clearTimeout(debounceRef.current);
@@ -85,61 +66,78 @@ const SearchAndRecords = () => {
       const response = await axios.get(`${apiUrl}/api/property/${propertyId}`);
       navigate('/property-details', { state: { propertyData: response.data } });
     } catch (err) {
-      console.error('Error fetching property data:', err);
-      toast.error('Failed to fetch property data. Please try again.', { position: 'top-right', autoClose: 3000 });
+      toast.error('Failed to fetch property data.', { position: 'top-right', autoClose: 3000 });
     }
   };
 
   return (
-    <div className="search-container">
-      <ToastContainer /> {/* Toastify Container */}
-
-      <div className="search-bar">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by APN, address, pincode, or query"
-          aria-label="Search input"
-        />
-        <button onClick={() => fetchRecords(query)} disabled={loading} aria-label="Search button">
-          <FontAwesomeIcon icon={faSearch} style={{ marginRight: '8px' }} />
-          {loading ? 'Searching...' : 'Search'}
-        </button>
-      </div>
-
-      {error && <div className="error">{error}</div>}
-
-      {records.length > 0 ? (
-        <table className="records-table">
-          <thead>
-            <tr>
-              <th>Property ID</th>
-              <th>Address</th>
-              <th>APN</th>
-              <th>Pincode</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((record) => (
-              <tr key={record.property_id}>
-                <td>{record.property_id}</td>
-                <td>{record.address}</td>
-                <td>{record.apn}</td>
-                <td>{record.pincode}</td>
-                <td>
-                  <button onClick={() => handleViewData(record.property_id)} aria-label="View record button">
-                    View
-                  </button>
-                </td>
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <ToastContainer />
+      <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md border border-gray-200">
+        <h2 className="text-2xl font-semibold text-gray-700 mb-4">Property Search</h2>
+        <div className="flex items-center space-x-4 mb-4">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by APN, address, pincode, or query"
+            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            onClick={() => fetchRecords(query)}
+            disabled={loading || !query.trim()}
+            className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
+          >
+            <FontAwesomeIcon icon={faSearch} className="mr-2" />
+            {loading ? 'Searching...' : 'Search'}
+          </button>
+        </div>
+        {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+        
+        <div className="overflow-x-auto">
+          <table className="w-full border border-gray-200 rounded-lg overflow-hidden shadow-md">
+            <thead className="bg-blue-100 text-gray-700">
+              <tr>
+                <th className="border px-4 py-2">Property ID</th>
+                <th className="border px-4 py-2">Address</th>
+                <th className="border px-4 py-2">APN</th>
+                <th className="border px-4 py-2">Pincode</th>
+                <th className="border px-4 py-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        !loading && error === 'No records found.' && <div className="no-records"></div>
-      )}
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan="5" className="text-center py-4">Loading records...</td>
+                </tr>
+              ) : (
+                records.length > 0 ? (
+                  records.map((record) => (
+                    <tr key={record.property_id} className="border hover:bg-gray-100 transition">
+                      <td className="border px-4 py-2 text-center">{record.property_id}</td>
+                      <td className="border px-4 py-2">{record.address}</td>
+                      <td className="border px-4 py-2 text-center">{record.apn}</td>
+                      <td className="border px-4 py-2 text-center">{record.pincode}</td>
+                      <td className="border px-4 py-2 text-center">
+                        <button
+                          onClick={() => handleViewData(record.property_id)}
+                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                        >
+                          View
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center py-4">No records found.</td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
