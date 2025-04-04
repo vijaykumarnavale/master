@@ -1,8 +1,8 @@
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,6 +11,8 @@ const SearchAndRecords = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10;
   const navigate = useNavigate();
   const debounceRef = useRef(null);
 
@@ -30,6 +32,7 @@ const SearchAndRecords = () => {
     setLoading(true);
     setError(null);
     setRecords([]);
+    setCurrentPage(1);
 
     try {
       const response = await axios.get(`${apiUrl}/search`, {
@@ -70,6 +73,11 @@ const SearchAndRecords = () => {
     }
   };
 
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+  const totalPages = Math.ceil(records.length / recordsPerPage);
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       <ToastContainer />
@@ -98,7 +106,7 @@ const SearchAndRecords = () => {
           <table className="w-full border border-gray-200 rounded-lg overflow-hidden shadow-md">
             <thead className="bg-blue-100 text-gray-700">
               <tr>
-                <th className="border px-4 py-2">Property ID</th>
+                <th className="border px-4 py-2">#</th>
                 <th className="border px-4 py-2">Address</th>
                 <th className="border px-4 py-2">APN</th>
                 <th className="border px-4 py-2">Pincode</th>
@@ -106,37 +114,51 @@ const SearchAndRecords = () => {
               </tr>
             </thead>
             <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan="5" className="text-center py-4">Loading records...</td>
-                </tr>
-              ) : (
-                records.length > 0 ? (
-                  records.map((record) => (
-                    <tr key={record.property_id} className="border hover:bg-gray-100 transition">
-                      <td className="border px-4 py-2 text-center">{record.property_id}</td>
-                      <td className="border px-4 py-2">{record.address}</td>
-                      <td className="border px-4 py-2 text-center">{record.apn}</td>
-                      <td className="border px-4 py-2 text-center">{record.pincode}</td>
-                      <td className="border px-4 py-2 text-center">
-                        <button
-                          onClick={() => handleViewData(record.property_id)}
-                          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-                        >
-                          View
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="text-center py-4">No records found.</td>
+              {currentRecords.length > 0 ? (
+                currentRecords.map((record, index) => (
+                  <tr key={record.property_id} className="border hover:bg-gray-100 transition">
+                    <td className="border px-4 py-2 text-center">{indexOfFirstRecord + index + 1}</td>
+                    <td className="border px-4 py-2">{record.address}</td>
+                    <td className="border px-4 py-2 text-center">{record.apn}</td>
+                    <td className="border px-4 py-2 text-center">{record.pincode}</td>
+                    <td className="border px-4 py-2 text-center">
+                      <button
+                        onClick={() => handleViewData(record.property_id)}
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                      >
+                        View
+                      </button>
+                    </td>
                   </tr>
-                )
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center py-4">No records found.</td>
+                </tr>
               )}
             </tbody>
           </table>
         </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg mr-2 disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="px-4 py-2">Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg ml-2 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -26,6 +26,7 @@ import About from './components/About';
 import UserPropertyDetails from './components/UserPropertyDetails';
 import FloorPlan from './components/FloorPlan';
 import FloorPlan3d from './components/FloorPlan3d';
+import PlanGen from './components/PlanGen';
 
 
 const App = () => {
@@ -53,6 +54,7 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/floor-plan" element={<FloorPlan />} />
         <Route path="/floorplan" element={<FloorPlan3d />} />
+        <Route path="/plangenerator" element={<PlanGen />} />
         </Routes>
       </div>
     </Router>

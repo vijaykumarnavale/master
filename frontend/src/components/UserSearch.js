@@ -11,6 +11,8 @@ const SearchAndRecords = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 10;
   const navigate = useNavigate();
   const debounceRef = useRef(null);
 
@@ -30,6 +32,7 @@ const SearchAndRecords = () => {
     setLoading(true);
     setError(null);
     setRecords([]);
+    setCurrentPage(1);
 
     try {
       const response = await axios.get(`${apiUrl}/search`, {
@@ -74,13 +77,17 @@ const SearchAndRecords = () => {
     }
   };
 
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = records.slice(indexOfFirstRecord, indexOfLastRecord);
+  const totalPages = Math.ceil(records.length / recordsPerPage);
+
   return (
     <div className="max-w-3xl mx-auto p-6 bg-gray-100 min-h-screen">
       <ToastContainer />
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Property Search</h2>
 
-        {/* Search Bar */}
         <div className="flex items-center space-x-3 mb-4">
           <input
             type="text"
@@ -99,18 +106,16 @@ const SearchAndRecords = () => {
           </button>
         </div>
 
-        {/* Error Message */}
         {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
 
-        {/* Table */}
         <div className="overflow-x-auto">
           {loading ? (
             <p className="text-center text-blue-600 font-medium py-4">Loading records...</p>
-          ) : records.length > 0 ? (
+          ) : currentRecords.length > 0 ? (
             <table className="w-full border border-gray-300 rounded-lg shadow-sm">
               <thead className="bg-blue-100 text-gray-700">
                 <tr>
-                  <th className="border px-4 py-2 text-left">Property ID</th>
+                  <th className="border px-4 py-2 text-left">#</th>
                   <th className="border px-4 py-2 text-left">Address</th>
                   <th className="border px-4 py-2 text-center">APN</th>
                   <th className="border px-4 py-2 text-center">Pincode</th>
@@ -118,9 +123,9 @@ const SearchAndRecords = () => {
                 </tr>
               </thead>
               <tbody>
-                {records.map((record) => (
+                {currentRecords.map((record, index) => (
                   <tr key={record.property_id} className="border hover:bg-gray-100 transition">
-                    <td className="border px-4 py-2">{record.property_id}</td>
+                    <td className="border px-4 py-2">{indexOfFirstRecord + index + 1}</td>
                     <td className="border px-4 py-2">{record.address}</td>
                     <td className="border px-4 py-2 text-center">{record.apn}</td>
                     <td className="border px-4 py-2 text-center">{record.pincode}</td>
@@ -140,6 +145,26 @@ const SearchAndRecords = () => {
             !loading && <p className="text-gray-600 text-center py-4">No records found.</p>
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg mr-2 disabled:opacity-50"
+            >
+              Previous
+            </button>
+            <span className="px-4 py-2">Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-500 text-white rounded-lg ml-2 disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

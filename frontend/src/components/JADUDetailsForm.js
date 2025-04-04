@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './JADUDetailsForm.css';
 
 const JADUDetailsForm = () => {
   const [rows, setRows] = useState([
@@ -51,52 +50,26 @@ const JADUDetailsForm = () => {
   };
 
   const removeRow = (index) => {
-    const updatedRows = rows.filter((_, i) => i !== index);
-    setRows(updatedRows);
+    setRows(rows.filter((_, i) => i !== index));
   };
 
-  const sanitizeData = (data) => {
-    return data.map((row) => {
-      const sanitizedRow = {};
-      Object.keys(row).forEach((key) => {
-        sanitizedRow[key] = row[key] === '' ? null : row[key];
-      });
-      return sanitizedRow;
-    });
-  };
+  const sanitizeData = (data) =>
+    data.map((row) =>
+      Object.fromEntries(Object.entries(row).map(([key, value]) => [key, value === '' ? null : value]))
+    );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const sanitizedRows = sanitizeData(rows);
-
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_NODE_API_URL}/api/jadu-details`,
-        { jaduDetails: sanitizedRows }
-      );
+      const response = await axios.post(`${process.env.REACT_APP_NODE_API_URL}/api/jadu-details`, {
+        jaduDetails: sanitizeData(rows),
+      });
       toast.success('Form submitted successfully!');
       console.log('API Response:', response.data);
 
-      setRows([
-        {
-          property_id: localStorage.getItem('property_id') || '',
-          jadu_type: '',
-          jadu_count: '',
-          jadu_max_sqft: '',
-          height: '',
-          length: '',
-          breadth: '',
-          setbacks_front_back: '',
-          side_yards: '',
-          no_of_units: '',
-        },
-      ]);
-
-      setTimeout(() => {
-        navigate('/user-dashboard');
-      }, 3500);
+      setTimeout(() => navigate('/user-dashboard'), 3500);
     } catch (error) {
       toast.error('Error submitting the form. Please try again.');
       console.error('API Error:', error.response?.data || error.message);
@@ -106,7 +79,7 @@ const JADUDetailsForm = () => {
   };
 
   const formFields = [
-    { name: 'jadu_type', type: 'select', options: ['Attached', 'Detached'], placeholder: 'Select JADU Type' },
+    { name: 'jadu_type', type: 'select', options: ['Attached', 'Detached'], placeholder: 'JADU Type' },
     { name: 'jadu_count', type: 'number', placeholder: 'Number of JADUs' },
     { name: 'jadu_max_sqft', type: 'number', placeholder: 'Max JADU Size (sqft)' },
     { name: 'height', type: 'number', placeholder: 'Height (ft)' },
@@ -118,60 +91,66 @@ const JADUDetailsForm = () => {
   ];
 
   return (
-    <div className="jadu-form-container">
-      <h2 className="jadu-form-title">JADU Details</h2>
-      <form onSubmit={handleSubmit} className="jadu-property-form">
+    <div className="max-w-4xl mx-auto my-8 p-6 bg-gray-50 rounded-xl shadow-xl">
+      <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">JADU Details</h2>
+      <form onSubmit={handleSubmit}>
         {rows.map((row, index) => (
-          <div key={index} className="jadu-row">
-            <div className="jadu-form-group">
+          <div key={index} className="bg-white border border-gray-300 rounded-lg p-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {formFields.map((field) => (
-                <div key={field.name} className="jadu-input-group">
-                  <label htmlFor={`${field.name}_${index}`}>{field.placeholder}:</label>
+                <div key={field.name}>
+                  <label className="block font-semibold text-gray-700 text-sm mb-2">
+                    {field.placeholder}
+                  </label>
                   {field.type === 'select' ? (
                     <select
-                      id={`${field.name}_${index}`}
                       name={field.name}
                       value={row[field.name]}
                       onChange={(e) => handleInputChange(index, e)}
-                      className="jadu-input-field"
+                      className="border border-gray-300 rounded p-2 w-full"
                     >
                       <option value="">{field.placeholder}</option>
                       {field.options.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
+                        <option key={option} value={option}>{option}</option>
                       ))}
                     </select>
                   ) : (
                     <input
-                      id={`${field.name}_${index}`}
                       type={field.type}
                       name={field.name}
                       value={row[field.name]}
                       onChange={(e) => handleInputChange(index, e)}
                       placeholder={field.placeholder}
-                      className="jadu-input-field"
+                      className="border border-gray-300 rounded p-2 w-full"
                       min={field.type === 'number' ? 0 : undefined}
                     />
                   )}
                 </div>
               ))}
-              {rows.length > 1 && (
-                <button
-                  type="button"
-                  className="remove-row-button"
-                  onClick={() => removeRow(index)}
-                >
-                  <FontAwesomeIcon icon={faTrash} /> Remove
-                </button>
-              )}
             </div>
+            {rows.length > 1 && (
+              <button
+                type="button"
+                className="mt-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded"
+                onClick={() => removeRow(index)}
+              >
+                <FontAwesomeIcon icon={faTrash} /> Remove
+              </button>
+            )}
           </div>
         ))}
-        <button type="button" className="add-row-button" onClick={addRow}>
+        <button
+          type="button"
+          className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded mr-4"
+          onClick={addRow}
+        >
           <FontAwesomeIcon icon={faPlus} /> Add Another
         </button>
-        <button type="submit" className="jadu-submit-button" disabled={isSubmitting}>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded"
+        >
           {isSubmitting ? 'Submitting...' : 'Submit'} <FontAwesomeIcon icon={faCheck} />
         </button>
       </form>

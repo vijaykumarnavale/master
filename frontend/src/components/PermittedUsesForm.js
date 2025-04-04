@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './PermittedUses.css';
-import './Error.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrash, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-const formatFieldName = (field) => field.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-
-const getInputType = (field) => 
-  field.includes('sqft') || field.includes('ft') || field.includes('spaces') ? 'number' : 'text';
+const useTypeOptions = [
+  'Townhouse', 'Condominiums', 'One-Family Dwellings', 'Senior Citizen Units', 'Garages',
+  'Unenclosed Parking', 'Accessory Buildings', 'Group Homes', 'Greenhouses/Gardens',
+  'Transitional Uses', 'Public Parks', 'Single-Family Homes', 'Multi-Family Housing',
+  'Religious Facilities', 'Daycare or Nursery Schools', 'Retail Stores', 'Financial Institutions',
+  'Offices', 'Restaurants', 'Entertainment', 'Hotels', 'Educational Uses', 'Manufacturing'
+];
 
 const PermittedUsesForm = () => {
   const navigate = useNavigate();
@@ -31,39 +34,6 @@ const PermittedUsesForm = () => {
     ],
   });
 
-  const validateForm = () => {
-    let isValid = true;
-    const validationErrors = [];
-
-    if (!formData.property_id) {
-      isValid = false;
-      validationErrors.push('Property ID is missing.');
-    }
-
-    formData.uses.forEach((use, index) => {
-      if (!use.use_type) {
-        isValid = false;
-        validationErrors.push(`Use type is missing for entry ${index + 1}.`);
-      }
-    });
-
-    if (!isValid) {
-      validationErrors.forEach((error) => toast.error(error));
-    }
-
-    return isValid;
-  };
-
-  const sanitizeData = (data) => {
-    return data.map((use) => {
-      const sanitizedUse = {};
-      Object.keys(use).forEach((key) => {
-        sanitizedUse[key] = use[key] === '' ? null : use[key];
-      });
-      return sanitizedUse;
-    });
-  };
-
   const handleChange = (e, index) => {
     const { name, value } = e.target;
     const updatedUses = [...formData.uses];
@@ -74,21 +44,19 @@ const PermittedUsesForm = () => {
   const handleAddUse = () => {
     setFormData({
       ...formData,
-      uses: [
-        ...formData.uses,
-        {
-          use_type: '',
-          lot_area_sqft: '',
-          lot_width_ft: '',
-          lot_depth_ft: '',
-          setback_front_ft: '',
-          setback_back_ft: '',
-          setback_side_ft: '',
-          max_height_ft: '',
-          parking_spaces_required: '',
-        },
-      ],
+      uses: [...formData.uses, {
+        use_type: '',
+        lot_area_sqft: '',
+        lot_width_ft: '',
+        lot_depth_ft: '',
+        setback_front_ft: '',
+        setback_back_ft: '',
+        setback_side_ft: '',
+        max_height_ft: '',
+        parking_spaces_required: '',
+      }],
     });
+    toast.info('New use added.');
   };
 
   const handleRemoveUse = (index) => {
@@ -98,118 +66,37 @@ const PermittedUsesForm = () => {
   };
 
   const handleSubmit = () => {
-    if (!validateForm()) return;
-
-    const sanitizedUses = sanitizeData(formData.uses);
-    const apiUrl = process.env.REACT_APP_NODE_API_URL;
-
-    axios
-      .post(`${apiUrl}/api/permitted-uses`, {
-        property_id: formData.property_id,
-        uses: sanitizedUses,
-      })
+    axios.post(`${process.env.REACT_APP_NODE_API_URL}/api/permitted-uses`, formData)
       .then(() => {
-        toast.success('Permitted uses submitted successfully!');
-        navigate('/adu-details');
+        toast.success('Permitted uses submitted successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+        });
+
+        setTimeout(() => {
+          navigate('/adu-details');
+        }, 2000);
       })
-      .catch((error) => {
-        console.error('Error submitting permitted uses:', error);
-        toast.error('Failed to submit permitted uses.');
+      .catch(() => {
+        toast.error('Failed to submit permitted uses.', {
+          position: "top-right",
+          autoClose: 3000,
+        });
       });
   };
 
-  const useTypeOptions = [
-    'Townhouse',
-    'Condominiums',
-    'One-Family Dwellings',
-    'Senior Citizen Units',
-    'Garages',
-    'Unenclosed Parking',
-    'Accessory Buildings',
-    'Group Homes',
-    'Greenhouses/Gardens',
-    'Transitional Uses',
-    'Public Parks',
-    'Same as R-1 Zone',
-    'Single-Family Homes',
-    'Multi-Family Housing',
-    'Religious Facilities',
-    'Transitional Uses (Specific Conditions Apply)',
-    'Uses from R-1 and R-2 Zones',
-    'Multiple-Unit Dwellings',
-    'Boarding or Lodging Houses',
-    'Daycare or Nursery Schools',
-    'Small Group Homes',
-    'Large Group Homes or Orphanages',
-    'Older Convalescent Homes',
-    'Parking Spaces',
-    'Adult Schools',
-    'Private Schools',
-    'Uses from Other Zones',
-    'Multiple Unit Dwellings',
-    'Nursery Schools',
-    'Group Homes & Care Facilities',
-    'Convalescent Homes',
-    'Parking Rules',
-    'Parking Space',
-    'Retail Stores',
-    'Financial Institutions',
-    'Offices',
-    'Restaurants',
-    'Entertainment',
-    'Liquor Sales',
-    'Service Shops',
-    'Hotels',
-    'Educational Uses',
-    'Unique Uses',
-    'Parking',
-    'Retail Sales (Enclosed Buildings)',
-    'Professional Services',
-    'Beauty Services',
-    'Other Businesses',
-    'Car-Related Services',
-    'Prohibited or Limited Businesses',
-    'Outdoor or Non-Enclosed Uses',
-    'Uses Allowed in C-2 Zone',
-    'Retail & Wholesale Sales',
-    'Automobile Sales & Servicing',
-    'Car Rental & Leasing',
-    'Frozen Food Facilities',
-    'Hotels/Motels',
-    'Plant Nurseries',
-    'Pawn Shops',
-    'Veterinary Offices',
-    'Auction Houses',
-    'Trade Schools',
-    'Light Manufacturing',
-    'Storage Yards',
-    'Accessory Uses',
-    'Mortuaries',
-    'Self-Storage Facilities',
-    'Commercial Uses',
-    'Manufacturing',
-    'Specific Facilities',
-    'Housing',
-    'Other Uses',
-    'All Uses Permitted in M-1 Zone',
-    'Industrial and Heavy Manufacturing Activities'
-  ];
-  
-
   return (
-    <div className="lot-form-container">
-      <h2 className="lot-form-title">Permitted Uses Details</h2>
-      <form onSubmit={(e) => e.preventDefault()} className="lot-property-form">
+    <div className="max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md border border-gray-300">
+      <ToastContainer />
+      <h2 className="text-center text-2xl font-bold text-gray-800 mb-4">Permitted Uses Details</h2>
+      <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
         {formData.uses.map((use, index) => (
-          <div key={index} className="lot-use-form-group">
-            <div className="lot-form-row">
+          <div key={index} className="p-4 border rounded-md bg-gray-100">
+            <div className="grid grid-cols-2 gap-4">
               {Object.keys(use).map((field) => (
-                <div
-                  className={`lot-form-group ${field === 'use_type' ? 'full-width' : 'half-width'}`}
-                  key={field}
-                >
-                  <label htmlFor={`${field}_${index}`} className="lot-form-label">
-                    {formatFieldName(field)}
+                <div key={field} className="flex flex-col">
+                  <label htmlFor={`${field}_${index}`} className="font-semibold text-gray-800 mb-1 text-xs">
+                    {field.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())}
                   </label>
                   {field === 'use_type' ? (
                     <select
@@ -217,26 +104,21 @@ const PermittedUsesForm = () => {
                       name={field}
                       value={use[field]}
                       onChange={(e) => handleChange(e, index)}
-                      className="lot-input-field"
+                      className="p-1 border rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                      <option value="" disabled>
-                        Select Use Type
-                      </option>
+                      <option value="" disabled>Select Use Type</option>
                       {useTypeOptions.map((option, idx) => (
-                        <option key={idx} value={option}>
-                          {option}
-                        </option>
+                        <option key={idx} value={option}>{option}</option>
                       ))}
                     </select>
                   ) : (
                     <input
-                      type={getInputType(field)}
+                      type="text"
                       id={`${field}_${index}`}
                       name={field}
                       value={use[field]}
                       onChange={(e) => handleChange(e, index)}
-                      className="lot-input-field"
-                      placeholder={formatFieldName(field)}
+                      className="p-1 border rounded-md text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   )}
                 </div>
@@ -245,18 +127,24 @@ const PermittedUsesForm = () => {
             <button
               type="button"
               onClick={() => handleRemoveUse(index)}
-              className="lot-remove-use-button"
+              className="mt-2 bg-red-500 text-white py-1 px-3 rounded-md text-xs hover:bg-red-600 transition duration-300"
             >
-              <i className="fa fa-trash" style={{ marginRight: '8px' }}></i>Remove This Use
+              <FontAwesomeIcon icon={faTrash} className="mr-2" /> Remove This Use
             </button>
           </div>
         ))}
-        <button type="button" onClick={handleAddUse} className="lot-add-use-button">
-          <i className="fa fa-plus" style={{ marginRight: '8px' }}></i>Add Another Use
+        <button
+          type="button"
+          onClick={handleAddUse}
+          className="bg-black text-white py-2 px-4 rounded-md text-xs hover:bg-green-500 hover:text-black transition duration-300"
+        >
+          <FontAwesomeIcon icon={faPlus} className="mr-2" /> Add Another Use
         </button>
-        <button type="button" onClick={handleSubmit} className="lot-submit-button">
-          <span>Next</span> <i className="fa fa-arrow-right" style={{ marginLeft: '8px' }}></i>
-        </button>
+        <div className="flex justify-end mt-4">
+          <button type="button" onClick={handleSubmit} className="bg-blue-600 text-white py-2 px-4 rounded-md text-xs hover:bg-blue-700 transition duration-300">
+            Next <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
+          </button>
+        </div>
       </form>
     </div>
   );

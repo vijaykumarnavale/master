@@ -58,21 +58,20 @@ const Signup = () => {
   return (
     <motion.div className={`flex justify-center items-center min-h-screen ${themeColors.background} p-6`}>
       <motion.div className={`w-full max-w-md ${themeColors.card} rounded-2xl p-8`}>
-        <h2 className={`text-center text-2xl font-bold ${themeColors.text} mb-6`}>Create an Account</h2>
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {[ 
-            { label: "Full Name", value: fullName, setValue: setFullName, icon: faUser, type: "text", placeholder: "John Doe" },
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {[
+            { label: "Full Name", value: fullName, setValue: setFullName, icon: faUser, type: "text", placeholder: "Enter Full name" },
             { label: "Email", value: email, setValue: setEmail, icon: faEnvelope, type: "email", placeholder: "example@mail.com" },
             { label: "Contact Number", value: contactNumber, setValue: setContactNumber, icon: faPhone, type: "text", placeholder: "123-456-7890" },
             { label: "Password", value: password, setValue: setPassword, icon: faLock, type: "password", placeholder: "Enter password" },
           ].map(({ label, value, setValue, icon, type, placeholder }, index) => (
             <motion.div key={index} className="relative">
               <label className={`block text-sm font-medium ${themeColors.text} mb-1`}>{label}</label>
-              <div className={`flex items-center border rounded-lg shadow-sm p-3 ${themeColors.input}`}>
+              <div className={`flex items-center border rounded-md shadow-sm py-2 px-3 ${themeColors.input}`}>
                 <FontAwesomeIcon icon={icon} className="text-gray-500 mr-3" />
                 <input
                   type={type}
-                  className="w-full bg-transparent outline-none"
+                  className="w-full bg-transparent outline-none text-base"
                   value={value}
                   onChange={(e) => setValue(e.target.value)}
                   placeholder={placeholder}
@@ -81,12 +80,13 @@ const Signup = () => {
               </div>
             </motion.div>
           ))}
+
           <motion.div className="relative">
             <label className={`block text-sm font-medium ${themeColors.text} mb-1`}>Role</label>
-            <div className={`flex items-center border rounded-lg shadow-sm p-3 ${themeColors.input}`}>
+            <div className={`flex items-center border rounded-md shadow-sm py-2 px-3 ${themeColors.input}`}>
               <FontAwesomeIcon icon={faUserTag} className="text-gray-500 mr-3" />
               <select
-                className="w-full bg-transparent outline-none"
+                className="w-full bg-transparent outline-none text-base"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               >
@@ -98,9 +98,9 @@ const Signup = () => {
 
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`w-full ${themeColors.button} text-white py-3 rounded-lg font-bold flex justify-center items-center gap-2 transition-transform transform hover:shadow-lg disabled:opacity-50`}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className={`w-full ${themeColors.button} text-white py-2.5 rounded-md font-semibold flex justify-center items-center gap-2 transition-transform hover:shadow-md disabled:opacity-50 text-base`}
             disabled={loading}
           >
             {loading ? <FontAwesomeIcon icon={faSpinner} spin /> : <FontAwesomeIcon icon={faUserTag} />}

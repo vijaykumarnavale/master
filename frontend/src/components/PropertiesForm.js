@@ -1,10 +1,10 @@
 import React, { useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './NewPropertiesForm.css';  
-import './Error.css';  
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight, faMapMarkerAlt, faMapPin, faSearchLocation, faBuilding, faRulerCombined, faRuler, faParking, faHome } from '@fortawesome/free-solid-svg-icons'; // Import necessary icons
+import { faArrowRight, faMapMarkerAlt, faMapPin, faSearchLocation, faBuilding, faRulerCombined, faRuler, faParking, faHome } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PropertiesForm = () => {
   const navigate = useNavigate();
@@ -44,224 +44,63 @@ const PropertiesForm = () => {
         .then(response => {
           console.log(response.data);
           localStorage.setItem('property_id', response.data.property_id);
-          navigate('/setbacks');
+          toast.success("Property details saved successfully!", {
+            position: "top-right",
+            autoClose: 3000, // Closes after 3 seconds
+          });
+          setTimeout(() => {
+            navigate('/setbacks');
+          }, 2000); // Navigate after 2 seconds to show toast message
         })
         .catch(error => {
-          console.error('There was an error submitting the property data:', error);
+          console.error('Error submitting property data:', error);
+          toast.error("Failed to save property details. Please try again.");
         });
     }
   };
 
   return (
-    <div className="new-form-container">
-      <h2 className="new-form-title">Properties Details</h2>
-      <form onSubmit={(e) => e.preventDefault()} className="new-property-form">
-        <div className="new-form-row">
-          <div className="new-form-group">
-            <label htmlFor="address" className="new-form-label">Address <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faMapMarkerAlt} className="input-icon" />
-              <input
-                type="text"
-                id="address"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="Address"
-                className="new-input-field"
-              />
+    <div className="max-w-3xl mx-auto mt-6 p-6 bg-white rounded-lg shadow-md border border-gray-300">
+      <ToastContainer />
+      <h2 className="text-center text-2xl font-bold text-gray-800 mb-6">Property Details</h2>
+      <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          {[
+            ['address', 'Address', faMapMarkerAlt],
+            ['apn', 'APN', faMapPin],
+            ['pincode', 'Pincode', faSearchLocation],
+            ['zoning', 'Zoning', faBuilding],
+            ['plot_area_sqft', 'Plot Area (sqft)', faRulerCombined],
+            ['height_limit_ft', 'Height Limit (ft)', faRuler],
+            ['depth_ft', 'Depth (ft)', faRuler],
+            ['width_ft', 'Width (ft)', faRuler],
+            ['building_sqft', 'Building Area (sqft)', faBuilding],
+            ['parking_spaces', 'Parking Spaces', faParking],
+            ['garages', 'Garages', faHome]
+          ].map(([name, label, icon]) => (
+            <div key={name} className="flex flex-col">
+              <label htmlFor={name} className="font-semibold text-gray-800 mb-1 text-sm">{label} <span className="text-red-500">*</span></label>
+              <div className="relative">
+                <FontAwesomeIcon icon={icon} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm" />
+                <input
+                  type={name.includes('_sqft') || name.includes('_ft') || name.includes('spaces') || name.includes('garages') ? 'number' : 'text'}
+                  id={name}
+                  name={name}
+                  value={formData[name]}
+                  onChange={handleChange}
+                  placeholder={label}
+                  className="pl-10 py-1 px-3 w-full border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 h-8"
+                />
+              </div>
+              {errors[name] && <span className="text-red-500 text-xs mt-1">{errors[name]}</span>}
             </div>
-            {errors.address && <span className="new-error-text">{errors.address}</span>}
-          </div>
-
-          <div className="new-form-group">
-            <label htmlFor="apn" className="new-form-label">APN <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faMapPin} className="input-icon" />
-              <input
-                type="text"
-                id="apn"
-                name="apn"
-                value={formData.apn}
-                onChange={handleChange}
-                placeholder="APN"
-                className="new-input-field"
-              />
-            </div>
-            {errors.apn && <span className="new-error-text">{errors.apn}</span>}
-          </div>
+          ))}
         </div>
-
-        <div className="new-form-row">
-          <div className="new-form-group">
-            <label htmlFor="pincode" className="new-form-label">Pincode <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faSearchLocation} className="input-icon" />
-              <input
-                type="text"
-                id="pincode"
-                name="pincode"
-                value={formData.pincode}
-                onChange={handleChange}
-                placeholder="Pincode"
-                className="new-input-field"
-              />
-            </div>
-            {errors.pincode && <span className="new-error-text">{errors.pincode}</span>}
-          </div>
-
-          <div className="new-form-group">
-            <label htmlFor="zoning" className="new-form-label">Zoning <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faBuilding} className="input-icon" />
-              <input
-                type="text"
-                id="zoning"
-                name="zoning"
-                value={formData.zoning}
-                onChange={handleChange}
-                placeholder="Zoning"
-                className="new-input-field"
-              />
-            </div>
-            {errors.zoning && <span className="new-error-text">{errors.zoning}</span>}
-          </div>
+        <div className="flex justify-end mt-4">
+          <button type="button" onClick={handleSubmit} className="bg-blue-600 text-white py-1 px-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition duration-300">
+            <FontAwesomeIcon icon={faArrowRight} className="mr-1" /> Next
+          </button>
         </div>
-
-        <div className="new-form-row">
-          <div className="new-form-group">
-            <label htmlFor="plot_area_sqft" className="new-form-label">Plot Area (sqft) <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faRulerCombined} className="input-icon" />
-              <input
-                type="number"
-                id="plot_area_sqft"
-                name="plot_area_sqft"
-                value={formData.plot_area_sqft}
-                onChange={handleChange}
-                placeholder="Plot Area (sqft)"
-                className="new-input-field"
-              />
-            </div>
-            {errors.plot_area_sqft && <span className="new-error-text">{errors.plot_area_sqft}</span>}
-          </div>
-
-          <div className="new-form-group">
-            <label htmlFor="height_limit_ft" className="new-form-label">Height Limit (ft) <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faRuler} className="input-icon" />
-              <input
-                type="number"
-                id="height_limit_ft"
-                name="height_limit_ft"
-                value={formData.height_limit_ft}
-                onChange={handleChange}
-                placeholder="Height Limit (ft)"
-                className="new-input-field"
-              />
-            </div>
-            {errors.height_limit_ft && <span className="new-error-text">{errors.height_limit_ft}</span>}
-          </div>
-        </div>
-
-        <div className="new-form-row">
-          <div className="new-form-group">
-            <label htmlFor="depth_ft" className="new-form-label">Depth (ft) <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faRuler} className="input-icon" />
-              <input
-                type="number"
-                id="depth_ft"
-                name="depth_ft"
-                value={formData.depth_ft}
-                onChange={handleChange}
-                placeholder="Depth (ft)"
-                className="new-input-field"
-              />
-            </div>
-            {errors.depth_ft && <span className="new-error-text">{errors.depth_ft}</span>}
-          </div>
-
-          <div className="new-form-group">
-            <label htmlFor="width_ft" className="new-form-label">Width (ft) <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faRuler} className="input-icon" />
-              <input
-                type="number"
-                id="width_ft"
-                name="width_ft"
-                value={formData.width_ft}
-                onChange={handleChange}
-                placeholder="Width (ft)"
-                className="new-input-field"
-              />
-            </div>
-            {errors.width_ft && <span className="new-error-text">{errors.width_ft}</span>}
-          </div>
-        </div>
-
-        <div className="new-form-row">
-          <div className="new-form-group">
-            <label htmlFor="building_sqft" className="new-form-label">Building Area (sqft) <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faBuilding} className="input-icon" />
-              <input
-                type="number"
-                id="building_sqft"
-                name="building_sqft"
-                value={formData.building_sqft}
-                onChange={handleChange}
-                placeholder="Building Area (sqft)"
-                className="new-input-field"
-              />
-            </div>
-            {errors.building_sqft && <span className="new-error-text">{errors.building_sqft}</span>}
-          </div>
-
-
-          <div className="new-form-group">
-            <label htmlFor="parking_spaces" className="new-form-label">Parking Spaces <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faParking} className="input-icon" />
-              <input
-                type="number"
-                id="parking_spaces"
-                name="parking_spaces"
-                value={formData.parking_spaces}
-                onChange={handleChange}
-                placeholder="Number of Parking Spaces"
-                className="new-input-field"
-              />
-            </div>
-            {errors.parking_spaces && <span className="new-error-text">{errors.parking_spaces}</span>}
-          </div>
-        </div>
-
-       
-        <div className="new-form-row">
-          <div className="new-form-group">
-            <label htmlFor="garages" className="new-form-label">Garages <span className="red-asterisk">*</span></label>
-            <div className="input-with-icon">
-              <FontAwesomeIcon icon={faHome} className="input-icon" />
-              <input
-                type="number"
-                id="garages"
-                name="garages"
-                value={formData.garages}
-                onChange={handleChange}
-                placeholder="Number of Garages"
-                className="new-input-field"
-              />
-            </div>
-            {errors.garages && <span className="new-error-text">{errors.garages}</span>}
-          </div>
-          
-</div>
-        {/* "Next" button with Font Awesome icon */}
-        <button type="button" onClick={handleSubmit} className="new-submit-button">
-          <FontAwesomeIcon icon={faArrowRight} style={{ marginRight: '8px' }} />  {/* Font Awesome right arrow */}
-          Next
-        </button>
       </form>
     </div>
   );

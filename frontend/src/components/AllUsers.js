@@ -2,16 +2,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faSave, faTimes, faUser, faEnvelope, faPhone, faTag } from '@fortawesome/free-solid-svg-icons';
-import 'react-toastify/dist/ReactToastify.css'; // Import react-toastify styles
-import './AllUsers.css'; // Import custom CSS
+import { faEdit, faTrash, faSave, faTimes, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 10;
 
-  // Fetch users from API
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
@@ -28,7 +28,6 @@ const AllUsers = () => {
     fetchUsers();
   }, []);
 
-  // Handle Delete
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${process.env.REACT_APP_NODE_API_URL}/users/${id}`);
@@ -40,11 +39,10 @@ const AllUsers = () => {
     }
   };
 
-  // Handle Edit (Save Changes)
-  const handleEdit = async (user) => {
+  const handleEdit = async () => {
     try {
-      await axios.put(`${process.env.REACT_APP_NODE_API_URL}/users/${user.id}`, user);
-      setUsers(users.map((u) => (u.id === user.id ? user : u)));
+      await axios.put(`${process.env.REACT_APP_NODE_API_URL}/users/${editingUser.id}`, editingUser);
+      setUsers(users.map((u) => (u.id === editingUser.id ? editingUser : u)));
       setEditingUser(null);
       toast.success('User updated successfully');
     } catch (error) {
@@ -53,110 +51,83 @@ const AllUsers = () => {
     }
   };
 
-  // Render User Row
-  const renderRow = (user) => {
-    if (editingUser?.id === user.id) {
-      return (
-        <tr key={user.id}>
-          <td>{user.id}</td>
-          <td>
-            <FontAwesomeIcon icon={faUser} /> 
-            <input
-              type="text"
-              value={editingUser.full_name}
-              onChange={(e) => setEditingUser({ ...editingUser, full_name: e.target.value })}
-            />
-          </td>
-          <td>
-            <FontAwesomeIcon icon={faEnvelope} /> 
-            <input
-              type="email"
-              value={editingUser.email}
-              onChange={(e) => setEditingUser({ ...editingUser, email: e.target.value })}
-            />
-          </td>
-          <td>
-            <FontAwesomeIcon icon={faPhone} /> 
-            <input
-              type="text"
-              value={editingUser.contact_number}
-              onChange={(e) => setEditingUser({ ...editingUser, contact_number: e.target.value })}
-            />
-          </td>
-          <td>
-            <FontAwesomeIcon icon={faTag} /> 
-            <input
-              type="text"
-              value={editingUser.role}
-              onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
-            />
-          </td>
-          <td>
-            <button className="btn btn-save" onClick={() => handleEdit(editingUser)}>
-              <FontAwesomeIcon icon={faSave} />
-            </button>
-            <button className="btn btn-cancel" onClick={() => setEditingUser(null)}>
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-          </td>
-        </tr>
-      );
-    }
-
-    return (
-      <tr key={user.id}>
-        <td>{user.id}</td>
-        <td>
-          <FontAwesomeIcon icon={faUser} /> {user.full_name}
-        </td>
-        <td>
-          <FontAwesomeIcon icon={faEnvelope} /> {user.email}
-        </td>
-        <td>
-          <FontAwesomeIcon icon={faPhone} /> {user.contact_number}
-        </td>
-        <td>
-          <FontAwesomeIcon icon={faTag} /> {user.role}
-        </td>
-        <td>
-          <button className="btn btn-edit" onClick={() => setEditingUser(user)}>
-            <FontAwesomeIcon icon={faEdit} />
-          </button>
-          <button className="btn btn-delete" onClick={() => handleDelete(user.id)}>
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
-        </td>
-      </tr>
-    );
-  };
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
-    <div>
-      <h1>All Users</h1>
+    <div className="p-6 bg-gray-100 min-h-screen">
       {loading ? (
-        <div>Loading...</div>
+        <div className="text-center text-gray-600">Loading...</div>
       ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Contact Number</th>
-              <th>Role</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.length === 0 ? (
-              <tr>
-                <td colSpan="6" style={{ textAlign: 'center' }}>No users found</td>
+        <div className="overflow-x-auto bg-white p-4 shadow-lg rounded-lg">
+          <table className="w-full border-collapse border border-gray-300 rounded-lg">
+            <thead>
+              <tr className="bg-blue-500 text-white">
+                <th className="border p-3">#</th>
+                <th className="border p-3">Name</th>
+                <th className="border p-3">Email</th>
+                <th className="border p-3">Contact Number</th>
+                <th className="border p-3">Role</th>
+                <th className="border p-3">Actions</th>
               </tr>
-            ) : (
-              users.map((user) => renderRow(user))
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentUsers.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="text-center p-4">No users found</td>
+                </tr>
+              ) : (
+                currentUsers.map((user, index) => (
+                  <tr key={user.id} className="border hover:bg-gray-100">
+                    {editingUser?.id === user.id ? (
+                      <>
+                        <td className="border p-3">{indexOfFirstUser + index + 1}</td>
+                        <td className="border p-3"><input type="text" className="border p-2 rounded w-full" value={editingUser.full_name} onChange={(e) => setEditingUser({...editingUser, full_name: e.target.value})} /></td>
+                        <td className="border p-3"><input type="email" className="border p-2 rounded w-full" value={editingUser.email} onChange={(e) => setEditingUser({...editingUser, email: e.target.value})} /></td>
+                        <td className="border p-3"><input type="text" className="border p-2 rounded w-full" value={editingUser.contact_number} onChange={(e) => setEditingUser({...editingUser, contact_number: e.target.value})} /></td>
+                        <td className="border p-3"><input type="text" className="border p-2 rounded w-full" value={editingUser.role} onChange={(e) => setEditingUser({...editingUser, role: e.target.value})} /></td>
+                        <td className="border p-3 flex space-x-2">
+                          <button className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600" onClick={handleEdit}>
+                            <FontAwesomeIcon icon={faSave} />
+                          </button>
+                          <button className="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600" onClick={() => setEditingUser(null)}>
+                            <FontAwesomeIcon icon={faTimes} />
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td className="border p-3">{indexOfFirstUser + index + 1}</td>
+                        <td className="border p-3">{user.full_name}</td>
+                        <td className="border p-3">{user.email}</td>
+                        <td className="border p-3">{user.contact_number}</td>
+                        <td className="border p-3">{user.role}</td>
+                        <td className="border p-3 flex space-x-2">
+                          <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" onClick={() => setEditingUser(user)}>
+                            <FontAwesomeIcon icon={faEdit} />
+                          </button>
+                          <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" onClick={() => handleDelete(user.id)}>
+                            <FontAwesomeIcon icon={faTrash} />
+                          </button>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+          <div className="flex justify-between mt-4">
+            <button className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500" onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}>
+              <FontAwesomeIcon icon={faChevronLeft} /> Prev
+            </button>
+            <span className="text-gray-700 font-semibold">Page {currentPage}</span>
+            <button className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500" onClick={() => setCurrentPage(prev => (indexOfLastUser < users.length ? prev + 1 : prev))}>
+              Next <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          </div>
+        </div>
       )}
       <ToastContainer />
     </div>
