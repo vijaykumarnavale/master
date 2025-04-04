@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 
+const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
+
 const ZoningRules = () => {
   const [zoneCodes, setZoneCodes] = useState([]);
   const [selectedZone, setSelectedZone] = useState("");
@@ -14,7 +16,7 @@ const ZoningRules = () => {
       setZonesLoading(true);
       setError("");
       try {
-        const response = await fetch("http://localhost:5000/zones");
+        const response = await fetch(`${apiBaseUrl}/zones`);
         if (!response.ok) throw new Error("Failed to load zone codes.");
         const data = await response.json();
         setZoneCodes([...new Set(data.map((item) => item.zone_code))]);
@@ -33,7 +35,7 @@ const ZoningRules = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(`http://localhost:5000/zones/${selectedZone}`);
+      const response = await fetch(`${apiBaseUrl}/zones/${selectedZone}`);
       if (!response.ok) throw new Error("Failed to fetch zoning data.");
       const data = await response.json();
       setZoneData(data.length > 0 ? data[0] : null);

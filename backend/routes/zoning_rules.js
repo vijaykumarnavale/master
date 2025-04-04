@@ -1,8 +1,6 @@
 const express = require("express");
-const db = require("../config/db"); 
+const db = require("../config/db");
 const router = express.Router();
-
-// Fetch all zoning rules
 router.get("/zones", (req, res) => {
     db.query("SELECT * FROM zoning_rules", (err, results) => {
         if (err) {
@@ -16,15 +14,24 @@ router.get("/zones", (req, res) => {
     });
 });
 
-// Fetch zoning rules by zone_code
+
 router.get("/zones/:zone_code", (req, res) => {
     const { zone_code } = req.params;
+    const { city } = req.query;
 
     if (!zone_code || typeof zone_code !== "string") {
         return res.status(400).json({ error: "Invalid zone code" });
     }
 
-    db.query("SELECT * FROM zoning_rules WHERE zone_code = ?", [zone_code], (err, results) => {
+    let query = "SELECT * FROM zoning_rules WHERE zone_code = ?";
+    const values = [zone_code];
+
+    if (city) {
+        query += " AND city LIKE ?";
+        values.push(`%${city}%`);
+    }
+
+    db.query(query, values, (err, results) => {
         if (err) {
             console.error("Database error:", err);
             return res.status(500).json({ error: "Internal Server Error" });
@@ -36,7 +43,7 @@ router.get("/zones/:zone_code", (req, res) => {
     });
 });
 
-// Fetch a specific zoning rule by ID
+
 router.get("/zone/:id", (req, res) => {
     const { id } = req.params;
 
@@ -57,3 +64,4 @@ router.get("/zone/:id", (req, res) => {
 });
 
 module.exports = router;
+    
