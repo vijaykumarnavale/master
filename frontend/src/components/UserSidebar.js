@@ -17,7 +17,7 @@ const Sidebar = ({ onMenuClick }) => {
   };
 
   return (
-    <div className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 min-h-screen shadow-2xl rounded-r-3xl backdrop-blur-lg">
+    <div className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 min-h-screen shadow-2xl rounded-r-3xl backdrop-blur-lg">
       <h3 className="text-2xl font-bold mb-8 text-gray-200 tracking-wide text-center">
         User Dashboard
       </h3>
@@ -25,19 +25,19 @@ const Sidebar = ({ onMenuClick }) => {
       <ul className="space-y-3">
         <SidebarItem
           icon={faSearch}
-          text="Zoning Search"
+          text="Property Details Search"
           active={active === "zoningSearch"}
           onClick={() => handleClick("zoningSearch")}
         />
         <SidebarItem
           icon={faMapSigns}
-          text="Data Entry"
+          text="Property Data Entry"
           active={active === "zoningData"}
           onClick={() => handleClick("zoningData")}
         />
         <SidebarItem
           icon={faListAlt}
-          text="View Rules"
+          text="Zoning Codes"
           active={active === "viewRules"}
           onClick={() => handleClick("viewRules")}
         />

@@ -15,8 +15,10 @@ import { useDropzone } from "react-dropzone";
 
 const FileUploadAndDisplay = () => {
   const [files, setFiles] = useState([]);
+  const [filteredFiles, setFilteredFiles] = useState([]);
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const filesPerPage = 10;
   const apiBaseUrl = process.env.REACT_APP_NODE_API_URL;
@@ -69,6 +71,7 @@ const FileUploadAndDisplay = () => {
     try {
       const response = await axios.get(`${apiBaseUrl}/files`);
       setFiles(response.data);
+      setFilteredFiles(response.data);
     } catch (error) {
       console.error("Error fetching files:", error);
     }
@@ -77,12 +80,26 @@ const FileUploadAndDisplay = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${apiBaseUrl}/files/${id}`);
-      setFiles((prev) => prev.filter((file) => file.id !== id));
+      const updatedFiles = files.filter((file) => file.id !== id);
+      setFiles(updatedFiles);
+      setFilteredFiles(updatedFiles);
       toast.success("File deleted successfully!");
     } catch (error) {
       console.error("Error deleting file:", error);
       toast.error("Error deleting the file. Please try again.");
     }
+  };
+
+  const handleSearch = () => {
+    if (!searchTerm.trim()) {
+      setFilteredFiles(files);
+      return;
+    }
+    const filtered = files.filter((f) =>
+      f.filename.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredFiles(filtered);
+    setCurrentPage(1);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -107,8 +124,8 @@ const FileUploadAndDisplay = () => {
 
   const indexOfLastFile = currentPage * filesPerPage;
   const indexOfFirstFile = indexOfLastFile - filesPerPage;
-  const currentFiles = files.slice(indexOfFirstFile, indexOfLastFile);
-  const totalPages = Math.ceil(files.length / filesPerPage);
+  const currentFiles = filteredFiles.slice(indexOfFirstFile, indexOfLastFile);
+  const totalPages = Math.ceil(filteredFiles.length / filesPerPage);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg border border-gray-200">
@@ -133,6 +150,26 @@ const FileUploadAndDisplay = () => {
           <FontAwesomeIcon icon={faUpload} className="mr-2" /> Upload
         </button>
       </div>
+
+     
+      {/* Search Field */}
+      <hr className="my-6 border-t-2 border-gray-300" />
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mt-6 text-center">
+      <input
+          type="text"
+          placeholder="Search by filename..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full sm:w-80 px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+        <button
+          onClick={handleSearch}
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Search
+        </button>
+      </div>
+      <hr className="my-6 border-t-2 border-gray-300" />
 
       <h3 className="text-lg font-semibold mt-6 text-gray-800">Uploaded Files</h3>
       <div className="overflow-x-auto">

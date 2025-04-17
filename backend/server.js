@@ -39,6 +39,11 @@ app.use('/', require('./routes/get_permited_uses_data'));
 app.use('/', require('./routes/file_upload'));
 app.use('/', require('./routes/zoning_rules'));
 
+
+app.use('/property_update', require('./routes/property_update'));
+app.use('/file_upload', require('./routes/file_upload'));
+
+
 // Home Route
 app.get('/', (req, res) => {
   res.status(200).send('Welcome to the Node.js Authentication System');

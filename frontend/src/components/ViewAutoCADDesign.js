@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { FiDownload, FiPrinter, FiBox, FiArrowRight } from 'react-icons/fi';
 import 'react-toastify/dist/ReactToastify.css';
 
-const API_BASE = process.env.REACT_APP_API_BASE || 'REACT_APP_NODE_API_URL';
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 const DXF_GENERATOR_URL = process.env.REACT_APP_DXF_GENERATOR_URL || 'https://dxffile-production.up.railway.app';
 
 const PlanGen = () => {

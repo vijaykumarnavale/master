@@ -20,7 +20,7 @@ const Sidebar = ({ onMenuClick }) => {
   };
 
   return (
-    <div className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 min-h-screen shadow-2xl rounded-r-3xl backdrop-blur-lg">
+    <div className="w-80 bg-gradient-to-b from-gray-900 to-gray-800 text-white p-6 min-h-screen shadow-2xl rounded-r-3xl backdrop-blur-lg">
       <h3 className="text-2xl font-bold mb-8 text-gray-200 tracking-wide text-center">
         Admin Dashboard
       </h3>
@@ -28,7 +28,7 @@ const Sidebar = ({ onMenuClick }) => {
       <ul className="space-y-3">
         <SidebarItem
           icon={faSearch}
-          text="Zoning Search"
+          text="Property Details Search"
           active={active === "zoningSearch"}
           onClick={() => handleClick("zoningSearch")}
         />
@@ -64,7 +64,7 @@ const Sidebar = ({ onMenuClick }) => {
         />
         <SidebarItem
           icon={faClipboard}
-          text="Rules And Regulations"
+          text="Zoning Rules & Regulations"
           active={active === "addRule"}
           onClick={() => handleClick("addRule")}
         />

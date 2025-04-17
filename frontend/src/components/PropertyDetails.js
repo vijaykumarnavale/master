@@ -16,10 +16,9 @@ const PropertyDetails = () => {
     navigate(-1);
   };
 
-  const handleCreateAP = () => {
+  const handleEdit = () => {
     if (propertyData) {
-      console.log('Creating architectural plan for:', propertyData);
-      alert('Architectural plan created successfully!');
+      navigate('/edit-property', { state: { propertyData } });
     }
   };
 
@@ -78,19 +77,31 @@ const PropertyDetails = () => {
       </div>
 
       <div className="details-footer flex justify-between mt-6">
-        <button onClick={handleBack} className="footer-back-button bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-red-500 hover:text-black transition-all duration-300">
+        <button
+          onClick={handleBack}
+          className="footer-back-button bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-red-500 hover:text-black transition-all duration-300"
+        >
           Back
         </button>
-        <button onClick={handleCreateAP} className="footer-create-ap-button bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 hover:text-black transition-all duration-300">
-          Create AP
+        <button
+          onClick={handleEdit}
+          className="footer-edit-button bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 hover:text-white transition-all duration-300 shadow-sm"
+        >
+          Edit
         </button>
       </div>
 
       <div className="bottom-right-buttons flex justify-center gap-6 mt-6">
-        <button onClick={handlePrint} className="print-button bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition-all duration-300">
+        <button
+          onClick={handlePrint}
+          className="print-button bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-800 transition-all duration-300"
+        >
           Print
         </button>
-        <button onClick={handleDownloadPDF} className="download-pdf-button bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-800 transition-all duration-300">
+        <button
+          onClick={handleDownloadPDF}
+          className="download-pdf-button bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-800 transition-all duration-300"
+        >
           Download PDF
         </button>
       </div>
