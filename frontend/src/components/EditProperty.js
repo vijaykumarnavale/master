@@ -23,7 +23,7 @@ const EditProperty = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/property_update/${formData.property_id}`,
+        `${process.env.REACT_APP_NODE_API_URL}/property_update/${formData.property_id}`,
         {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
